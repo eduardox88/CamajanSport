@@ -10,7 +10,8 @@ namespace CamajanSport.Controllers
     {
         //
         // GET: /Admin/
-        public ActionResult Index()
+
+        public ActionResult Dashboard()
         {
              
             return View();
