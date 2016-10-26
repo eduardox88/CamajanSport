@@ -15,29 +15,29 @@
     <title>Camajan Sport</title>
 
     <!-- PACE LOAD BAR PLUGIN - This creates the subtle load bar effect at the top of the page. -->
-    <link href="css/plugins/pace/pace.css" rel="stylesheet">
-    <script src="js/plugins/pace/pace.js"></script>
+    <link href="~/css/plugins/pace/pace.css" rel="stylesheet">
+    <script src="~/js/plugins/pace/pace.js"></script>
 
     <!-- GLOBAL STYLES - Include these on every page. -->
-    <link href="css/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="~/css/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <link href='http://fonts.googleapis.com/css?family=Ubuntu:300,400,500,700,300italic,400italic,500italic,700italic' rel="stylesheet" type="text/css">
     <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel="stylesheet" type="text/css">
-    <link href="icons/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+    <link href="~/icons/font-awesome/css/font-awesome.min.css" rel="stylesheet">
 
     <!-- PAGE LEVEL PLUGIN STYLES -->
-    <link href="css/plugins/messenger/messenger.css" rel="stylesheet">
-    <link href="css/plugins/messenger/messenger-theme-flat.css" rel="stylesheet">
-    <link href="css/plugins/daterangepicker/daterangepicker-bs3.css" rel="stylesheet">
-    <link href="css/plugins/morris/morris.css" rel="stylesheet">
-    <link href="css/plugins/jvectormap/jquery-jvectormap-1.2.2.css" rel="stylesheet">
-    <link href="css/plugins/datatables/datatables.css" rel="stylesheet">
+    <link href="~/css/plugins/messenger/messenger.css" rel="stylesheet">
+    <link href="~/css/plugins/messenger/messenger-theme-flat.css" rel="stylesheet">
+    <link href="~/css/plugins/daterangepicker/daterangepicker-bs3.css" rel="stylesheet">
+    <link href="~/css/plugins/morris/morris.css" rel="stylesheet">
+    <link href="~/css/plugins/jvectormap/jquery-jvectormap-1.2.2.css" rel="stylesheet">
+    <link href="~/css/plugins/datatables/datatables.css" rel="stylesheet">
 
     <!-- THEME STYLES - Include these on every page. -->
-    <link href="css/style.css" rel="stylesheet">
-    <link href="css/plugins.css" rel="stylesheet">
+    <link href="~/css/style.css" rel="stylesheet">
+    <link href="~/css/plugins.css" rel="stylesheet">
 
     <!-- THEME DEMO STYLES - Use these styles for reference if needed. Otherwise they can be deleted. -->
-    <link href="css/demo.css" rel="stylesheet">
+    <link href="~/css/demo.css" rel="stylesheet">
 
     <!--[if lt IE 9]>
       <script src="js/html5shiv.js"></script>
@@ -60,7 +60,9 @@
                 </button>
                 <div class="navbar-brand">
                     <a href="index.html">
-                        <img src="img/flex-admin-logo.png" data-1x="img/flex-admin-logo@1x.png" data-2x="img/flex-admin-logo@2x.png" class="hisrc img-responsive" alt="">
+                        @*<img src="~/img/flex-admin-logo.png" data-1x="~/img/flex-admin-logo@1x.png" data-2x="~/img/flex-admin-logo@2x.png" class="hisrc img-responsive" alt="">*@
+
+                        CAMAJANSPORT
                     </a>
                 </div>
             </div>
@@ -91,7 +93,7 @@
                 <ul id="side" class="nav navbar-nav side-nav">
                     <!-- begin SIDE NAV USER PANEL -->
                     <li class="side-user hidden-xs">
-                        <img class="img-circle" src="img/profile-pic.jpg" alt="">
+                        <img class="img-circle" src="~/img/profile-pic.jpg" alt="">
                         <p class="welcome">
                             <i class="fa fa-key"></i> Ha iniciado sesion como:
                         </p>
@@ -102,16 +104,7 @@
                         <div class="clearfix"></div>
                     </li>
                     <!-- end SIDE NAV USER PANEL -->
-                    <!-- begin SIDE NAV SEARCH -->
-                    <li class="nav-search">
-                        <form role="form">
-                            <input type="search" class="form-control" placeholder="Search...">
-                            <button class="btn">
-                                <i class="fa fa-search"></i>
-                            </button>
-                        </form>
-                    </li>
-                    <!-- end SIDE NAV SEARCH -->
+
                     <!-- begin DASHBOARD LINK -->
                     <li>
                         <a class="active" href="index.html">
@@ -126,27 +119,22 @@
                         <ul class="collapse nav" id="forms">
                             <li>
                                 <a href="basic-form-elements.html">
-                                    <i class="fa fa-angle-double-right"></i> Basic Elements
+                                    <i class="fa fa-angle-double-right"></i> Mantenimiento Deporte
                                 </a>
                             </li>
                             <li>
                                 <a href="advanced-form-elements.html">
-                                    <i class="fa fa-angle-double-right"></i> Advanced Elements
+                                    <i class="fa fa-angle-double-right"></i> Mantenimiento Equipos
                                 </a>
                             </li>
                             <li>
-                                <a href="validation.html">
-                                    <i class="fa fa-angle-double-right"></i> Validation
+                                <a href="@Url.Action("MantUsuarios", "Admin")">
+                                    <i class="fa fa-angle-double-right"></i> Mantenimiento Usuarios
                                 </a>
                             </li>
                             <li>
                                 <a href="wysiwyg-editor.html">
-                                    <i class="fa fa-angle-double-right"></i> WYSIWYG Editor
-                                </a>
-                            </li>
-                            <li>
-                                <a href="dropzone-uploader.html">
-                                    <i class="fa fa-angle-double-right"></i> Dropzone Uploader
+                                    <i class="fa fa-angle-double-right"></i> Mantenimiento Publicaciones
                                 </a>
                             </li>
                         </ul>
@@ -320,14 +308,14 @@
     <!-- /#wrapper -->
     <!-- GLOBAL SCRIPTS -->
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
-    <script src="js/plugins/bootstrap/bootstrap.min.js"></script>
-    <script src="js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
-    <script src="js/plugins/popupoverlay/jquery.popupoverlay.js"></script>
-    <script src="js/plugins/popupoverlay/defaults.js"></script>
+    <script src="~/js/plugins/bootstrap/bootstrap.min.js"></script>
+    <script src="~/js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+    <script src="~/js/plugins/popupoverlay/jquery.popupoverlay.js"></script>
+    <script src="~/js/plugins/popupoverlay/defaults.js"></script>
     <!-- Logout Notification Box -->
     <div id="logout">
         <div class="logout-message">
-            <img class="img-circle img-logout" src="img/profile-pic.jpg" alt="">
+            <img class="img-circle img-logout" src="~/img/profile-pic.jpg" alt="">
             <h3>
                 <i class="fa fa-sign-out text-green"></i> Ready to go?
             </h3>
@@ -346,40 +334,40 @@
     </div>
     <!-- /#logout -->
     <!-- Logout Notification jQuery -->
-    <script src="js/plugins/popupoverlay/logout.js"></script>
+    <script src="~/js/plugins/popupoverlay/logout.js"></script>
     <!-- HISRC Retina Images -->
-    <script src="js/plugins/hisrc/hisrc.js"></script>
+    <script src="~/js/plugins/hisrc/hisrc.js"></script>
 
     <!-- PAGE LEVEL PLUGIN SCRIPTS -->
     <!-- HubSpot Messenger -->
-    <script src="js/plugins/messenger/messenger.min.js"></script>
-    <script src="js/plugins/messenger/messenger-theme-flat.js"></script>
+    <script src="~/js/plugins/messenger/messenger.min.js"></script>
+    <script src="~/js/plugins/messenger/messenger-theme-flat.js"></script>
     <!-- Date Range Picker -->
-    <script src="js/plugins/daterangepicker/moment.js"></script>
-    <script src="js/plugins/daterangepicker/daterangepicker.js"></script>
+    <script src="~/js/plugins/daterangepicker/moment.js"></script>
+    <script src="~/js/plugins/daterangepicker/daterangepicker.js"></script>
     <!-- Morris Charts -->
-    <script src="js/plugins/morris/raphael-2.1.0.min.js"></script>
-    <script src="js/plugins/morris/morris.js"></script>
+    <script src="~/js/plugins/morris/raphael-2.1.0.min.js"></script>
+    <script src="~/js/plugins/morris/morris.js"></script>
     <!-- Flot Charts -->
-    <script src="js/plugins/flot/jquery.flot.js"></script>
-    <script src="js/plugins/flot/jquery.flot.resize.js"></script>
+    <script src="~/js/plugins/flot/jquery.flot.js"></script>
+    <script src="~/js/plugins/flot/jquery.flot.resize.js"></script>
     <!-- Sparkline Charts -->
-    <script src="js/plugins/sparkline/jquery.sparkline.min.js"></script>
+    <script src="~/js/plugins/sparkline/jquery.sparkline.min.js"></script>
     <!-- Moment.js -->
-    <script src="js/plugins/moment/moment.min.js"></script>
+    <script src="~/js/plugins/moment/moment.min.js"></script>
     <!-- jQuery Vector Map -->
-    <script src="js/plugins/jvectormap/jquery-jvectormap-1.2.2.min.js"></script>
-    <script src="js/plugins/jvectormap/maps/jquery-jvectormap-world-mill-en.js"></script>
-    <script src="js/demo/map-demo-data.js"></script>
+    <script src="~/js/plugins/jvectormap/jquery-jvectormap-1.2.2.min.js"></script>
+    <script src="~/js/plugins/jvectormap/maps/jquery-jvectormap-world-mill-en.js"></script>
+    <script src="~/js/demo/map-demo-data.js"></script>
     <!-- Easy Pie Chart -->
-    <script src="js/plugins/easypiechart/jquery.easypiechart.min.js"></script>
+    <script src="~/js/plugins/easypiechart/jquery.easypiechart.min.js"></script>
     <!-- DataTables -->
-    <script src="js/plugins/datatables/jquery.dataTables.js"></script>
-    <script src="js/plugins/datatables/datatables-bs3.js"></script>
+    <script src="~/js/plugins/datatables/jquery.dataTables.js"></script>
+    <script src="~/js/plugins/datatables/datatables-bs3.js"></script>
 
     <!-- THEME SCRIPTS -->
-    <script src="js/flex.js"></script>
-    <script src="js/demo/dashboard-demo.js"></script>
+    <script src="~/js/flex.js"></script>
+    <script src="~/js/demo/dashboard-demo.js"></script>
 
 </body>
 
