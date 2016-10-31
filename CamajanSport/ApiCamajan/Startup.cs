@@ -20,6 +20,7 @@ namespace ApiCamajan
     {
         public void Configuration(IAppBuilder app)
         {
+            GlobalConfiguration.Configure(WebApiConfig.Register);
             var config = new HttpConfiguration();
             //other configurations
 
