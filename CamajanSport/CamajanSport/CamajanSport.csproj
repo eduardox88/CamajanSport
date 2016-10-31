@@ -579,6 +579,9 @@
     <Content Include="Views\Admin\Dashboard.cshtml" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Views\Admin\MantDeportes.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
     <Content Include="Views\Admin\MantUsuarios.cshtml" />
   </ItemGroup>
   <PropertyGroup>

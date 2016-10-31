@@ -16,10 +16,24 @@ namespace CamajanSport.Controllers
             return View();
         }
 
+<<<<<<< .mine
+        #region Deportes
+||||||| .r7
+=======
         public ActionResult MantUsuarios() {
+>>>>>>> .r15
 
+<<<<<<< .mine
+        public ActionResult MantDeportes() 
+        {
+            return View("MantDeportes");
+        }
+#endregion
+||||||| .r7
+=======
             return View("MantUsuarios");
         }
+>>>>>>> .r15
 
     }
 }
