@@ -16,8 +16,7 @@
 
     <!-- PACE LOAD BAR PLUGIN - This creates the subtle load bar effect at the top of the page. -->
     <link href="~/css/plugins/pace/pace.css" rel="stylesheet">
-    <script src="~/js/plugins/pace/pace.js"></script>
-
+    <script src="~/js/plugins/pace/pace.js"></script>  
     <!-- GLOBAL STYLES - Include these on every page. -->
     <link href="~/css/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <link href='http://fonts.googleapis.com/css?family=Ubuntu:300,400,500,700,300italic,400italic,500italic,700italic' rel="stylesheet" type="text/css">
@@ -118,7 +117,7 @@
                         </a>
                         <ul class="collapse nav" id="forms">
                             <li>
-                                <a href="basic-form-elements.html">
+                                <a href="@Url.Action("MantDeportes","Admin")">
                                     <i class="fa fa-angle-double-right"></i> Mantenimiento Deporte
                                 </a>
                             </li>
@@ -368,7 +367,6 @@
     <!-- THEME SCRIPTS -->
     <script src="~/js/flex.js"></script>
     <script src="~/js/demo/dashboard-demo.js"></script>
-
 
     @RenderSection("Scripts", required: false)
    
