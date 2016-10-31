@@ -13,11 +13,13 @@ namespace CamajanSport.Controllers
 
         public ActionResult Dashboard()
         {
-             
             return View();
         }
 
+        public ActionResult MantUsuarios() {
 
+            return View("MantUsuarios");
+        }
 
     }
 }
