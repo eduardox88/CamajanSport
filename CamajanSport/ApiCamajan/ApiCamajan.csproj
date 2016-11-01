@@ -104,11 +104,14 @@
     <Reference Include="System.EnterpriseServices" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Web.config" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Context\CamajanSportContext.cs" />
+    <Compile Include="Controllers\DeporteController.cs" />
     <Compile Include="Manejadores\ManejadorUsuario.cs" />
     <Compile Include="Models\Deporte.cs" />
     <Compile Include="Models\Rol.cs" />
@@ -127,7 +130,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Controllers\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Utilidades\Utilidades.csproj">
