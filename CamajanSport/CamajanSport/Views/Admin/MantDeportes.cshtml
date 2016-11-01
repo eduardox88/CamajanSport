@@ -3,6 +3,8 @@
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }    <!-- begin MAIN PAGE CONTENT -->
 
+
+
 <div class="page-content">
 
     <!-- begin PAGE TITLE AREA -->
@@ -59,12 +61,75 @@
                                 </tbody>
                             </table>
                         </div>
-                        <a class="btn btn-green">Nuevo Deporte</a>
+                        <!-- Advanced Modal Trigger -->
+                        <button class="btn btn-green btn-md" data-toggle="modal" data-target="#flexModal">
+                            Nuevo Deporte
+                        </button>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+    <br>
+    <br>
+
+    <!-- Flex Modal -->
+    <div class="modal modal-flex fade" id="flexModal" tabindex="-1" role="dialog" aria-labelledby="flexModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="flexModalLabel">Nuevo Deporte</h4>
+                </div>
+                <div class="modal-body">
+                    
+                    <div class="row">
+                        <div class="col-xs-1">
+                            <input type="hidden" id="hdfId" />
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-5">
+                            <label for="txtNombre">Nombre:</label>
+                            <input type="text" class="form-control" id="txtNombre"/>
+                        </div>
+                        <div class="col-xs-5">
+                            <label for="txtNombre">Activo:</label>
+                            <input type="checkbox" class="form-control" id="chkActivo" checked="checked" />
+                        </div>
+                    </div>
+                    <br />
+                    <!-- begin DROPZONE UPLOADER ROW -->
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <div class="portlet portlet-default dropzone-portlet">
+                                <div class="portlet-heading">
+                                    <div class="portlet-title">
+                                        <h4>Dropzone Uploader Example</h4>
+                                    </div>
+                                    <div class="clearfix"></div>
+                                </div>
+                                <div class="portlet-body">
+                                    <input type="file" id="fileUploader" />
+                                </div>
+                            </div>
+                        </div>
+                        <!-- /.col-lg-12 -->
+                    </div>
+                    <!-- /.row -->
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-green" onclick="GuardarDeporte()">Guardar</button>
+                </div>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+    <!-- /.modal -->
+
+
 </div>
 
 @section Scripts{
@@ -72,11 +137,34 @@
 
         $(document).ready(function () {
 
-            //alert("MALDITA PRUEBA");
-
 
         });
 
+        function GuardarDeporte()
+        {
+            alert($('#txtNombre').val());
+            var formData = new FormData();
+            var fileUpload = document.getElementById('fileUploader');
+            formData.append("deporte", $('#txtNombre').val());
+            //formData.append("accountnum", 123456);
+            formData.append("afile", fileUpload.files[0]);
+
+            var xhr = new XMLHttpRequest();
+            xhr.open("POST", "/Admin/SaveUploadedFile");
+            xhr.onreadystatechange = function (aEvt) {
+                if (xhr.readyState == 4) {
+                    if (xhr.status == 200) {
+                        var msg = JSON.stringify(xhr.responseText);
+                        alert(msg);
+                    } else
+                        alert("Error uploading");
+                }
+            }
+
+
+
+            xhr.send(formData);          
+        }
 
 
     </script>
