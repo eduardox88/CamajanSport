@@ -7,9 +7,14 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Mvc;
-using Utilidades;
-using CamajanSport.Models;
 using System.Net;
+using ApiCamajan;
+using ApiCamajan.Models;
+using System.Net.Http.Headers;
+using System.Net.Http.Formatting;
+using CamajanSport.Helpers;
+using CamajanSport.Models;
+using Utilidades;
 
 namespace CamajanSport.Controllers
 {
@@ -24,30 +29,11 @@ namespace CamajanSport.Controllers
 
             HttpResponseMessage responseMessage = await Helper.GetBearerToken("http://localhost:14678/", username, password);
 
-            //client.DefaultRequestHeaders.Add("Authorization", "Bearer " + token);
-
             if (responseMessage.IsSuccessStatusCode)
             {
-                Token response = await responseMessage.Content.ReadAsAsync<Token>();
-
-                if (response != null) {
-                    HttpClient client = new HttpClient();
-
-                    client.DefaultRequestHeaders.Add("Authorization", "Bearer " + response.AccessToken);
-
-                    HttpResponseMessage test = await client.GetAsync("http://localhost:14678/api/Deporte/Getdeportes");
-
-                    if (test.IsSuccessStatusCode) {
-
-                        var message = test.Content.ReadAsStringAsync().Result;
-
-                        var result1 = JsonConvert.DeserializeObject<Deporte>(message);
-                        var result2 = test.Content.ReadAsAsync<Deporte>().Result;
-
-                       
-                    }
-
-                }
+                Token token = await responseMessage.Content.ReadAsAsync<Token>();
+                Session.Add("Token", token);
+                Session.Timeout = (token.ExpiresIn / 60);
 
                 return Json(true, JsonRequestBehavior.AllowGet);
             }
@@ -58,19 +44,4 @@ namespace CamajanSport.Controllers
             
         }
     }
-
-    public class Deporte
-    {
-        [JsonProperty("IdDeporte")]
-        public int IdDeporte { get; set; }
-
-        public string Nombre { get; set; }
-
-        public byte?[] Imagen { get; set; }
-
-        public bool? Activo { get; set; }
-
-        public DateTime? FechaIngreso { get; set; }
-
-    }  
 }

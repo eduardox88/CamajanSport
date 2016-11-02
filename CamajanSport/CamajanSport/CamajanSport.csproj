@@ -112,15 +112,15 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="App_Start\SessionHandle.cs" />
     <Compile Include="Controllers\AdminController.cs" />
     <Compile Include="Controllers\CamajanController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\LogInController.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Models\Deporte.cs" />
-    <Compile Include="Models\Usuario.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -583,6 +583,19 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Admin\MantUsuarios.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\LogIn\Index.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ApiCamajan\ApiCamajan.csproj">
+      <Project>{01f88407-c461-45a4-a5ca-18a629784878}</Project>
+      <Name>ApiCamajan</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Utilidades\Utilidades.csproj">
+      <Project>{c9bcb507-7d9e-4f83-a16d-6509e69b66a6}</Project>
+      <Name>Utilidades</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
