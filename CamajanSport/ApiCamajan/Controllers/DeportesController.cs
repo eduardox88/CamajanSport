@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Description;
 using ApiCamajan.Context;
-using ApiCamajan.Models;
+using CamajanSport.BOL;
 
 namespace ApiCamajan.Controllers
 {
