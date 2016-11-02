@@ -42,7 +42,6 @@ namespace CamajanSport.Controllers
                     Response.StatusCode = (int)HttpStatusCode.BadRequest;
                     return Json(0);
                 }
-                //return View("~/Admin/Dashboard");
             }
             catch (Exception ex)
             {
