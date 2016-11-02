@@ -4,12 +4,11 @@ using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
-using ApiCamajan.Models;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using System.Net.Http.Formatting;
-
+using CamajanSport.BOL;
 
 namespace CamajanSport.Controllers
 {
