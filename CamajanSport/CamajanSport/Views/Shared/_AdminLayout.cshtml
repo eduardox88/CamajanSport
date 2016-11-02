@@ -30,6 +30,7 @@
     <link href="~/css/plugins/morris/morris.css" rel="stylesheet">
     <link href="~/css/plugins/jvectormap/jquery-jvectormap-1.2.2.css" rel="stylesheet">
     <link href="~/css/plugins/datatables/datatables.css" rel="stylesheet">
+    <link href="~/css/plugins/dropzone/css/dropzone.css" rel="stylesheet">
 
     <!-- THEME STYLES - Include these on every page. -->
     <link href="~/css/style.css" rel="stylesheet">
@@ -117,7 +118,7 @@
                         </a>
                         <ul class="collapse nav" id="forms">
                             <li>
-                                <a href="@Url.Action("MantDeportes","Admin")">
+                                <a href="@Url.Action("MantDeportes","Deporte")">
                                     <i class="fa fa-angle-double-right"></i> Mantenimiento Deporte
                                 </a>
                             </li>
@@ -363,9 +364,11 @@
     <!-- DataTables -->
     <script src="~/js/plugins/datatables/jquery.dataTables.js"></script>
     <script src="~/js/plugins/datatables/datatables-bs3.js"></script>
-
+    <!-- PAGE LEVEL PLUGIN SCRIPTS -->
+    <script src="~/js/plugins/dropzone/dropzone.js"></script>
     <!-- THEME SCRIPTS -->
     <script src="~/js/flex.js"></script>
+    <script src="~/js/helpers/Utilities.js"></script>
     @*<script src="~/js/demo/dashboard-demo.js"></script>*@
 
     @RenderSection("Scripts", required: false)

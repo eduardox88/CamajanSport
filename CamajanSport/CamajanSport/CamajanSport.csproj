@@ -113,11 +113,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\SessionHandle.cs" />
-    <Compile Include="App_Start\WebApiConfig.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Controllers\AdminController.cs" />
     <Compile Include="Controllers\CamajanController.cs" />
+    <Compile Include="Controllers\DeporteController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\LogInController.cs" />
     <Compile Include="Controllers\UserController.cs" />
@@ -362,6 +360,7 @@
     <Content Include="js\demo\validation-demo.js" />
     <Content Include="js\demo\wysiwyg-demo.js" />
     <Content Include="js\flex.js" />
+    <Content Include="js\helpers\Utilities.js" />
     <Content Include="js\html5shiv.js" />
     <Content Include="js\plugins\bootstrap-datepicker\bootstrap-datepicker.js" />
     <Content Include="js\plugins\bootstrap-maxlength\bootstrap-maxlength.js" />
@@ -581,7 +580,7 @@
     <Content Include="Views\Admin\Dashboard.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Admin\MantDeportes.cshtml" />
+    <Content Include="Views\Deporte\MantDeportes.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Admin\MantUsuarios.cshtml" />

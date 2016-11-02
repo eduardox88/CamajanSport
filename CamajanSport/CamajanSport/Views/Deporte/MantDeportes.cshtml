@@ -135,27 +135,22 @@
 @section Scripts{
     <script>
 
-        $(document).ready(function () {
-
-
-        });
-
         function GuardarDeporte()
         {
             alert($('#txtNombre').val());
             var formData = new FormData();
             var fileUpload = document.getElementById('fileUploader');
             formData.append("deporte", $('#txtNombre').val());
-            //formData.append("accountnum", 123456);
+            formData.append("activo", $('#chkActivo').is(':checked'));
             formData.append("afile", fileUpload.files[0]);
 
             var xhr = new XMLHttpRequest();
-            xhr.open("POST", "/Admin/SaveUploadedFile");
+            xhr.open("POST", "/Deporte/SaveUploadedFile");
             xhr.onreadystatechange = function (aEvt) {
                 if (xhr.readyState == 4) {
                     if (xhr.status == 200) {
-                        var msg = JSON.stringify(xhr.responseText);
-                        alert(msg);
+                        console.log(aEvt);
+                        //MostrarDialogo('nuevoDeporte', 'Nuevo Deporte', 'El deporte ha sido creado satisfactoriamente', true, undefined, true, true);
                     } else
                         alert("Error uploading");
                 }
