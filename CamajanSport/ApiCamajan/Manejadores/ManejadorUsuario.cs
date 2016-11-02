@@ -3,9 +3,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
-using ApiCamajan.Models;
 using Utilidades;
 using System.Threading.Tasks;
+using CamajanSport.BOL;
 
 namespace ApiCamajan.Manejadores
 {
@@ -18,7 +18,6 @@ namespace ApiCamajan.Manejadores
         }
 
         public async Task<Usuario> Autenticar(string user, string contraseña) {
-
             string password = Encrypt.ComputeHash(contraseña, "SHA512", null);
 
             Usuario usuario = _db.usuarios.Where(m => m.NombreUsuario == user).FirstOrDefault();
