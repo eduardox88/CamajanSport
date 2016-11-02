@@ -56,7 +56,7 @@
                                         <th>Fecha Ingreso</th>
                                     </tr>
                                 </thead>
-                                <tbody>
+                                <tbody id="tblDeportes">
                                     
                                 </tbody>
                             </table>
@@ -135,9 +135,31 @@
 @section Scripts{
     <script>
 
+
+        $(document).ready(function () {
+
+
+            $.ajax({
+                type: "POST",
+                async:true,
+                url: '@Url.Action("Getdeportes","Deporte")',
+                dataType: "json",
+                success: function (response) {
+                    console.log(response);
+                    //if (response.Result == "OK") {
+                    //    alert(response.Result);
+                    //} else {
+                    //    MostrarAlerta('danger', response.Message);
+                    //    alert("Paso");
+                    //}
+                    
+                }
+            });
+
+        });
+
         function GuardarDeporte()
         {
-            alert($('#txtNombre').val());
             var formData = new FormData();
             var fileUpload = document.getElementById('fileUploader');
             formData.append("deporte", $('#txtNombre').val());
@@ -150,9 +172,9 @@
                 if (xhr.readyState == 4) {
                     if (xhr.status == 200) {
                         console.log(aEvt);
-                        //MostrarDialogo('nuevoDeporte', 'Nuevo Deporte', 'El deporte ha sido creado satisfactoriamente', true, undefined, true, true);
+                        MostrarDialogo('nuevoDeporte', 'Nuevo Deporte', 'El deporte ha sido creado satisfactoriamente', true, undefined, true, true);
                     } else
-                        alert("Error uploading");
+                        MostrarAlerta('danger', 'Ha ocurrido un error al crear el deporte');
                 }
             }
 
