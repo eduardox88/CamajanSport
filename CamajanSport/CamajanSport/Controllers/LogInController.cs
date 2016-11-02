@@ -36,9 +36,9 @@ namespace CamajanSport.Controllers
                 Session.Timeout = (token.ExpiresIn / 60);
 
                 return Json(true, JsonRequestBehavior.AllowGet);
+                //return View("~/Admin/Dashboard");
             }
             else {
-                Response.StatusCode = (int)HttpStatusCode.BadRequest;
                 return Json(0);
             }
             
