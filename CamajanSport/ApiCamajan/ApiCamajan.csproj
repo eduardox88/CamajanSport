@@ -111,7 +111,7 @@
   <ItemGroup>
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Context\CamajanSportContext.cs" />
-    <Compile Include="Controllers\DeportesController.cs" />
+    <Compile Include="Controllers\DeporteController.cs" />
     <Compile Include="Manejadores\ManejadorUsuario.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />

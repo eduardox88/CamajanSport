@@ -11,10 +11,12 @@ using System.Web.Http;
 using System.Web.Http.Description;
 using ApiCamajan.Context;
 using CamajanSport.BOL;
+using System.Web;
+using System.Net.Http.Formatting;
 
 namespace ApiCamajan.Controllers
 {
-    public class DeportesController : ApiController
+    public class DeporteController : ApiController
     {
         private CamajanSportContext db = new CamajanSportContext();
 
