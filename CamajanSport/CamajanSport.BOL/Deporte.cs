@@ -17,9 +17,9 @@ namespace CamajanSport.BOL
 
         public byte[] Imagen { get; set; }
 
-        public bool? Activo { get; set; }
+        public bool Activo { get; set; }
 
-        public DateTime? FechaIngreso { get; set; }
+        public DateTime FechaIngreso { get { return DateTime.Today; } }
 
     }       
 }
