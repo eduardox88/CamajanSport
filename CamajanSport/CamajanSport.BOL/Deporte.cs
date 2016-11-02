@@ -15,7 +15,7 @@ namespace CamajanSport.BOL
 
         public string Nombre { get; set; }
 
-        public byte?[] Imagen { get; set; }
+        public byte[] Imagen { get; set; }
 
         public bool? Activo { get; set; }
 
