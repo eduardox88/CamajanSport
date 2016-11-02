@@ -20,9 +20,9 @@ namespace ApiCamajan.Controllers
 
         // GET api/Deporte
         [Authorize]
-        public IQueryable<Deporte> Getdeportes()
+        public List<Deporte> Getdeportes()
         {
-            return db.deportes;
+            return db.deportes.ToList();
         }
 
         // GET api/Deporte/5
@@ -73,16 +73,17 @@ namespace ApiCamajan.Controllers
         }
 
         // POST api/Deporte
+        [Authorize]
         [ResponseType(typeof(Deporte))]
-        public async Task<IHttpActionResult> PostDeporte(Deporte deporte)
+        public async Task<IHttpActionResult> PostDeporte( Deporte deporte)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            db.deportes.Add(deporte);
-            await db.SaveChangesAsync();
+            //db.deportes.Add(deporte);
+            //await db.SaveChangesAsync();
 
             return CreatedAtRoute("DefaultApi", new { id = deporte.IdDeporte }, deporte);
         }
