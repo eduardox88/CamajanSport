@@ -1,5 +1,4 @@
-﻿using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
@@ -8,13 +7,10 @@ using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Mvc;
 using System.Net;
-using ApiCamajan;
-using ApiCamajan.Models;
 using System.Net.Http.Headers;
 using System.Net.Http.Formatting;
-using CamajanSport.Helpers;
-using CamajanSport.Models;
 using Utilidades;
+using CamajanSport.BOL;
 
 namespace CamajanSport.Controllers
 {
@@ -27,20 +23,33 @@ namespace CamajanSport.Controllers
 
         public async Task<JsonResult> SignIn(string username, string password) {
 
-            HttpResponseMessage responseMessage = await Helper.GetBearerToken("http://localhost:14678/", username, password);
 
-            if (responseMessage.IsSuccessStatusCode)
+            try
             {
-                Token token = await responseMessage.Content.ReadAsAsync<Token>();
-                Session.Add("Token", token);
-                Session.Timeout = (token.ExpiresIn / 60);
+                HttpResponseMessage responseMessage = await Helper.GetBearerToken("http://localhost:14678/", username, password);
 
-                return Json(true, JsonRequestBehavior.AllowGet);
+                if (responseMessage.IsSuccessStatusCode)
+                {
+                    Token token = await responseMessage.Content.ReadAsAsync<Token>();
+                    Session.Add("Token", token);
+                    Session.Timeout = (token.ExpiresIn / 60);
+
+
+                    return Json(true, JsonRequestBehavior.AllowGet);
+                }
+                else
+                {
+                    Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                    return Json(0);
+                }
                 //return View("~/Admin/Dashboard");
             }
-            else {
+            catch (Exception ex)
+            {
+
                 return Json(0);
             }
+            
             
         }
     }

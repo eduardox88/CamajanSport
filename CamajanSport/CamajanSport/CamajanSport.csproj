@@ -40,9 +40,9 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.CSharp" />
-    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.6.0.4\lib\net45\Newtonsoft.Json.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -113,6 +113,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\SessionHandle.cs" />
+    <Compile Include="App_Start\WebApiConfig.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Controllers\AdminController.cs" />
     <Compile Include="Controllers\CamajanController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -126,7 +129,6 @@
   <ItemGroup>
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
-    <Compile Include="App_Start\WebApiConfig.cs" />
     <Content Include="css\demo.css" />
     <Content Include="css\plugins.css" />
     <Content Include="css\plugins\bootstrap-datepicker\datepicker3.css" />
@@ -588,9 +590,9 @@
     <Content Include="Views\LogIn\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\ApiCamajan\ApiCamajan.csproj">
-      <Project>{01f88407-c461-45a4-a5ca-18a629784878}</Project>
-      <Name>ApiCamajan</Name>
+    <ProjectReference Include="..\CamajanSport.BOL\CamajanSport.BOL.csproj">
+      <Project>{a9b037eb-4964-407a-8d1c-9c318defe8f1}</Project>
+      <Name>CamajanSport.BOL</Name>
     </ProjectReference>
     <ProjectReference Include="..\Utilidades\Utilidades.csproj">
       <Project>{c9bcb507-7d9e-4f83-a16d-6509e69b66a6}</Project>

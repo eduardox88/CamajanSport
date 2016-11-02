@@ -14,7 +14,7 @@ namespace CamajanSport.App_Start
             if (filterContext.HttpContext.Session["Token"] == null)
             {
                 // check if a new session id was generated
-                filterContext.Result = new RedirectResult("~/Users/Login");
+                filterContext.Result = new RedirectResult("~/LogIn/Index");
                 return;
             }
 
