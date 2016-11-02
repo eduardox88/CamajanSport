@@ -10,23 +10,24 @@ using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Description;
 using ApiCamajan.Context;
-using CamajanSport.BOL;
+using ApiCamajan.Models;
 
 namespace ApiCamajan.Controllers
 {
-    public class DeporteController : ApiController
+    public class DeportesController : ApiController
     {
         private CamajanSportContext db = new CamajanSportContext();
 
-        // GET api/Deporte
+        // GET: api/Deportes
         [Authorize]
-        public List<Deporte> Getdeportes()
+        public IQueryable<Deporte> Getdeportes()
         {
-            return db.deportes.ToList();
+            return db.deportes;
         }
 
-        // GET api/Deporte/5
+        // GET: api/Deportes/5
         [ResponseType(typeof(Deporte))]
+        [Authorize]
         public async Task<IHttpActionResult> GetDeporte(int id)
         {
             Deporte deporte = await db.deportes.FindAsync(id);
@@ -38,7 +39,9 @@ namespace ApiCamajan.Controllers
             return Ok(deporte);
         }
 
-        // PUT api/Deporte/5
+        // PUT: api/Deportes/5
+        [ResponseType(typeof(void))]
+        [Authorize]
         public async Task<IHttpActionResult> PutDeporte(int id, Deporte deporte)
         {
             if (!ModelState.IsValid)
@@ -72,24 +75,25 @@ namespace ApiCamajan.Controllers
             return StatusCode(HttpStatusCode.NoContent);
         }
 
-        // POST api/Deporte
-        [Authorize]
+        // POST: api/Deportes
         [ResponseType(typeof(Deporte))]
-        public async Task<IHttpActionResult> PostDeporte( Deporte deporte)
+        [Authorize]
+        public async Task<IHttpActionResult> PostDeporte(Deporte deporte)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            //db.deportes.Add(deporte);
-            //await db.SaveChangesAsync();
+            db.deportes.Add(deporte);
+            await db.SaveChangesAsync();
 
             return CreatedAtRoute("DefaultApi", new { id = deporte.IdDeporte }, deporte);
         }
 
-        // DELETE api/Deporte/5
+        // DELETE: api/Deportes/5
         [ResponseType(typeof(Deporte))]
+        [Authorize]
         public async Task<IHttpActionResult> DeleteDeporte(int id)
         {
             Deporte deporte = await db.deportes.FindAsync(id);
@@ -112,7 +116,7 @@ namespace ApiCamajan.Controllers
             }
             base.Dispose(disposing);
         }
-
+        [Authorize]
         private bool DeporteExists(int id)
         {
             return db.deportes.Count(e => e.IdDeporte == id) > 0;
