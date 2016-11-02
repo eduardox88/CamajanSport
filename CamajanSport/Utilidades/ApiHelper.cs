@@ -7,7 +7,7 @@ using System.Web;
 using System.Net.Http.Formatting;
 using CamajanSport.BOL;
 
-namespace CamajanSport.Helpers
+namespace Utilidades
 {
     public class ApiHelper
     {
