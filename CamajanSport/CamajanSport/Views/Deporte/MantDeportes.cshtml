@@ -38,36 +38,39 @@
                     <div class="portlet-title">
                         <h4><i class="fa fa-exchange fa-fw"></i> Listado de Deportes</h4>
                     </div>
-                    @*<div class="portlet-widgets">
+                    <div class="portlet-widgets">
                         <a data-toggle="collapse" data-parent="#accordion" href="#transactionsPortlet"><i class="fa fa-chevron-down"></i></a>
-                    </div>*@
+                    </div>
                     <div class="clearfix"></div>
                 </div>
-                <div id="transactionsPortlet" class="panel-collapse collapse in">
+                   <div id="transactionsPortlet" class="panel-collapse collapse in">
                     <div class="portlet-body">
                         <div class="table-responsive dashboard-demo-table">
                             <table class="table table-bordered table-striped table-hover">
                                 <thead>
                                     <tr>
-                                        <th>Id</th>
+                                        
                                         <th>Nombre</th>
                                         <th>Imagen</th>
                                         <th>Activo</th>
                                         <th>Fecha Ingreso</th>
+                                        <th>Editar</th>
                                     </tr>
                                 </thead>
-                                <tbody id="tblDeportes">
-                                    
+                                <tbody id="tblDeportes">                                   
                                 </tbody>
                             </table>
                         </div>
-                        <!-- Advanced Modal Trigger -->
+                        
                         <button class="btn btn-green btn-md" data-toggle="modal" data-target="#flexModal">
                             Nuevo Deporte
                         </button>
                     </div>
+                       
                 </div>
+                
             </div>
+            @*<div id="listaEquipos"></div>*@
         </div>
     </div>
     <br>
@@ -86,6 +89,7 @@
                     <div class="row">
                         <div class="col-xs-1">
                             <input type="hidden" id="hdfId" />
+                            <input type="hidden" id="hdfOldImg" />
                         </div>
                     </div>
                     <div class="row">
@@ -94,7 +98,7 @@
                             <input type="text" class="form-control" id="txtNombre"/>
                         </div>
                         <div class="col-xs-5">
-                            <label for="txtNombre">Activo:</label>
+                            <label for="chkActivo">Activo:</label>
                             <input type="checkbox" class="form-control" id="chkActivo" checked="checked" />
                         </div>
                     </div>
@@ -112,6 +116,7 @@
                                 <div class="portlet-body">
                                     <input type="file" id="fileUploader" />
                                 </div>
+                                <div id="oldImg"></div>
                             </div>
                         </div>
                         <!-- /.col-lg-12 -->
@@ -119,70 +124,115 @@
                     <!-- /.row -->
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
-                    <button type="button" class="btn btn-green" onclick="GuardarDeporte()">Guardar</button>
+                    <button type="button" class="btn btn-default" onclick="LimpiarDiv()" data-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-green" id="btnGuardar" onclick="GuardarDeporte()">Guardar</button>                    
                 </div>
             </div>
             <!-- /.modal-content -->
         </div>
         <!-- /.modal-dialog -->
     </div>
+    <div id="prueba"></div>
     <!-- /.modal -->
-
-
-</div>
-
+</div> 
 @section Scripts{
-    <script>
 
+    <script>
+   
+        var objDeporte;
 
         $(document).ready(function () {
+            
+            CargarData();
+        });
 
-
+        function CargarData()
+        {
             $.ajax({
                 type: "POST",
-                async:true,
+                async: true,
                 url: '@Url.Action("Getdeportes","Deporte")',
                 dataType: "json",
                 success: function (response) {
-                    console.log(response);
-                    //if (response.Result == "OK") {
-                    //    alert(response.Result);
-                    //} else {
-                    //    MostrarAlerta('danger', response.Message);
-                    //    alert("Paso");
-                    //}
-                    
+                    //console.log(response);
+                    if (response.Result == "OK") {
+                        $('#tblDeportes').empty();
+                        objDeporte = response.Deportes;
+                        if (response.Deportes.length > 0) {
+                            for (var i = 0; i < response.Deportes.length; i++) {
+                                var deporte = response.Deportes[i];
+                                var imageSrc = "data:image/png;base64," + _arrayBufferToBase64(response.Deportes[i].Imagen).toString();
+                                var img = '<img width="100" heigth="50" src="' + imageSrc + '" alt="prueba"/>';
+                                var html = '<tr>' +
+                                '<td>' + deporte.Nombre + '</td>' +
+                                '<td>' + img + '</td>' +
+                                '<td>' + ((deporte.Activo == true) ? "SI" : "NO") + '</td>' +
+                                '<td>' + formatFecha(deporte.FechaIngreso) + '</td>' +
+                                '<td>' + '<input type="button" class="btn btn-danger" onclick="EditarDeporte(' + i + ')" value="Editar"/>' + '</td>' +
+                                '</tr>';
+                                $('#tblDeportes').append(html);
+                            }
+                        }
+                    } else {
+                        MostrarAlerta('danger', response.Message);
+                    }
                 }
             });
-
-        });
-
+        }
         function GuardarDeporte()
         {
             var formData = new FormData();
+            
             var fileUpload = document.getElementById('fileUploader');
-            formData.append("deporte", $('#txtNombre').val());
+            formData.append("idDeporte", ($('#hdfId').val() != "") ? parseInt($('#hdfId').val()) : 0);
+            formData.append("nombre", $('#txtNombre').val());
             formData.append("activo", $('#chkActivo').is(':checked'));
-            formData.append("afile", fileUpload.files[0]);
-
+            if (fileUpload.files[0] == null) {
+                var f = new File($('#hdfOldImg').val(), "oldImg");
+                formData.append("afile", f);
+            } else {
+                formData.append("afile", fileUpload.files[0]);
+            }
+            
+            
             var xhr = new XMLHttpRequest();
             xhr.open("POST", "/Deporte/SaveUploadedFile");
             xhr.onreadystatechange = function (aEvt) {
                 if (xhr.readyState == 4) {
                     if (xhr.status == 200) {
                         console.log(aEvt);
-                        MostrarDialogo('nuevoDeporte', 'Nuevo Deporte', 'El deporte ha sido creado satisfactoriamente', true, undefined, true, true);
+                        MostrarDialogo('nuevoDeporte', (($('#hdfId').val() != "") ? 'Editar Deporte' : 'Nuevo Deporte'), (($('#hdfId').val() != "") ? 'El deporte ha sido editado satisfactoriamente' : 'El deporte ha sido creado satisfactoriamente'), true, undefined, true, true);
+                        CargarData();
+                        LimpiarDiv();
                     } else
-                        MostrarAlerta('danger', 'Ha ocurrido un error al crear el deporte');
+                        MostrarAlerta('danger', 'Ha ocurrido un error al guardar. Si el problema persiste contacte su administrador.');
                 }
             }
+            xhr.send(formData);
 
-
-
-            xhr.send(formData);          
         }
 
+        function LimpiarDiv()
+        {
+            $('#hdfId').val('');
+            $('#hdfOldImg').val('');
+            $('#txtNombre').val('');
+            $('#chkActivo').prop('checked', true);
+            $('#oldImg').empty();
+            $('#flexModal').modal('hide');
+        }
+
+        function EditarDeporte(indice)
+        {
+            var deporte = objDeporte[indice];
+            $('#oldImg').empty();
+            $('#hdfId').val(deporte.IdDeporte);
+            $('#hdfOldImg').val(deporte.Imagen);
+            $('#txtNombre').val(deporte.Nombre);
+            $('#chkActivo').prop('checked', deporte.Activo);
+            $('#oldImg').append('<img width="100" heigth="50" src="data:image/png;base64,' + _arrayBufferToBase64(deporte.Imagen).toString() + '"/>');           
+            $('#flexModal').modal('show');
+        }
 
     </script>
 }
