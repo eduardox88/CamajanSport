@@ -57,26 +57,50 @@ function MostrarDialogo(id, titulo, mensaje, showBtnCerrar, botones, showTopClos
 }
 
 function AjaxCall(url, data,idContenedor ,callBackFunction)
-{    
-    $.ajax({
-        type: "POST",
-        url: url,
-        data: JSON.stringify(data),
-        contentType: "application/json; charset=utf-8",
-        dataType: "json",
-        success: function (data) {
-            //Llamada a la funcion para el callback
-            if (callBackFunction == undefined) {
-                MostrarDialogo('ajaxSuccessModal',"Mensaje informativo","La acción se realizó exitosamente.");
-            } else if(idContenedor != ""){
-                callBackFunction(idContenedor, data);
-            } else {
-                callBackFunction(data);
+{
+    if (data == undefined) {
+        $.ajax({
+            type: "POST",
+            url: url,
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function (data) {
+                //Llamada a la funcion para el callback
+                if (callBackFunction == undefined) {
+                    MostrarDialogo('ajaxSuccessModal', "Mensaje informativo", "La acción se realizó exitosamente.");
+                } else if (idContenedor != "") {
+                    callBackFunction(idContenedor, data);
+                } else {
+                    callBackFunction(data);
+                }
+            }, error: function (jqXHR, textStatus, errorThrown) {
+                MostrarDialogo('ajaxErrorModal', "Error", textStatus);
             }
-        }, error: function (jqXHR, textStatus, errorThrown) {
-            MostrarDialogo('ajaxErrorModal', "Error", textStatus);
-        }
-    });
+        });
+    }
+    else {
+        $.ajax({
+            type: "POST",
+            url: url,
+            data: JSON.stringify(data),
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function (data) {
+                //Llamada a la funcion para el callback
+                if (callBackFunction == undefined) {
+                    MostrarDialogo('ajaxSuccessModal', "Mensaje informativo", "La acción se realizó exitosamente.");
+                } else if (idContenedor != "") {
+                    callBackFunction(idContenedor, data);
+                } else {
+                    callBackFunction(data);
+                }
+            }, error: function (jqXHR, textStatus, errorThrown) {
+                MostrarDialogo('ajaxErrorModal', "Error", textStatus);
+            }
+        });
+    }
+
+    
 }
 //Reinicia el dropdown de direcciones por el id.
 function restartDropDown(id,value,text) {
@@ -85,12 +109,20 @@ function restartDropDown(id,value,text) {
 }
 
 function CargarDropDown(idDropDown, options) {
-    if (options.d.length > 0) {
-        for (var i = 0; i < options.d.length; i++) {
-            $('#' + idDropDown).append($('<option value="' + options.d[i].Value + '">' + options.d[i].DisplayText + '</option>'));
+    if (options.length > 0) {
+        for (var i = 0; i < options.length; i++) {
+            $('#' + idDropDown).append($('<option value="' + options[i].Value + '">' + options[i].DisplayText + '</option>'));
         }
     }
-    
+}
+
+function CargarDropDownDeportes(idDropDown, options) {
+    console.log(options)
+    if (options.length > 0) {
+        for (var i = 0; i < options.length; i++) {
+            $('#' + idDropDown).append($('<option value="' + options[i].IdDeporte + '">' + options[i].Nombre + '</option>'));
+        }
+    }
 }
 
 function LimpiarRecibirEnvioModal() {
@@ -109,4 +141,15 @@ function LimpiarRecibirEnvioModal() {
     $('#pnlRecepcion').addClass('hidden');
     $('#divRecepcionEnvio').appendTo('body');
     
+}
+
+function formatFecha(milisegundos) {
+
+    var milli = milisegundos
+    var result = new Date(parseInt(milli.substr(6)));
+
+    var date = new Date(Date.parse(result));
+
+    alert((date.getUTCDate()) + "/" + (date.getMonth() + 1) + "/" + date.getFullYear());
+
 }
