@@ -150,6 +150,15 @@ function formatFecha(milisegundos) {
 
     var date = new Date(Date.parse(result));
 
-    alert((date.getUTCDate()) + "/" + (date.getMonth() + 1) + "/" + date.getFullYear());
+    return ((date.getUTCDate()) + "/" + (date.getMonth() + 1) + "/" + date.getFullYear());
 
+}
+
+function _arrayBufferToBase64(bytes) {
+    var binary = '';
+    var len = bytes.length;
+    for (var i = 0; i < len; i++) {
+        binary += String.fromCharCode(bytes[i]);
+    }
+    return window.btoa(binary);
 }
