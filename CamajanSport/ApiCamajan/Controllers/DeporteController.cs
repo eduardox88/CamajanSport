@@ -44,16 +44,11 @@ namespace ApiCamajan.Controllers
         // PUT: api/Deportes/5
         [ResponseType(typeof(void))]
         [Authorize]
-        public async Task<IHttpActionResult> PutDeporte(int id, Deporte deporte)
+        public async Task<IHttpActionResult> PutDeporte(Deporte deporte)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
-            }
-
-            if (id != deporte.IdDeporte)
-            {
-                return BadRequest();
             }
 
             db.Entry(deporte).State = EntityState.Modified;
@@ -64,14 +59,7 @@ namespace ApiCamajan.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!DeporteExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
+                throw;
             }
 
             return StatusCode(HttpStatusCode.NoContent);
