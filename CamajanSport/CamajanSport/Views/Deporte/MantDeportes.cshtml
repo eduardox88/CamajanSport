@@ -156,11 +156,11 @@
                 success: function (response) {
 
                     $('#tblDeportes').empty();
-                    objDeporte = response.Deportes;
-                    if (response.Deportes.length > 0) {
-                        for (var i = 0; i < response.Deportes.length; i++) {
-                            var deporte = response.Deportes[i];
-                            var imageSrc = "data:image/png;base64," + _arrayBufferToBase64(response.Deportes[i].Imagen).toString();
+                    objDeporte = response;
+                    if (response.length > 0) {
+                        for (var i = 0; i < response.length; i++) {
+                            var deporte = response[i];
+                            var imageSrc = "data:image/png;base64," + _arrayBufferToBase64(deporte.Imagen).toString();
                             var img = '<img width="100" heigth="50" src="' + imageSrc + '" alt="prueba"/>';
                             var html = '<tr>' +
                             '<td>' + deporte.Nombre + '</td>' +
@@ -222,6 +222,7 @@
             $('#chkActivo').prop('checked', true);
             $('#oldImg').empty();
             $('#flexModal').modal('hide');
+            $('#fileUploader').val('');
         }
 
         function EditarDeporte(indice)
