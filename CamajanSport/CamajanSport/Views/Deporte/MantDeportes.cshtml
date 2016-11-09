@@ -154,7 +154,6 @@
                 url: '@Url.Action("Getdeportes","Deporte")',
                 dataType: "json",
                 success: function (response) {
-                    //console.log(response);
                     if (response.Result == "OK") {
                         $('#tblDeportes').empty();
                         objDeporte = response.Deportes;
@@ -174,8 +173,11 @@
                             }
                         }
                     } else {
-                        MostrarAlerta('danger', response.Message);
+                        MostrarAlerta("Error",'error', response.Message);
                     }
+                },
+                error: function () {
+                    MostrarAlerta("Error", 'error', "Ha ocurrido un error al cargar la información. Si el problema persiste contacte el administrador.");
                 }
             });
         }
@@ -188,28 +190,29 @@
             formData.append("nombre", $('#txtNombre').val());
             formData.append("activo", $('#chkActivo').is(':checked'));
             if (fileUpload.files[0] == null) {
-                var f = new File($('#hdfOldImg').val(), "oldImg");
-                formData.append("afile", f);
+                formData.append("newFile", false);
+                var array = new Array($('#hdfOldImg').val().split(','));                
+                formData.append("afile", array);
             } else {
+                formData.append("newFile", true);
                 formData.append("afile", fileUpload.files[0]);
             }
-            
             
             var xhr = new XMLHttpRequest();
             xhr.open("POST", "/Deporte/SaveUploadedFile");
             xhr.onreadystatechange = function (aEvt) {
                 if (xhr.readyState == 4) {
                     if (xhr.status == 200) {
-                        console.log(aEvt);
-                        MostrarDialogo('nuevoDeporte', (($('#hdfId').val() != "") ? 'Editar Deporte' : 'Nuevo Deporte'), (($('#hdfId').val() != "") ? 'El deporte ha sido editado satisfactoriamente' : 'El deporte ha sido creado satisfactoriamente'), true, undefined, true, true);
+                        //console.log(aEvt);
+                        MostrarAlerta("¡Enhorabuena!", 'success', xhr.responseText.replace('"', ""));
+                        //MostrarDialogo('nuevoDeporte', ($('#hdfId').val() != "")?"Edición de Deporte":"Nuevo Deporte", xhr.responseText.replace('"',""), true, undefined, true, true);
                         CargarData();
                         LimpiarDiv();
                     } else
-                        MostrarAlerta('danger', 'Ha ocurrido un error al guardar. Si el problema persiste contacte su administrador.');
-                }
+                        MostrarAlerta("Error", 'error', xhr.responseText.replace('"', ""));
+                } 
             }
             xhr.send(formData);
-
         }
 
         function LimpiarDiv()
