@@ -11,6 +11,7 @@ using System.Net.Http.Formatting;
 using CamajanSport.BOL;
 using CamajanSport.App_Start;
 using Utilidades;
+using System.Net;
 
 namespace CamajanSport.Controllers
 {
@@ -23,66 +24,70 @@ namespace CamajanSport.Controllers
         }
        
         [SessionHandle]
-        public async Task<ActionResult> SaveUploadedFile()
+        public async Task<JsonResult> SaveUploadedFile()
         {
             bool isSavedSuccessfully = true;
             
             try
             {
                 string fName = "";
-                string nombre = Request.Form["deporte"];
+                int idDeporte = int.Parse(Request.Form["idDeporte"]);
+                string nombre = Request.Form["nombre"];
                 bool activo = Convert.ToBoolean(Request.Form["activo"].ToString());
-                string fileName = Request.Files.AllKeys[0];
-                HttpPostedFileBase file = Request.Files[fileName];
-                fName = file.FileName;
+                bool newFile = Convert.ToBoolean(Request.Form["newFile"].ToString());
                 Byte[] imgByte = null;
-                if (file != null && file.ContentLength > 0)
+                
+                if (newFile)
                 {
-                    imgByte = new Byte[file.ContentLength];
-                    //force the control to load data in array
-                    file.InputStream.Read(imgByte, 0, file.ContentLength);
-                    
-                }
-                Deporte deporte = new Deporte();
-                deporte.Nombre = nombre;
-                deporte.Activo = activo;
-                deporte.Imagen = imgByte;
-                var respuesta = await ApiHelper.POST<Deporte>("Deporte/PostDeporte", deporte, (Token)Session["Token"]);
+                    string fileName;
+                    HttpPostedFileBase file;
+                    fileName = Request.Files.AllKeys[0];
+                    file = Request.Files[fileName];
+                    fName = file.FileName;
+                    if (file != null && file.ContentLength > 0)
+                    {
+                        imgByte = new Byte[file.ContentLength];
+                        //force the control to load data in array
+                        file.InputStream.Read(imgByte, 0, file.ContentLength);
 
-                if (respuesta.IsSuccessStatusCode)
-                {
-                    return Json("El deporte ha sido guardado satisfactoriamente", JsonRequestBehavior.AllowGet);
-                    //List<Deporte> deportes = await test.Content.ReadAsAsync<List<Deporte>>();
-
-                    //var result1 = JsonConvert.DeserializeObject<Deporte>(message);
-                    //var result2 = test.Content.ReadAsAsync<Deporte>().Result;
-
-
-                    //}
-                    //var originalDirectory = new DirectoryInfo(string.Format("{0}Images\\WallImages", Server.MapPath(@"\")));
-
-                    //string pathString = System.IO.Path.Combine(originalDirectory.ToString(), "imagepath");
-
-                    //var fileName1 = Path.GetFileName(file.FileName);
-
-                    //bool isExists = System.IO.Directory.Exists(pathString);
-
-                    //if (!isExists)
-                    //    System.IO.Directory.CreateDirectory(pathString);
-
-                    //var path = string.Format("{0}\\{1}", pathString, "Prueba");
-                    //file.SaveAs(path);
-
+                    }
                 }
                 else
                 {
-                    return Json("Error al guardar el deporte.", JsonRequestBehavior.AllowGet);
+                    int len = Request.Form["afile"].ToString().Split(',').Length;
+                    imgByte = new Byte[len];
+                    imgByte = Request.Form["afile"].ToString().Split(',').Select(s => Convert.ToByte(s)).ToArray();
+                }
+                Deporte deporte = new Deporte();
+                deporte.IdDeporte = idDeporte;
+                deporte.Nombre = nombre;
+                deporte.Activo = activo;
+                deporte.Imagen = imgByte;
+                HttpResponseMessage  respuesta;
+                if (idDeporte > 0)
+                {
+                    respuesta = await ApiHelper.PUT<Deporte>("Deporte/PutDeporte", deporte, (Token)Session["Token"]);
+                }
+                else
+                {
+                    respuesta = await ApiHelper.POST<Deporte>("Deporte/PostDeporte", deporte, (Token)Session["Token"]);
+                }
+                
+                if (respuesta.IsSuccessStatusCode)
+                {
+                    return Json((deporte.IdDeporte > 0)?"El deporte se ha editado satisfactoriamente":"El deporte ha sido guardado satisfactoriamente", JsonRequestBehavior.AllowGet);
+                }
+                else
+                {
+                    Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                    return Json("Ha ocurrido un error al guardar. Si el problema persiste contacte su administrador.");
                 }
                 
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                return Json("Error al guardar el deporte.", JsonRequestBehavior.AllowGet);
+                Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                return Json("Ha ocurrido un error al guardar. Si el problema persiste contacte su administrador.");                
             }
             
         }
@@ -100,6 +105,14 @@ namespace CamajanSport.Controllers
                 return Json(new { Result = "ERROR",Message="Ha ocurrido un error al cargar la lista de deportes."}, JsonRequestBehavior.AllowGet);
             }
         }
+
+        //[Authorize]
+        //[AcceptVerbs(HttpVerbs.Get)]
+        //public void GetImage(byte[] imageArray)
+        //{
+        //    Response.ContentType = "image/png";
+        //    Response.Write(imageArray);
+        //}
 
     }
 }
