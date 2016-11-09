@@ -1,9 +1,14 @@
-﻿function MostrarAlerta(tipoAlerta,mensaje)
+﻿function MostrarAlerta(titulo,tipoAlerta,mensaje)
 {
-    var height = window.screen.availHeight
-    var width = window.screen.availWidth
-    $('<div class="alert alert-'+tipoAlerta+' alert-dismissable" style="z-index:9000;position:absolute;top:10%;left:40%"><button type = "button" class = "close" data-dismiss = "alert" aria-hidden = "true">&times;</button>'+mensaje+'</div>').appendTo($('form'));
+    
+    swal({
+        title: titulo,
+        text: mensaje,
+        type: tipoAlerta,
+        confirmButtonText: "Cerrar"
+    });
 }
+
 
 function MostrarDialogo(id, titulo, mensaje, showBtnCerrar, botones, showTopCloseBtn, backdropClose) {
     showBtnCerrar = (showBtnCerrar == undefined) ? true : showBtnCerrar;
