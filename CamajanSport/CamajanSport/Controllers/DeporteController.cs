@@ -102,7 +102,8 @@ namespace CamajanSport.Controllers
             }
             catch (Exception ex)
             {
-                return Json(new { Result = "ERROR",Message="Ha ocurrido un error al cargar la lista de deportes."}, JsonRequestBehavior.AllowGet);
+                Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                return Json("Ha ocurrido un error al momento de obtener el listado de deportes, si el problema persiste contacte al administrador");
             }
         }
     }
