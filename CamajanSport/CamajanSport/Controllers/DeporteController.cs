@@ -98,21 +98,12 @@ namespace CamajanSport.Controllers
             try
             {
                 var lista = await ApiHelper.GET_List<Deporte>("Deporte/Getdeportes", (Session["Token"] as Token));
-                return Json(new { Result = "OK",Deportes = lista, JsonRequestBehavior.AllowGet });
+                return Json(lista, JsonRequestBehavior.AllowGet);
             }
             catch (Exception ex)
             {
                 return Json(new { Result = "ERROR",Message="Ha ocurrido un error al cargar la lista de deportes."}, JsonRequestBehavior.AllowGet);
             }
         }
-
-        //[Authorize]
-        //[AcceptVerbs(HttpVerbs.Get)]
-        //public void GetImage(byte[] imageArray)
-        //{
-        //    Response.ContentType = "image/png";
-        //    Response.Write(imageArray);
-        //}
-
     }
 }
