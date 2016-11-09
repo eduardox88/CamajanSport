@@ -154,30 +154,31 @@
                 url: '@Url.Action("Getdeportes","Deporte")',
                 dataType: "json",
                 success: function (response) {
-                    if (response.Result == "OK") {
-                        $('#tblDeportes').empty();
-                        objDeporte = response.Deportes;
-                        if (response.Deportes.length > 0) {
-                            for (var i = 0; i < response.Deportes.length; i++) {
-                                var deporte = response.Deportes[i];
-                                var imageSrc = "data:image/png;base64," + _arrayBufferToBase64(response.Deportes[i].Imagen).toString();
-                                var img = '<img width="100" heigth="50" src="' + imageSrc + '" alt="prueba"/>';
-                                var html = '<tr>' +
-                                '<td>' + deporte.Nombre + '</td>' +
-                                '<td>' + img + '</td>' +
-                                '<td>' + ((deporte.Activo == true) ? "SI" : "NO") + '</td>' +
-                                '<td>' + formatFecha(deporte.FechaIngreso) + '</td>' +
-                                '<td>' + '<input type="button" class="btn btn-danger" onclick="EditarDeporte(' + i + ')" value="Editar"/>' + '</td>' +
-                                '</tr>';
-                                $('#tblDeportes').append(html);
-                            }
+
+                    $('#tblDeportes').empty();
+                    objDeporte = response.Deportes;
+                    if (response.Deportes.length > 0) {
+                        for (var i = 0; i < response.Deportes.length; i++) {
+                            var deporte = response.Deportes[i];
+                            var imageSrc = "data:image/png;base64," + _arrayBufferToBase64(response.Deportes[i].Imagen).toString();
+                            var img = '<img width="100" heigth="50" src="' + imageSrc + '" alt="prueba"/>';
+                            var html = '<tr>' +
+                            '<td>' + deporte.Nombre + '</td>' +
+                            '<td>' + img + '</td>' +
+                            '<td>' + ((deporte.Activo == true) ? "SI" : "NO") + '</td>' +
+                            '<td>' + formatFecha(deporte.FechaIngreso) + '</td>' +
+                            '<td>' + '<input type="button" class="btn btn-danger" onclick="EditarDeporte(' + i + ')" value="Editar"/>' + '</td>' +
+                            '</tr>';
+                            $('#tblDeportes').append(html);
                         }
-                    } else {
-                        MostrarAlerta("Error",'error', response.Message);
+                    }
+                    else {
+                        MostrarAlerta("Error",'info', 'No existen deportes para mostrar');
                     }
                 },
-                error: function () {
-                    MostrarAlerta("Error", 'error', "Ha ocurrido un error al cargar la información. Si el problema persiste contacte el administrador.");
+                error: function (xhr, status) {
+                    
+                    MostrarAlerta("Error", 'error', xhr.responseText);
                 }
             });
         }
