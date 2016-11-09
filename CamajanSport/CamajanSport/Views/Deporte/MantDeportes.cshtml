@@ -203,9 +203,7 @@
             xhr.onreadystatechange = function (aEvt) {
                 if (xhr.readyState == 4) {
                     if (xhr.status == 200) {
-                        //console.log(aEvt);
                         MostrarAlerta("¡Enhorabuena!", 'success', xhr.responseText.replace('"', ""));
-                        //MostrarDialogo('nuevoDeporte', ($('#hdfId').val() != "")?"Edición de Deporte":"Nuevo Deporte", xhr.responseText.replace('"',""), true, undefined, true, true);
                         CargarData();
                         LimpiarDiv();
                     } else
