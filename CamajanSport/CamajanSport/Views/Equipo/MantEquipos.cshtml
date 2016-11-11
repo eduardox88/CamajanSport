@@ -1,0 +1,240 @@
+﻿@{
+    ViewBag.Title = "MantEquipos";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="page-content">
+
+    <!-- begin PAGE TITLE AREA -->
+    <!-- Use this section for each page's title and breadcrumb layout. In this example a date range picker is included within the breadcrumb. -->
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="page-title">
+                <h1>
+                    Mantenimiento de Equipos
+                    @*<small>Deportes</small>*@
+                </h1>
+                <ol class="breadcrumb">
+                    <li class="active"><i class="fa fa-dashboard"></i> Mantenimiento de Equipos</li>
+                </ol>
+            </div>
+        </div>
+        <!-- /.col-lg-12 -->
+    </div>
+    <!-- /.row -->
+    <!-- end PAGE TITLE AREA -->
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="portlet portlet-green">
+                <div class="portlet-heading">
+                    <div class="portlet-title">
+                        <h4><i class="fa fa-exchange fa-fw"></i> Lista de Equipos</h4>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <div id="transactionsPortlet" class="panel-collapse collapse in">
+                    <div class="portlet-body">
+                        <div class="table-responsive dashboard-demo-table">
+                            <table class="table table-bordered table-striped table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Nombre</th>
+                                        <th>Abrev</th>
+                                        <th>Imagen</th>
+                                        <th>Deporte</th>
+                                        <th>FechaIngreso</th>
+                                        <th>Activo</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tbEquipo"></tbody>
+                            </table>
+                        </div>
+                        <!-- Advanced Modal Trigger -->
+                        <button class="btn btn-green btn-md" data-toggle="modal" data-target="#flexModal">
+                            Nuevo Equipo
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br>
+    <br>
+
+    <!-- Flex Modal -->
+    <div class="modal modal-flex fade" id="flexModal" tabindex="-1" role="dialog" aria-labelledby="flexModalLabel" aria-hidden="true">
+        <div class="modal-dialog" style="width:40%">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="flexModalLabel">Creación de Equipos</h4>
+                </div>
+                <div class="modal-body">
+
+                    <div class="row">
+                        <div class="col-xs-1">
+                            <input type="hidden" id="hdfId" />
+                            <input type="hidden" id="hdfOldImg" />
+                        </div>
+                    </div>
+                    <div class="row form-group">
+                        <div class="col-xs-3">
+                            <label for="txtNombre">Nombre:</label>
+                            <input type="text" class="form-control" id="txtNombre" />
+                        </div>
+                        <div class="col-xs-3">
+                            <label for="txtAbrev">Abreviación:</label>
+                            <input type="text" class="form-control" id="txtAbrev" />
+                        </div>
+                        <div class="col-xs-3">
+                            <label for="drpDeporte">Seleccione el Deporte:</label>
+                            <select id="drpDeporte" class="form-control"></select>
+                        </div>
+                        <div class="col-xs-2">
+                            <label for="chkActivo">Activo:</label>
+                            <input type="checkbox" class="form-control" id="chkActivo" />
+                        </div>
+                    </div>
+                    <br />
+                    <!-- begin DROPZONE UPLOADER ROW -->
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <div class="portlet portlet-default dropzone-portlet">
+                                <div class="portlet-heading">
+                                    <div class="portlet-title">
+                                        <h4>Seleccione la imagen del Equipo</h4>
+                                    </div>
+                                    <div class="clearfix"></div>
+                                </div>
+                                <div class="portlet-body">
+                                    <input type="file" id="fileUploader" />
+                                </div>
+                                <div id="oldImg"></div>
+                            </div>
+                        </div>
+                        <!-- /.col-lg-12 -->
+                    </div>
+                    <!-- /.row -->
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-green" onclick="GuardarEquipo()">Guardar</button>
+                </div>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+    <!-- /.modal -->
+
+
+</div>
+
+@Scripts.Render("~/js/helpers/Utilities.js")
+
+@section Scripts{
+
+<script type="text/javascript">
+
+    var objEquipo;
+
+    $(document).ready(function () {
+        AjaxCall('@Url.Action("Getdeportes","Deporte")', undefined, 'drpDeporte', CargarDropDownDeportes)
+        CargarData();
+    });
+
+    function GuardarEquipo() {
+        var formData = new FormData();
+        var fileUpload = document.getElementById('fileUploader');
+        formData.append("idEquipo", ($('#hdfId').val() != "") ? $('#hdfId').val() : 0);
+        formData.append("Equipo", $('#txtNombre').val());
+        formData.append("Abreviacion", $('#txtAbrev').val());
+        formData.append("idDeporte", $('#drpDeporte :selected').val());
+        formData.append("Activo", $('#chkActivo').is(':checked'));
+
+        if (fileUpload.files[0] == null) {
+            formData.append("newFile", false);
+            var array = new Array($('#hdfOldImg').val().split(','));
+            formData.append("afile", array);
+        } else {
+            formData.append("newFile", true);
+            formData.append("afile", fileUpload.files[0]);
+        }
+
+        var xhr = new XMLHttpRequest();
+        xhr.open("POST", "/Equipo/SaveUploadedFile");
+        xhr.onreadystatechange = function (aEvt) {
+            if (xhr.readyState == 4) {
+                if (xhr.status == 200) {
+                    MostrarAlerta("¡Enhorabuena!", 'success', xhr.responseText.replace('"', ""));
+                    CargarData();
+                    limpiarTodosCampos("flexModal");
+                    $('#flexModal').modal('hide');
+                }
+                else {
+                    MostrarAlerta("Error", 'error', xhr.responseText.replace('"', ""));
+                }
+            }
+        }
+        xhr.send(formData);
+    }
+
+    function CargarData() {
+        $.ajax({
+            type: "POST",
+            async: true,
+            url: '@Url.Action("GetEquipos", "Equipo")',
+            dataType: "json",
+            success: function (response) {
+
+                console.log(response)
+
+                $('#tbEquipo').empty();
+                objEquipo = response;
+
+                if (response.length > 0) {
+                    for (var i = 0; i < response.length; i++) {
+
+                        var equipo = response[i];
+                        var imageSrc = "data:image/png;base64," + _arrayBufferToBase64(equipo.Imagen).toString();
+                        var img = '<img width="100" heigth="50" src="' + imageSrc + '" alt="prueba"/>';
+                        var html = '<tr>' +
+                        '<td>' + equipo.Nombre + '</td>' +
+                        '<td>' + equipo.Abrev + '</td>' +
+                        '<td>'+img+'</td>' +
+                        '<td>' + $('#drpDeporte option[value="' + equipo.idDeporte + '"]').text() + '</td>' +
+                        '<td>' + formatFecha(equipo.FechaIngreso) + '</td>' +
+                        '<td>' + ((equipo.Activo == true) ? "SI" : "NO") + '</td>' +
+                        '<td>' + '<input type="button" class="btn btn-danger" onclick="EditarEquipo(' + i + ')" value="Editar"/>' + '</td>' +
+                        '</tr>';
+                        $('#tbEquipo').append(html);
+                    }
+                }
+                else {
+                    MostrarAlerta("Error", 'info', 'No existen Equipos para mostrar');
+                }
+            },
+            error: function (xhr, status) {
+
+                MostrarAlerta("Error", 'error', xhr.responseText);
+            }
+        });
+    }
+
+    function EditarEquipo(indice) {
+        var equipo = objEquipo[indice];
+        $('#oldImg').empty();
+        $('#hdfId').val(equipo.idEquipo);
+        $('#hdfOldImg').val(equipo.Imagen);
+        $('#txtNombre').val(equipo.Nombre);
+        $('#txtAbrev').val(equipo.Abrev.trim())
+        $('#drpDeporte').val(equipo.idDeporte)
+        $('#chkActivo').prop('checked', equipo.Activo);
+        $('#oldImg').append('<img width="100" heigth="50" src="data:image/png;base64,' + _arrayBufferToBase64(equipo.Imagen).toString() + '"/>');
+        $('#flexModal').modal('show');
+    }
+
+</script>
+
+}
