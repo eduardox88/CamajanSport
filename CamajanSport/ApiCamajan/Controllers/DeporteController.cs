@@ -27,9 +27,9 @@ namespace ApiCamajan.Controllers
             return db.deportes.ToList();
         }
 
-        public IEnumerable<Object> GetDeportes_Select()
+        public List<SelectAttributes> GetDeportes_Select()
         {
-            return db.deportes.Select(m => new { Value = m.IdDeporte, DisplayText = m.Nombre });
+            return db.deportes.Select(m => new SelectAttributes{ Value = m.IdDeporte, DisplayText = m.Nombre }).ToList();
         }
 
         // GET: api/Deportes/5
