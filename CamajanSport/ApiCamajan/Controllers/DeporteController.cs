@@ -22,9 +22,9 @@ namespace ApiCamajan.Controllers
 
         // GET: api/Deportes
         [Authorize]
-        public IQueryable<Deporte> Getdeportes()
+        public List<Deporte> Getdeportes()
         {
-            return db.deportes;
+            return db.deportes.ToList();
         }
 
         // GET: api/Deportes/5
