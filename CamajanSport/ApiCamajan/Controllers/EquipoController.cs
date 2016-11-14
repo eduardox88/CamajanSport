@@ -24,6 +24,11 @@ namespace ApiCamajan.Controllers
             return db.Equipoes.ToList();
         }
 
+        public List<SelectAttributes> GetEquipos_Select()
+        {
+            return db.Equipoes.Select(m => new SelectAttributes { Value = m.idEquipo, DisplayText = m.Nombre }).ToList();
+        }
+
         
         [Authorize]
         [ResponseType(typeof(Equipo))]
