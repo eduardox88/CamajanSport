@@ -19,9 +19,9 @@ namespace ApiCamajan.Controllers
         private CamajanSportContext db = new CamajanSportContext();
 
         [Authorize]
-        public IQueryable<Equipo> GetListEquipos()
+        public List<Equipo> GetListEquipos()
         {
-            return db.Equipoes;
+            return db.Equipoes.ToList();
         }
 
         
