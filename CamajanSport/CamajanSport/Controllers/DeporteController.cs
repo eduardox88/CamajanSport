@@ -64,6 +64,8 @@ namespace CamajanSport.Controllers
                 deporte.Activo = activo;
                 deporte.Imagen = imgByte;
                 HttpResponseMessage  respuesta;
+
+
                 if (idDeporte > 0)
                 {
                     respuesta = await ApiHelper.PUT<Deporte>("Deporte/PutDeporte", deporte, (Token)Session["Token"]);
@@ -104,6 +106,23 @@ namespace CamajanSport.Controllers
             {
                 Response.StatusCode = (int)HttpStatusCode.BadRequest;
                 return Json("Ha ocurrido un error al momento de obtener el listado de deportes, si el problema persiste contacte al administrador");
+            }
+        }
+
+
+        [SessionHandle]
+        public async Task<JsonResult> GetDeportes_Select()
+        {
+            try
+            {
+                var lista = await ApiHelper.GET_List<SelectAttributes>("Deporte/GetDeportes_Select", (Session["Token"] as Token));
+
+                return Json(lista, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                return Json("Ha ocurrido un error al momento de obtener el listado de deportes para el select, si el problema persiste contacte al administrador");
             }
         }
     }
