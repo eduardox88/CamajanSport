@@ -91,10 +91,14 @@ function restartDropDown(id,value,text) {
 }
 
 function CargarDropDown(idDropDown, options) {
+    var drp = $('#' + idDropDown);
+    var html = '<option value="">Seleccione</option>';
     if (options.length > 0) {
         for (var i = 0; i < options.length; i++) {
-            $('#' + idDropDown).append($('<option value="' + options[i].Value + '">' + options[i].DisplayText + '</option>'));
+            html += '<option value="' + options[i].Value + '">' + options[i].DisplayText + '</option>';
         }
+
+        drp.html(html);
     }
 }
 
@@ -154,4 +158,26 @@ function Init_SingleSelect2($elem) {
         placeholder: "Seleccione",
         allowClear: true
     });
+}
+
+function CrearObjeto(idContenedor) {
+
+    var objeto = new Object();
+
+    $('.objeto', '#' + idContenedor + '').each(function () {
+
+        var elem = $(this);
+
+        if (elem.is(':text')) {
+            objeto[elem.attr('id')] = elem.val();
+        }
+        else if (elem.is(':checkbox')) {
+            objeto[elem.attr('id')] = elem.is(':checked');
+        }
+        else if (elem.is('select')) {
+            objeto[elem.attr('id')] = elem.find(":selected").val()
+        }
+    })
+
+    return objeto;
 }
