@@ -17,6 +17,10 @@ namespace ApiCamajan.Context
 
         public DbSet<Rol> roles { get; set; }
 
+        public DbSet<Pais> paises { get; set; }
+
+        public DbSet<Estado> estados { get; set; }
+
         public System.Data.Entity.DbSet<CamajanSport.BOL.Equipo> Equipoes { get; set; }
     }
 }
