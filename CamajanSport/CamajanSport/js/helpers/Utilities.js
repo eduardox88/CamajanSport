@@ -72,7 +72,8 @@ function AjaxCall(url, data,idContenedor ,callBackFunction)
         success: function (data) {
             //Llamada a la funcion para el callback
             if (callBackFunction == undefined) {
-                MostrarDialogo('ajaxSuccessModal', "Mensaje informativo", "La acción se realizó exitosamente.");
+                //MostrarDialogo('ajaxSuccessModal', "Mensaje informativo", "La acción se realizó exitosamente.");
+                MostrarAlerta("¡Enhorabuena!", 'success', 'La acción se realizó exitosamente.');
             } else if (idContenedor != "") {
                 callBackFunction(idContenedor, data);
             } else {
