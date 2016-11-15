@@ -23,10 +23,15 @@ namespace ApiCamajan.Controllers
         {
             return db.Equipoes.ToList();
         }
-
+        [Authorize]
         public List<SelectAttributes> GetEquipos_Select()
         {
             return db.Equipoes.Select(m => new SelectAttributes { Value = m.idEquipo, DisplayText = m.Nombre }).ToList();
+        }
+        [Authorize]
+        public List<SelectAttributes> GetEquiposByDeporte_Select(int id)
+        {
+            return db.Equipoes.Where(e => e.idDeporte == id).Select(e => new SelectAttributes { Value = e.idDeporte, DisplayText = e.Nombre }).ToList();
         }
 
         
