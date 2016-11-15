@@ -80,7 +80,7 @@ function AjaxCall(url, data,idContenedor ,callBackFunction)
                 callBackFunction(data);
             }
         }, error: function (jqXHR, textStatus, errorThrown) {
-            MostrarDialogo('ajaxErrorModal', "Error", textStatus);
+            MostrarAlerta("Error", 'error', 'Ha ocurrido un error al realizar el llamado.');
         }
     });
 
