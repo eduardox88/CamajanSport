@@ -107,5 +107,36 @@ namespace CamajanSport.Controllers
                 return Json("Ha ocurrido un error al momento de obtener el listado de equipos, si el problema persiste contacte al administrador");
             }
         }
+
+        [SessionHandle]
+        public async Task<JsonResult> GetEquipos_Select()
+        {
+
+            try
+            {
+                var lista = await ApiHelper.GET_List<SelectAttributes>("Equipo/GetEquipos_Select", (Session["Token"] as Token));
+                return Json(lista, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                return Json("Ha ocurrido un error al momento de obtener el listado de equipos, si el problema persiste contacte al administrador");
+            }
+        }
+        [SessionHandle]
+        public async Task<JsonResult> GetEquiposByDeporte_Select(int idDeporte)
+        {
+
+            try
+            {
+                var lista = await ApiHelper.GET_ListById<SelectAttributes>("Equipo/GetEquiposByDeporte_Select", idDeporte, (Session["Token"] as Token));
+                return Json(lista, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                return Json("Ha ocurrido un error al momento de obtener el listado de equipos, si el problema persiste contacte al administrador");
+            }
+        }
     }
 }
