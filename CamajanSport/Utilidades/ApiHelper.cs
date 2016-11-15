@@ -77,5 +77,25 @@ namespace Utilidades
 
             return lista;
         }
+
+        public static async Task<List<T>> GET_ListById<T>(string nombreControladorAccion,int ID, Token token) where T : class
+        {
+            List<T> lista = null;
+
+            HttpClient client = new HttpClient();
+
+            client.DefaultRequestHeaders.Add("Authorization", "Bearer " + token.AccessToken);
+
+            HttpResponseMessage result = await client.GetAsync("http://localhost:14678/api/" + nombreControladorAccion + "/" + ID);
+
+            if (result.IsSuccessStatusCode)
+            {
+
+                lista = new List<T>();
+                lista = await result.Content.ReadAsAsync<List<T>>();
+            }
+
+            return lista;
+        }
     }
 }
