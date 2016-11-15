@@ -1,0 +1,269 @@
+﻿@{
+    ViewBag.Title = "Mantenimiento Publicaciones";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="page-content">
+
+    <!-- begin PAGE TITLE AREA -->
+    <!-- Use this section for each page's title and breadcrumb layout. In this example a date range picker is included within the breadcrumb. -->
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="page-title">
+                <h1>
+                    Mantenimiento de Publicaciones
+                </h1>
+                <ol class="breadcrumb">
+                    <li class="active"><i class="fa fa-dashboard"></i> Mantenimiento de Publicaciones</li>
+                </ol>
+            </div>
+        </div>
+        <!-- /.col-lg-12 -->
+    </div>
+
+
+    <!-- Flex Modal -->
+    <div class="modal modal-flex fade" id="flexModal" tabindex="-1" role="dialog" aria-labelledby="flexModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="flexModalLabel">Nueva Publicación</h4>
+                </div>
+                <div class="modal-body">
+                    <form id="frmNuevaPublicacion">
+                        <div class="row">
+                            <div class="col-xs-12 col-sm-7 col-md-6">
+                                <div class="form-group">
+                                    <label for="txtTitulo">Título</label>
+                                    <input type="text" class="form-control" id="txtTitulo" name="txtTitulo" />
+                                </div>
+                            </div>
+                            <div class="col-xs-12 col-sm-7 col-md-6">
+                                <div class="form-group">
+                                    <label for="txtFecha">Fecha</label>
+                                    <input type="text" class="form-control" id="txtFecha" name="txtFecha" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+
+                        </div>
+
+                        <div class="row">
+                            <div class="col-xs-12 col-md-6">
+                                <div class="form-group">
+                                    <label for="">Seleccione el Deporte</label>
+                                    <select id="drpDeportes" class="form-control" name="drpDeportes" style="width:100%"></select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row" id="divEsMatchup">
+                            <div class="col-xs-12 col-md-6">
+                                ¿Es Matchup?
+                                <div class="radio-inline">
+                                    <label>
+                                        <input type="radio" name="optEsMatchup" id="optEsMatchup1" value="0" checked>
+                                        No
+                                    </label>
+                                </div>
+                                <div class="radio-inline">
+                                    <label>
+                                        <input type="radio" name="optEsMatchup" id="optEsMatchup2" value="1">
+                                        Si
+                                    </label>
+                                </div>
+
+
+                            </div>
+                        </div>
+                        <br />
+                        <div class="row">
+                            <div class="col-xs-12 col-md-6">
+                                <div class="form-group">
+                                    <label for="drpEquipo1">Equipo 1</label>
+                                    <select style="width:100%" class="form-control" id="drpEquipo1" name="drpEquipo1"></select>
+                                </div>
+                            </div>
+                            <div class="col-xs-12 col-md-6">
+                                <div class="form-group">
+                                    <label for="drpEquipo2">Equipo 2</label>
+                                    <select style="width:100%" class="form-control" id="drpEquipo2" name="drpEquipo2"></select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row hidden" id="divMatchup">
+                            <div class="col-xs-12 col-md-6">
+                                <div class="form-group">
+                                    <label for="txtJugador1">Jugador Equipo 1</label>
+                                    <input type="text" id="txtJugador1" name="txtJugador1" class="form-control" />
+                                </div>
+                            </div>
+                            <div class="col-xs-12 col-md-6">
+                                <div class="form-group">
+                                    <label for="txtJugador2">Jugador Equipo 2</label>
+                                    <input type="text" id="txtJugador2" name="txtJugador2" class="form-control" />
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="row">
+                            <div class="col-xs-12 col-sm-7 col-md-6">
+                                <div class="form-group">
+                                    <label for="txtPronostico">Pronóstico</label>
+                                    <input type="text" id="txtPronostico" class="form-control" />
+                                </div>
+                            </div>
+
+                            <div class="col-xs-12 col-sm-7 col-md-6">
+                                <div class="form-group">
+                                    <label for="drpTipoPublicacion">Tipo publicación</label>
+                                    <select style="width:100%" class="form-control" id="drpTipoPublicacion">
+                                        <option value="">Seleccione</option>
+                                        <option value="0">Gratis</option>
+                                        <option value="1">Premium</option>
+                                    </select>
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-12 -col-md-6">
+
+                                <label for="txtAnalisis">Análisis</label>
+                                <textarea id="txtAnalisis" class="form-control" rows="10"></textarea>
+
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-green" id="btnGuardar" onclick="GuardarPublicacion()">Guardar</button>
+                </div>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="divPublicaciones"></div>
+            <div class="row">
+                <div class="col-xs-6 col-sm-5 col-md-4 col-lg-4">
+                    <a class="btn btn-primary" data-toggle="modal" data-target="#flexModal">Nueva Publicación</a>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+@section Scripts{
+
+    <script>
+    $(document).ready(function () {
+        Init_SingleSelect2($('#drpEquipo1'));
+        Init_SingleSelect2($('#drpEquipo2'));
+        Init_SingleSelect2($('#drpDeportes'));
+        Init_SingleSelect2($('#drpTipoPublicacion'));
+
+        $('#divEsMatchup').find('input[name="optEsMatchup"]').change(function () {
+            if ($(this).val() == '1') {
+                $('#divMatchup').removeClass('hidden');
+            } else {
+                $('#divMatchup').addClass('hidden');
+            }
+        });
+        AjaxCall('@Url.Action("GetDeportes_Select", "Deporte")', '', 'drpDeportes', CargarDropDown);
+
+        $('#drpDeportes').on("change", function () {
+            AjaxCall('@Url.Action("GetEquiposByDeporte_Select", "Equipo")', { 'idDeporte': +$(this).val() }, 'drpEquipo1', CargarDropDown);
+            AjaxCall('@Url.Action("GetEquiposByDeporte_Select", "Equipo")', { 'idDeporte': +$(this).val() }, 'drpEquipo2', CargarDropDown);            
+        });
+
+        $("#frmNuevaPublicacion").validate({
+            errorClass: 'control-label text-danger',
+            rules: {
+                txtTitulo: {
+                    required: true,
+                    lettersonly: true
+                },
+                txtFecha: {
+                    required: true
+                },
+                drpDeportes: {
+                    required: true
+                },
+                drpEquipo1: {
+                    required: true
+                },
+                drpEquipo2: {
+                    required: true
+                },
+                optEsMatchup: {
+                    required:true
+                },
+                txtJugador1:{
+                    required: ($('#optEsMatchup').val() == 1)
+                },
+                txtJugador2:{
+                    required: ($('#optEsMatchup').val() == 1)
+                }
+            }
+        });
+
+
+        @*AjaxCall('@Url.Action("GetEquipos_Select", "Equipo")', '', 'drpEquipo1', CargarDropDown);
+        AjaxCall('@Url.Action("GetEquipos_Select", "Equipo")', '', 'drpEquipo2', CargarDropDown);*@
+            
+            //CargarDropDown(idDropDown, options)
+        });
+
+        function GuardarPublicacion() {
+            var validator = $("#frmNuevaPublicacion").validate();
+            validator.form();
+
+            
+
+        }
+
+
+        function CargarData() {
+            $.ajax({
+                type: "POST",
+                async: true,
+                url: '@Url.Action("Getpublicaciones","Publicacion")',
+            dataType: "json",
+            success: function (response) {
+
+                $('#divPublicaciones').empty();
+                objDeporte = response;
+                if (response.length > 0) {
+                    for (var i = 0; i < response.length; i++) {
+                        var deporte = response[i];
+                        var imageSrc = "data:image/png;base64," + _arrayBufferToBase64(deporte.Imagen).toString();
+                        var img = '<img width="100" heigth="50" src="' + imageSrc + '" alt="prueba"/>';
+                        var html = '<tr>' +
+                        '<td>' + deporte.Nombre + '</td>' +
+                        '<td>' + img + '</td>' +
+                        '<td>' + ((deporte.Activo == true) ? "SI" : "NO") + '</td>' +
+                        '<td>' + formatFecha(deporte.FechaIngreso) + '</td>' +
+                        '<td>' + '<input type="button" class="btn btn-danger" onclick="EditarDeporte(' + i + ')" value="Editar"/>' + '</td>' +
+                        '</tr>';
+                        $('#tblDeportes').append(html);
+                    }
+                }
+                else {
+                    MostrarAlerta("Error", 'info', 'No existen deportes para mostrar');
+                }
+            },
+            error: function (xhr, status) {
+                MostrarAlerta("Error", 'error', xhr.responseText);
+            }
+        });
+    }
+    </script>
+}
