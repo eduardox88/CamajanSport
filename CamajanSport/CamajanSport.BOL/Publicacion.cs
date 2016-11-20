@@ -28,7 +28,11 @@ namespace CamajanSport.BOL
         public DateTime FechaIngreso { get; set; }
         public int IdUsuario { get; set; }
 
-    //    public virtual<Equipo> Equipo1{ get; set; }
-    //public virtual<Equipo> Equipo2{ get; set; }
+        [ForeignKey("IdEquipo1")]
+        public virtual Equipo Equipo1 { get; set; }
+        [ForeignKey("IdEquipo2")]
+        public virtual Equipo Equipo2 { get; set; }
+
+        public virtual Usuario Usuario { get; set; }
     }
 }
