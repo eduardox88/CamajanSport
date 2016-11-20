@@ -26,7 +26,7 @@ namespace ApiCamajan.Controllers
         {
             return db.deportes.ToList();
         }
-
+        [Authorize]
         public List<SelectAttributes> GetDeportes_Select()
         {
             return db.deportes.Select(m => new SelectAttributes{ Value = m.IdDeporte, DisplayText = m.Nombre }).ToList();
