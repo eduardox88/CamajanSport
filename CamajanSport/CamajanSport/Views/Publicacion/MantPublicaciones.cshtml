@@ -32,6 +32,8 @@
                 </div>
                 <div class="modal-body">
                     <form id="frmNuevaPublicacion">
+                        <input type="hidden" value="" id="idPublicacion"/>
+                        <input type="hidden" value="" id="fechaIngreso" />
                         <div class="row">
                             <div class="col-xs-12 col-sm-7 col-md-6">
                                 <div class="form-group">
@@ -54,7 +56,9 @@
                             <div class="col-xs-12 col-md-6">
                                 <div class="form-group">
                                     <label for="">Seleccione el Deporte</label>
-                                    <select id="drpDeportes" class="form-control" name="drpDeportes" style="width:100%"></select>
+                                    <select id="drpDeportes" class="form-control" name="drpDeportes" style="width:100%">
+                                        <option value="">Seleccione</option>
+                                    </select>
                                 </div>
                             </div>
                         </div>
@@ -82,13 +86,17 @@
                             <div class="col-xs-12 col-md-6">
                                 <div class="form-group">
                                     <label for="drpEquipo1">Equipo 1</label>
-                                    <select style="width:100%" class="form-control" id="drpEquipo1" name="drpEquipo1"></select>
+                                    <select style="width:100%" class="form-control" id="drpEquipo1" name="drpEquipo1">
+                                        <option value="">Seleccione</option>
+                                    </select>
                                 </div>
                             </div>
                             <div class="col-xs-12 col-md-6">
                                 <div class="form-group">
                                     <label for="drpEquipo2">Equipo 2</label>
-                                    <select style="width:100%" class="form-control" id="drpEquipo2" name="drpEquipo2"></select>
+                                    <select style="width:100%" class="form-control" id="drpEquipo2" name="drpEquipo2">
+                                        <option value="">Seleccione</option>
+                                    </select>
                                 </div>
                             </div>
                         </div>
@@ -139,7 +147,7 @@
                     </form>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-default" onclick="Cancelar()">Cancelar</button>
                     <button type="button" class="btn btn-green" id="btnGuardar" onclick="GuardarPublicacion()">Guardar</button>
                 </div>
             </div>
@@ -149,42 +157,46 @@
     </div>
 
     <div class="row">
-        <div class="col-xs-12">
-            <div class="divPublicaciones"></div>
-            <div class="row">
-                <div class="col-xs-6 col-sm-5 col-md-4 col-lg-4">
-                    <a class="btn btn-primary" data-toggle="modal" data-target="#flexModal">Nueva Publicación</a>
-                </div>
-            </div>
+        <div class="col-xs-5 col-xs-offset-1 col-sm-5 col-md-4 col-lg-4">
+            <a class="btn btn-primary" onclick="NuevaPublicacion()">Nueva Publicación</a>
         </div>
-
+    </div><br />
+    <div class="row">
+        <div class="col-xs-11 col-xs-offset-1 col-sm-9 col-md-6 col-md-offset-3">
+            <div id="divPublicaciones"></div>
+        </div>
     </div>
 
 </div>
 @section Scripts{
 
     <script>
-    $(document).ready(function () {
-        Init_SingleSelect2($('#drpEquipo1'));
-        Init_SingleSelect2($('#drpEquipo2'));
-        Init_SingleSelect2($('#drpDeportes'));
-        Init_SingleSelect2($('#drpTipoPublicacion'));
+        $(document).ready(function () {
+            var objPublicaciones = undefined;
+            var publicacion = undefined;
+            Init_SingleSelect2($('#drpEquipo1'));
+            Init_SingleSelect2($('#drpEquipo2'));
+            Init_SingleSelect2($('#drpDeportes'));
+            Init_SingleSelect2($('#drpTipoPublicacion'));
+            $('#txtFecha').datetimepicker({
+             format:'D/MM/YYYY hh:mm A'
+            });
 
-        $('#divEsMatchup').find('input[name="optEsMatchup"]').change(function () {
-            if ($(this).val() == '1') {
-                $('#divMatchup').removeClass('hidden');
-            } else {
-                $('#divMatchup').addClass('hidden');
-                $('#txtJugador1', '#frmNuevaPublicacion').val('');
-                $('#txtJugador2', '#frmNuevaPublicacion').val('');
-            }
-        });
-        AjaxCall('@Url.Action("GetDeportes_Select", "Deporte")', '', 'drpDeportes', CargarDropDown);
+            $('#divEsMatchup').find('input[name="optEsMatchup"]').change(function () {
+                if ($(this).val() == '1') {
+                    $('#divMatchup').removeClass('hidden');
+                } else {
+                    $('#divMatchup').addClass('hidden');
+                    $('#txtJugador1', '#frmNuevaPublicacion').val('');
+                    $('#txtJugador2', '#frmNuevaPublicacion').val('');
+                }
+            });
+            AjaxCall('@Url.Action("GetDeportes_Select", "Deporte")', '', 'drpDeportes', CargarDropDown);
 
-        $('#drpDeportes').on("change", function () {
-            AjaxCall('@Url.Action("GetEquiposByDeporte_Select", "Equipo")', { 'idDeporte': +$(this).val() }, 'drpEquipo1', CargarDropDown);
-            AjaxCall('@Url.Action("GetEquiposByDeporte_Select", "Equipo")', { 'idDeporte': +$(this).val() }, 'drpEquipo2', CargarDropDown);
-        });
+            $('#drpDeportes').on("change", function () {
+                AjaxCall('@Url.Action("GetEquiposByDeporte_Select", "Equipo")', { 'idDeporte': +$(this).val() }, 'drpEquipo1', CargarDropDown);
+                AjaxCall('@Url.Action("GetEquiposByDeporte_Select", "Equipo")', { 'idDeporte': +$(this).val() }, 'drpEquipo2', CargarDropDown);
+            });
 
             $("#frmNuevaPublicacion").validate({
                 errorClass: 'control-label text-danger',
@@ -221,15 +233,60 @@
                         required: true
                     }
                 }
+            });
+            CargarData();
+
         });
 
-    });
+    function Cancelar()
+    {
+        $('#flexModal').modal('hide');
+        publicacion = undefined;
+    }
+
+    function EditarPublicacion(index)
+    {
+        publicacion = objPublicaciones[index];
+        $('#fechaIngreso').val(formatFecha(publicacion.FechaIngreso));
+        $('#idPublicacion').val(publicacion.IdPublicacion);
+        $('#txtTitulo', '#frmNuevaPublicacion').val(publicacion.Titulo);
+        $('#txtFecha', '#frmNuevaPublicacion').val(formatFecha(publicacion.FechaJuego));
+        $('#drpDeportes', '#frmNuevaPublicacion').val(publicacion.Equipo1.Deporte.IdDeporte).change();
+        AjaxCall('@Url.Action("GetEquiposByDeporte_Select", "Equipo")', { 'idDeporte': +publicacion.Equipo1.Deporte.IdDeporte }, '', CargarYSeleccionarDropDownEquipos);
+        if (publicacion.EsMatchup) {
+            $('#optEsMatchup2').prop('checked',true);
+            $('#divMatchup').removeClass('hidden');
+            $('#txtJugador1', '#frmNuevaPublicacion').val(publicacion.Jugador1);
+            $('#txtJugador2', '#frmNuevaPublicacion').val(publicacion.Jugador2);
+        } else {
+            $('#optEsMatchup1').prop('checked', true);
+            $('#divMatchup').addClass('hidden');
+            $('#txtJugador1', '#frmNuevaPublicacion').val('');
+            $('#txtJugador2', '#frmNuevaPublicacion').val('');
+        }
+        $('#txtPronostico', '#frmNuevaPublicacion').val(publicacion.Pronostico);
+        $('#drpTipoPublicacion', '#frmNuevaPublicacion').val((publicacion.EsPremium) ? "1" : "0").change();
+        $('#txtAnalisis', '#frmNuevaPublicacion').text(publicacion.Analisis);
+        $('#flexModal').modal('show');
+    }
+
+        function CargarYSeleccionarDropDownEquipos(data)
+        {
+            CargarDropDown('drpEquipo1', data);
+            CargarDropDown('drpEquipo2', data);
+            $('#drpEquipo1').val(publicacion.IdEquipo1).change();
+            $('#drpEquipo2').val(publicacion.IdEquipo2).change();
+        }
 
     function GuardarPublicacion() {
         var validator = $("#frmNuevaPublicacion").validate();
         if (validator.form())
         {
             var publicacion = new Object();
+            if ($('#idPublicacion').val() != '') {
+                publicacion.IdPublicacion = $('#idPublicacion').val();
+                publicacion.FechaIngreso = $('#fechaIngreso').val();
+            }
             publicacion.Titulo = $('#txtTitulo', '#frmNuevaPublicacion').val();
             publicacion.FechaJuego = $('#txtFecha', '#frmNuevaPublicacion').val();
             publicacion.EsMatchup = Boolean(parseInt($('input[name=optEsMatchup]:checked','#frmNuevaPublicacion').val()));
@@ -240,40 +297,90 @@
             publicacion.Pronostico = $('#txtPronostico', '#frmNuevaPublicacion').val();
             publicacion.EsPremium = Boolean(parseInt($('#drpTipoPublicacion', '#frmNuevaPublicacion').val()));
             publicacion.Analisis = $('#txtAnalisis', '#frmNuevaPublicacion').text();
-
+           
             AjaxCall('@Url.Action("GuardarPublicacion", "Publicacion")', publicacion, '', undefined);
+            //CargarData();
+            
 
         } else {
             //TODO si el form no es válido
         }
     }
+        function NuevaPublicacion()
+        {
+            $('#idPublicacion').val('');
+            $('#flexModal').modal("show");
+        }
 
     function CargarData() {
             $.ajax({
             type: "POST",
             async: true,
-            url: '@Url.Action("Getpublicaciones","Publicacion")',
+            url: '@Url.Action("GetPublicaciones","Publicacion")',
             dataType: "json",
             success: function (response) {
                 $('#divPublicaciones').empty();
-                objDeporte = response;
-                if (response.length > 0) {
-                    for (var i = 0; i < response.length; i++) {
-                        var deporte = response[i];
-                        var imageSrc = "data:image/png;base64," + _arrayBufferToBase64(deporte.Imagen).toString();
-                        var img = '<img width="100" heigth="50" src="' + imageSrc + '" alt="prueba"/>';
-                        var html = '<tr>' +
-                        '<td>' + deporte.Nombre + '</td>' +
-                        '<td>' + img + '</td>' +
-                        '<td>' + ((deporte.Activo == true) ? "SI" : "NO") + '</td>' +
-                        '<td>' + formatFecha(deporte.FechaIngreso) + '</td>' +
-                        '<td>' + '<input type="button" class="btn btn-danger" onclick="EditarDeporte(' + i + ')" value="Editar"/>' + '</td>' +
-                        '</tr>';
-                        $('#tblDeportes').append(html);
+                objPublicaciones = response;
+                
+                if (objPublicaciones.length > 0) {
+                    for (var i = 0; i < objPublicaciones.length; i++) {
+                        var publicacion = objPublicaciones[i];
+                        console.log(publicacion);
+                        var srcImgDeporte = "data:image/png;base64," + _arrayBufferToBase64(publicacion.Equipo1.Deporte.Imagen).toString();
+                        var imgDeporte = '<img width="80" class="pull-right" heigth="40" src="' + srcImgDeporte + '" alt="Deporte"/>';
+                        var srcImgEquipo1 = "data:image/png;base64," + _arrayBufferToBase64(publicacion.Equipo1.Imagen).toString();
+                        var srcImgEquipo2 = "data:image/png;base64," + _arrayBufferToBase64(publicacion.Equipo2.Imagen).toString();
+                        var imgEquipo1 = '<img width="100" heigth="50" src="' + srcImgEquipo1 + '" class="center-block" alt="Equipo 1"/>';
+                        var imgEquipo2 = '<img width="100" heigth="50" src="' + srcImgEquipo2 + '" class="center-block" alt="Equipo 2"/>';
+                        var fechaJuego = formatFecha(publicacion.FechaJuego);
+                        var html = '<div class="row">'+
+                            '<div class="panel panel-default">' +
+                            '<div class="panel-heading">' +
+                               
+                                    publicacion.Titulo +
+                                    '<div class="pull-right">' +
+                                         fechaJuego +                                         
+                                    '</div>'+
+                           
+                            '</div>' +
+                            '<div class="panel-body">' +
+                            '<div class="row">'+
+                                '<div class="col-xs-3 col-xs-offset-2 col-md-3 col-md-offset-3">' +
+                                   imgEquipo1+
+                                '</div>'+
+                                '<div class="col-xs-3 col-xs-offset-1">' +
+                                    imgEquipo2+
+                                '</div>' +
+                            '</div>' +
+                            '<div class="row">' +
+                            '<div class="col-xs-3 col-xs-offset-3 col-md-3 col-md-offset-4">' +
+                             '<label class="center-block">' + publicacion.Equipo1.Abrev + '</label>' +
+                            '</div>' +
+                             '<div class="col-xs-3 col-xs-offset-1">' +
+                             '<label class="center-block">'+ publicacion.Equipo2.Abrev +'</label>'+
+                            '</div>' +
+                            '</div>' +
+                           
+                            '<hr/>' +
+                             '<div class"row">' +
+                            '<div class="col-xs-6 col-xs-offset-4 col-md-6 col-md-offset-5">' +
+                            'PICK:'+publicacion.Pronostico+
+                            '</div>' +
+                             '</div><br/><br/>' +
+                            '</div>' +
+                            '<div class="panel-footer">' +
+                            '<div class="row">'+
+                                '<input type="button" class="btn btn-danger pull-left" onclick="EditarPublicacion('+i+')" value="Editar"/>' +
+                                imgDeporte +                           
+                                '</div>' +
+                            '</div>' +
+                            '</div>' +
+                            '</div>';
+                            $('#divPublicaciones').append(html);
                     }
                 }
                 else {
-                    MostrarAlerta("Error", 'info', 'No existen deportes para mostrar');
+                    MostrarAlerta("Información", 'info', 'No existen publicaciones para mostrar');
                 }
             },
             error: function (xhr, status) {
