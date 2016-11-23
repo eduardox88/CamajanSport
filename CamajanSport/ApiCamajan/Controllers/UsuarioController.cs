@@ -38,20 +38,37 @@ namespace ApiCamajan.Controllers
             return Ok(usuario);
         }
 
+        [ResponseType(typeof(Usuario))]
+        [HttpPost]
+        public IHttpActionResult GetUsuarioByEmail(Usuario user)
+        {
+            Usuario usuario =  db.usuarios.Where(m => m.CorreoElec == user.CorreoElec).FirstOrDefault();
+            if (usuario == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(usuario);
+        }
+
+        [Authorize]
+        public int GetCountUsuarios()
+        {
+            return db.usuarios.ToList().Count;
+        }
+
+
         // PUT api/Usuario/5
-        public async Task<IHttpActionResult> PutUsuario(int id, Usuario usuario)
+        public async Task<IHttpActionResult> PutUsuario(Usuario usuario)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            if (id != usuario.IdUsuario)
-            {
-                return BadRequest();
-            }
 
             db.Entry(usuario).State = EntityState.Modified;
+            db.Entry(usuario).Property(x => x.Contrasena).IsModified = false;
 
             try
             {
@@ -59,14 +76,7 @@ namespace ApiCamajan.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!UsuarioExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
+                throw;
             }
 
             return StatusCode(HttpStatusCode.NoContent);
