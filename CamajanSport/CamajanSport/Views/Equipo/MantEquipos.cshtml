@@ -71,31 +71,33 @@
                     <h4 class="modal-title" id="flexModalLabel">Creación de Equipos</h4>
                 </div>
                 <div class="modal-body">
+                    <form id="Validaciones">
+                        <div class="row">
+                            <div class="col-xs-1">
+                                <input type="hidden" id="hdfId" />
+                                <input type="hidden" id="hdfOldImg" />
+                            </div>
+                        </div>
+                        <div class="row form-group">
+                            <div class="col-xs-3">
+                                <label for="txtNombre">Nombre:</label>
+                                <input type="text" class="form-control" name="txtNombre" id="txtNombre" />
+                            </div>
+                            <div class="col-xs-3">
+                                <label for="txtAbrev">Abreviación:</label>
+                                <input type="text" class="form-control" name="txtAbrev" id="txtAbrev" />
+                            </div>
+                            <div class="col-xs-3">
+                                <label for="drpDeporte">Seleccione el Deporte:</label>
+                                <select id="drpDeporte" name="drpDeporte" class="form-control"></select>
+                            </div>
+                            <div class="col-xs-2">
+                                <label for="chkActivo">Activo:</label>
+                                <input type="checkbox" class="form-control" id="chkActivo" />
+                            </div>
+                        </div>
 
-                    <div class="row">
-                        <div class="col-xs-1">
-                            <input type="hidden" id="hdfId" />
-                            <input type="hidden" id="hdfOldImg" />
-                        </div>
-                    </div>
-                    <div class="row form-group">
-                        <div class="col-xs-3">
-                            <label for="txtNombre">Nombre:</label>
-                            <input type="text" class="form-control" id="txtNombre" />
-                        </div>
-                        <div class="col-xs-3">
-                            <label for="txtAbrev">Abreviación:</label>
-                            <input type="text" class="form-control" id="txtAbrev" />
-                        </div>
-                        <div class="col-xs-3">
-                            <label for="drpDeporte">Seleccione el Deporte:</label>
-                            <select id="drpDeporte" class="form-control"></select>
-                        </div>
-                        <div class="col-xs-2">
-                            <label for="chkActivo">Activo:</label>
-                            <input type="checkbox" class="form-control" id="chkActivo" />
-                        </div>
-                    </div>
+                    </form>
                     <br />
                     <!-- begin DROPZONE UPLOADER ROW -->
                     <div class="row">
@@ -135,106 +137,132 @@
 
 @section Scripts{
 
-<script type="text/javascript">
+    <script type="text/javascript">
 
-    var objEquipo;
+        var objEquipo;
 
-    $(document).ready(function () {
-        AjaxCall('@Url.Action("Getdeportes","Deporte")', undefined, 'drpDeporte', CargarDropDownDeportes)
-        CargarData();
-    });
+        $(document).ready(function () {
+            AjaxCall('@Url.Action("Getdeportes","Deporte")', undefined, 'drpDeporte', CargarDropDownDeportes, true)
+            CargarData();
+            InicializarValidaciones();
+        });
 
-    function GuardarEquipo() {
-        var formData = new FormData();
-        var fileUpload = document.getElementById('fileUploader');
-        formData.append("idEquipo", ($('#hdfId').val() != "") ? $('#hdfId').val() : 0);
-        formData.append("Equipo", $('#txtNombre').val());
-        formData.append("Abreviacion", $('#txtAbrev').val());
-        formData.append("idDeporte", $('#drpDeporte :selected').val());
-        formData.append("Activo", $('#chkActivo').is(':checked'));
+        function InicializarValidaciones() {
 
-        if (fileUpload.files[0] == null) {
-            formData.append("newFile", false);
-            var array = new Array($('#hdfOldImg').val().split(','));
-            formData.append("afile", array);
-        } else {
-            formData.append("newFile", true);
-            formData.append("afile", fileUpload.files[0]);
-        }
-
-        var xhr = new XMLHttpRequest();
-        xhr.open("POST", "/Equipo/SaveUploadedFile");
-        xhr.onreadystatechange = function (aEvt) {
-            if (xhr.readyState == 4) {
-                if (xhr.status == 200) {
-                    MostrarAlerta("¡Enhorabuena!", 'success', xhr.responseText.replace('"', ""));
-                    CargarData();
-                    limpiarTodosCampos("flexModal");
-                    $('#flexModal').modal('hide');
-                }
-                else {
-                    MostrarAlerta("Error", 'error', xhr.responseText.replace('"', ""));
-                }
-            }
-        }
-        xhr.send(formData);
-    }
-
-    function CargarData() {
-        $.ajax({
-            type: "POST",
-            async: true,
-            url: '@Url.Action("GetEquipos", "Equipo")',
-            dataType: "json",
-            success: function (response) {
-
-                console.log(response)
-
-                $('#tbEquipo').empty();
-                objEquipo = response;
-
-                if (response.length > 0) {
-                    for (var i = 0; i < response.length; i++) {
-
-                        var equipo = response[i];
-                        var imageSrc = "data:image/png;base64," + _arrayBufferToBase64(equipo.Imagen).toString();
-                        var img = '<img width="100" heigth="50" src="' + imageSrc + '" alt="prueba"/>';
-                        var html = '<tr>' +
-                        '<td>' + equipo.Nombre + '</td>' +
-                        '<td>' + equipo.Abrev + '</td>' +
-                        '<td>'+img+'</td>' +
-                        '<td>' + $('#drpDeporte option[value="' + equipo.idDeporte + '"]').text() + '</td>' +
-                        '<td>' + formatFecha(equipo.FechaIngreso) + '</td>' +
-                        '<td>' + ((equipo.Activo == true) ? "SI" : "NO") + '</td>' +
-                        '<td>' + '<input type="button" class="btn btn-danger" onclick="EditarEquipo(' + i + ')" value="Editar"/>' + '</td>' +
-                        '</tr>';
-                        $('#tbEquipo').append(html);
+            $("#Validaciones").validate({
+                errorClass: 'control-label text-danger',
+                rules: {
+                    txtNombre: {
+                        required: true,
+                        minlength: 4,
+                        maxlength: 20
+                    },
+                    txtAbrev: {
+                        required: true,
+                        minlength: 1,
+                        maxlength: 3
+                    },
+                    drpDeporte: {
+                        required: true
                     }
                 }
-                else {
-                    MostrarAlerta("Error", 'info', 'No existen Equipos para mostrar');
+            });
+        }
+
+        function GuardarEquipo() {
+            var validator = $("#Validaciones").validate();
+
+            if (validator.form()) {
+                var formData = new FormData();
+                var fileUpload = document.getElementById('fileUploader');
+                formData.append("idEquipo", ($('#hdfId').val() != "") ? $('#hdfId').val() : 0);
+                formData.append("Equipo", $('#txtNombre').val());
+                formData.append("Abreviacion", $('#txtAbrev').val());
+                formData.append("idDeporte", $('#drpDeporte :selected').val());
+                formData.append("Activo", $('#chkActivo').is(':checked'));
+
+                if (fileUpload.files[0] == null) {
+                    formData.append("newFile", false);
+                    var array = new Array($('#hdfOldImg').val().split(','));
+                    formData.append("afile", array);
+                } else {
+                    formData.append("newFile", true);
+                    formData.append("afile", fileUpload.files[0]);
                 }
-            },
-            error: function (xhr, status) {
 
-                MostrarAlerta("Error", 'error', xhr.responseText);
+                var xhr = new XMLHttpRequest();
+                xhr.open("POST", "/Equipo/SaveUploadedFile");
+                xhr.onreadystatechange = function (aEvt) {
+                    if (xhr.readyState == 4) {
+                        if (xhr.status == 200) {
+                            MostrarAlerta("¡Enhorabuena!", 'success', xhr.responseText.replace('"', ""));
+                            CargarData();
+                            limpiarTodosCampos("flexModal");
+                            $('#flexModal').modal('hide');
+                        }
+                        else {
+                            MostrarAlerta("Error", 'error', xhr.responseText.replace('"', ""));
+                        }
+                    }
+                }
+                xhr.send(formData);
             }
-        });
-    }
+        }
 
-    function EditarEquipo(indice) {
-        var equipo = objEquipo[indice];
-        $('#oldImg').empty();
-        $('#hdfId').val(equipo.idEquipo);
-        $('#hdfOldImg').val(equipo.Imagen);
-        $('#txtNombre').val(equipo.Nombre);
-        $('#txtAbrev').val(equipo.Abrev.trim())
-        $('#drpDeporte').val(equipo.idDeporte)
-        $('#chkActivo').prop('checked', equipo.Activo);
-        $('#oldImg').append('<img width="100" heigth="50" src="data:image/png;base64,' + _arrayBufferToBase64(equipo.Imagen).toString() + '"/>');
-        $('#flexModal').modal('show');
-    }
+        function CargarData() {
+            $.ajax({
+                type: "POST",
+                async: true,
+                url: '@Url.Action("GetEquipos", "Equipo")',
+                dataType: "json",
+                success: function (response) {
 
-</script>
+                    console.log(response)
 
+                    $('#tbEquipo').empty();
+                    objEquipo = response;
+
+                    if (response.length > 0) {
+                        for (var i = 0; i < response.length; i++) {
+
+                            var equipo = response[i];
+                            var imageSrc = "data:image/png;base64," + _arrayBufferToBase64(equipo.Imagen).toString();
+                            var img = '<img width="100" heigth="50" src="' + imageSrc + '" alt="prueba"/>';
+                            var html = '<tr>' +
+                            '<td>' + equipo.Nombre + '</td>' +
+                            '<td>' + equipo.Abrev + '</td>' +
+                            '<td>' + img + '</td>' +
+                            '<td>' + $('#drpDeporte option[value="' + equipo.idDeporte + '"]').text() + '</td>' +
+                            '<td>' + formatFecha(equipo.FechaIngreso) + '</td>' +
+                            '<td>' + ((equipo.Activo == true) ? "SI" : "NO") + '</td>' +
+                            '<td>' + '<input type="button" class="btn btn-danger" onclick="EditarEquipo(' + i + ')" value="Editar"/>' + '</td>' +
+                            '</tr>';
+                            $('#tbEquipo').append(html);
+                        }
+                    }
+                    else {
+                        MostrarAlerta("Error", 'info', 'No existen Equipos para mostrar');
+                    }
+                },
+                error: function (xhr, status) {
+
+                    MostrarAlerta("Error", 'error', xhr.responseText);
+                }
+            });
+        }
+
+        function EditarEquipo(indice) {
+            var equipo = objEquipo[indice];
+            $('#oldImg').empty();
+            $('#hdfId').val(equipo.idEquipo);
+            $('#hdfOldImg').val(equipo.Imagen);
+            $('#txtNombre').val(equipo.Nombre);
+            $('#txtAbrev').val(equipo.Abrev.trim())
+            $('#drpDeporte').val(equipo.idDeporte)
+            $('#chkActivo').prop('checked', equipo.Activo);
+            $('#oldImg').append('<img width="100" heigth="50" src="data:image/png;base64,' + _arrayBufferToBase64(equipo.Imagen).toString() + '"/>');
+            $('#flexModal').modal('show');
+        }
+
+    </script>
 }

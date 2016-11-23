@@ -2,6 +2,8 @@
     Layout = null;
 }
 
+@model  CamajanSport.BOL.Usuario
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -19,6 +21,8 @@
     <link href='http://fonts.googleapis.com/css?family=Ubuntu:300,400,500,700,300italic,400italic,500italic,700italic' rel="stylesheet" type="text/css">
     <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel="stylesheet" type="text/css">
     <link href="icons/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+    <link href="~/css/style.css" rel="stylesheet" />
+    <link href="~/css/plugins/sweetalert/sweetalert.css" rel="stylesheet" />
 
     <!-- PAGE LEVEL PLUGIN STYLES -->
     <!-- THEME STYLES -->
@@ -47,11 +51,11 @@
                     <div class="portlet-heading login-heading">
                         <div class="portlet-title">
                             <h4>
-                                <strong>Login to Flex Admin!</strong>
+                                <strong>Iniciar Sesión</strong>
                             </h4>
                         </div>
                         <div class="portlet-widgets">
-                            <button class="btn btn-white btn-xs"><i class="fa fa-plus-circle"></i> New User</button>
+                            <button class="btn btn-white btn-xs"><i class="fa fa-plus-circle"></i> Crear usuario</button>
                         </div>
                         <div class="clearfix"></div>
                     </div>
@@ -59,22 +63,22 @@
                         <form accept-charset="UTF-8" role="form">
                             <fieldset>
                                 <div class="form-group">
-                                    <input id="txtEmail" class="form-control" placeholder="E-mail" name="email" type="text">
+                                    @Html.TextBoxFor(m => m.CorreoElec, new { id= "txtEmail", placeholder="Correo Electrónico", @class="form-control"})
                                 </div>
                                 <div class="form-group">
-                                    <input id="txtPassword" class="form-control" placeholder="Password" name="password" type="password" value="">
+                                    @Html.PasswordFor(m => m.Contrasena, new { id = "txtPassword", placeholder = "Contraseña", @class="form-control", value = Model.Contrasena })
                                 </div>
                                 <div class="checkbox">
                                     <label>
-                                        <input name="remember" type="checkbox" value="Remember Me">Remember Me
+                                        @Html.CheckBox("recuerdame",(bool)ViewBag.Checked) Recuerdame
                                     </label>
                                 </div>
                                 <br>
-                                <input id="btnSignIn" type="button" class="btn btn-lg btn-green btn-block" value="Sign In" />
+                                <input id="btnSignIn" type="button" class="btn btn-lg btn-green btn-block" value="Iniciar" />
                             </fieldset>
                             <br>
                             <p class="small">
-                                <a href="#">Forgot your password?</a>
+                                <a href="#">¿Olvidaste tu contraseña?</a>
                             </p>
                         </form>
                     </div>
@@ -87,8 +91,10 @@
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
     <script src="js/plugins/bootstrap/bootstrap.min.js"></script>
     <script src="js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+    <script src="~/js/plugins/sweetalert/sweetalert.min.js"></script>
     <!-- HISRC Retina Images -->
     <script src="js/plugins/hisrc/hisrc.js"></script>
+    <script src="~/js/helpers/Utilities.js"></script>
 
     <!-- PAGE LEVEL PLUGIN SCRIPTS -->
     <!-- THEME SCRIPTS -->
@@ -99,23 +105,24 @@
 </html>
 
 <script type="text/javascript">
+
+
+    function SuccessOrError(data){
+        
+        if(data == true){
+            window.location = "Admin/Dashboard";
+        }
+    }
+
     $(document).ready(function () {
         $('#btnSignIn').click(function () {
-            $.ajax({
-                type: "POST",
-                url: "@Url.Action("SignIn","LogIn")",
-                data: {
-                    'username': $('#txtEmail').val(),
-                    'password': $('#txtPassword').val()
-                },
-                dataType: "json",
-                success: function (response) {
-                    window.location = "Admin/Dashboard";
-                },
-                error: function (error, xth) {
-                    alert('Error');
-                }
-            });
+            var objeto = {
+                'correo': $('#txtEmail').val(),
+                'password': $('#txtPassword').val()
+            };
+            AjaxCall('@Url.Action("SignIn","LogIn")', objeto, "", SuccessOrError, true);
         });
     });
+
+
 </script>

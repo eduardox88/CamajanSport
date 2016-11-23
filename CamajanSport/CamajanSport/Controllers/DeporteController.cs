@@ -125,5 +125,28 @@ namespace CamajanSport.Controllers
                 return Json("Ha ocurrido un error al momento de obtener el listado de deportes para el select, si el problema persiste contacte al administrador");
             }
         }
+
+
+        [SessionHandle]
+        public async Task<JsonResult> GetCountDeporte()
+        {
+            try
+            {
+                int cantidad = 0;
+                var response = await ApiHelper.GET("Deporte/GetCountDeporte", (Session["Token"] as Token));
+
+                if (response.IsSuccessStatusCode)
+                {
+                    cantidad = await response.Content.ReadAsAsync<int>();
+                }
+
+                return Json(cantidad, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                return Json("Ha ocurrido un error al momento de obtener la cantidad de deportes registrado, si el problema persiste contacte al administrador");
+            }
+        }
     }
 }

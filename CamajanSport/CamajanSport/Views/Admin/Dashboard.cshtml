@@ -3,9 +3,181 @@
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
 
-<h2>Dashboard</h2>
-<p>Estoy probando </p>
+<div class="page-content">
 
+    <!-- begin PAGE TITLE AREA -->
+    <!-- Use this section for each page's title and breadcrumb layout. In this example a date range picker is included within the breadcrumb. -->
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="page-title">
+                <h1>
+                    Dashboard
+                    <small>Contenido en General</small>
+                </h1>
+                <ol class="breadcrumb">
+                    <li class="active"><i class="fa fa-dashboard"></i> Dashboard</li>
+                </ol>
+            </div>
+        </div>
+        <!-- /.col-lg-12 -->
+    </div>
+    <!-- /.row -->
+    <!-- end PAGE TITLE AREA -->
+    <!-- begin DASHBOARD CIRCLE TILES -->
+
+    <div id="contenedor">
+
+    </div>
+</div>
 @section Scripts{
 
-    }
+    <script type="text/javascript">
+
+        
+        $('#spinner').ajaxStart(function () {
+            console.log('entre')
+            $(this).fadeIn('fast');
+        }).ajaxStop(function () {
+            $(this).stop().fadeOut('fast');
+        });
+
+
+        var countGlobal = 0;
+
+        function CargarData() {
+
+            var cantDeportes = 0;
+            var cantEquipos = 0;
+            var cantUsuarios = 0;
+
+            AjaxCall("@Url.Action("GetCountDeporte", "Deporte")", undefined, "", SuccessOrFail, false)
+            cantDeportes = countGlobal;
+
+            AjaxCall("@Url.Action("GetCountEquipos", "Equipo")", undefined, "", SuccessOrFail, false)
+            cantEquipos = countGlobal;
+
+            AjaxCall("@Url.Action("GetCountUsuarios", "Usuario")", undefined, "", SuccessOrFail, false)
+            cantUsuarios = countGlobal;
+
+        }
+
+        function RenderizarDashBoard(CantDeportes, CantEquipos, CantUsuarios) {
+            var html = '';
+            html += '<div class="row">' +
+                        '<div class="col-lg-1">' +
+                           '</div>' +
+                               '<div class="col-lg-2 col-sm-6">' +
+                                    '<div class="circle-tile">' +
+                                        '<a href="#">' +
+                                            '<div class="circle-tile-heading orange">' +
+                                                 '<i class="fa fa-bell fa-fw fa-3x"></i>' +
+                                            '</div>' +
+                                        '</a>' +
+                                        '<div class="circle-tile-content orange">' +
+                                            '<div class="circle-tile-description text-faded">' +
+                                                'DINAMICO' +
+                                        '</div>' +
+                                        '<div class="circle-tile-number text-faded">' +
+                                                '9 New' +
+                                        '</div>' +
+                                            '<a href="#" class="circle-tile-footer">More Info <i class="fa fa-chevron-circle-right"></i></a>' +
+                                    '</div>' +
+                                '</div>' +
+                           '</div>' +
+                           '<div class="col-lg-2 col-sm-6">' +
+                           '<div class="circle-tile">' +
+                           '<a href="#">' +
+                           '<div class="circle-tile-heading blue">' +
+                           '<i class="fa fa-tasks fa-fw fa-3x"></i>' +
+                           '</div>' +
+                           '</a>' +
+                           '<div class="circle-tile-content blue">' +
+                           '<div class="circle-tile-description text-faded">' +
+                           'Tasks' +
+                           '</div>' +
+                           '<div class="circle-tile-number text-faded">' +
+                           '10' +
+                           '<span id="sparklineB"></span>' +
+                           '</div>' +
+                           '<a href="#" class="circle-tile-footer">More Info <i class="fa fa-chevron-circle-right"></i></a>' +
+                           '</div>' +
+                           '</div>' +
+                           '</div>' +
+                           '<div class="col-lg-2 col-sm-6">' +
+                                '<div class="circle-tile">' +
+                                    '<a href="#">' +
+                                        '<div class="circle-tile-heading red">' +
+                                            '<i class="fa fa-shopping-cart fa-fw fa-3x"></i>' +
+                                        '</div>' +
+                                    '</a>' +
+                                    '<div class="circle-tile-content red">' +
+                                        '<div class="circle-tile-description text-faded">' +
+                                            'Orders' +
+                                        '</div>' +
+                                        '<div class="circle-tile-number text-faded">' +
+                                            '24' +
+                                            '<span id="sparklineC"></span>' +
+                                        '</div>' +
+                                        '<a href="#" class="circle-tile-footer">More Info <i class="fa fa-chevron-circle-right"></i></a>' +
+                                    '</div>' +
+                                '</div>' +
+                            '</div>' +
+                            '<div class="col-lg-2 col-sm-6">' +
+                                '<div class="circle-tile">' +
+                                    '<a href="#">' +
+                                        '<div class="circle-tile-heading purple">' +
+                                            '<i class="fa fa-comments fa-fw fa-3x"></i>' +
+                                        '</div>' +
+                                    '</a>' +
+                                    '<div class="circle-tile-content purple">' +
+                                        '<div class="circle-tile-description text-faded">' +
+                                            'Mentions' +
+                                        '</div>' +
+                                        '<div class="circle-tile-number text-faded">' +
+                                            '96' +
+                                            '<span id="sparklineD"></span>' +
+                                        '</div>' +
+                                        '<a href="#" class="circle-tile-footer">More Info <i class="fa fa-chevron-circle-right"></i></a>' +
+                                    '</div>' +
+                                '</div>' +
+                            '</div>' +
+                            '<div class="col-lg-2 col-sm-6">' +
+                                '<div class="circle-tile">' +
+                                    '<a href="#">' +
+                                        '<div class="circle-tile-heading purple">' +
+                                            '<i class="fa fa-comments fa-fw fa-3x"></i>' +
+                                        '</div>' +
+                                    '</a>' +
+                                    '<div class="circle-tile-content purple">' +
+                                        '<div class="circle-tile-description text-faded">' +
+                                            'Mentions' +
+                                        '</div>' +
+                                        '<div class="circle-tile-number text-faded">' +
+                                            '96' +
+                                            '<span id="sparklineD"></span>' +
+                                        '</div>' +
+                                        '<a href="#" class="circle-tile-footer">More Info <i class="fa fa-chevron-circle-right"></i></a>' +
+                                    '</div>' +
+                                '</div>' +
+                            '</div>' +
+                            '<div class="col-lg-1">' +
+                            '</div>' +
+                   '</div>';
+
+            $('#contenedor').html(html);;
+
+        }
+
+        function SuccessOrFail(data) {
+            countGlobal = data;
+        }
+
+        $(document).ready(function () {
+
+            CargarData();
+            RenderizarDashBoard();
+        });
+
+    </script>
+
+}

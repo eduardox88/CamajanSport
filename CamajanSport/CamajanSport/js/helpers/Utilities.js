@@ -61,7 +61,7 @@ function MostrarDialogo(id, titulo, mensaje, showBtnCerrar, botones, showTopClos
     $('#' + id).modal();
 }
 
-function AjaxCall(url, data,idContenedor ,callBackFunction)
+function AjaxCall(url, data,idContenedor ,callBackFunction, IsAsync)
 {
     $.ajax({
         type: "POST",
@@ -69,6 +69,7 @@ function AjaxCall(url, data,idContenedor ,callBackFunction)
         data: JSON.stringify(data),
         contentType: "application/json; charset=utf-8",
         dataType: "json",
+        async: IsAsync,
         success: function (data) {
             //Llamada a la funcion para el callback
             if (callBackFunction == undefined) {
@@ -83,6 +84,7 @@ function AjaxCall(url, data,idContenedor ,callBackFunction)
             MostrarAlerta("Error", 'error', 'Ha ocurrido un error al realizar el llamado.');
         }
     });
+    
 
 }
 //Reinicia el dropdown de direcciones por el id.
@@ -149,9 +151,11 @@ function _arrayBufferToBase64(bytes) {
     return window.btoa(binary);
 }
 
-function limpiarTodosCampos(test) {
-    $('#'+test+' input').not(':button, :submit, :reset, :checkbox, :radio').val('');
+function limpiarTodosCampos(id) {
+    $('#' + id + ' input').not(':button, :submit, :reset, :checkbox, :radio').val('');
     $(':checkbox, :radio').prop('checked', false);
+
+    $('#' + id).find('textarea').val('')
 }
 
 function Init_SingleSelect2($elem) {
@@ -172,13 +176,49 @@ function CrearObjeto(idContenedor) {
         if (elem.is(':text')) {
             objeto[elem.attr('id')] = elem.val();
         }
+        else if (elem.is(':hidden')) {
+            objeto[elem.attr('id')] = ((elem.val() == '') ? 0 : elem.val());
+        }
         else if (elem.is(':checkbox')) {
             objeto[elem.attr('id')] = elem.is(':checked');
         }
         else if (elem.is('select')) {
             objeto[elem.attr('id')] = elem.find(":selected").val()
         }
+        else if (elem.is('textarea')) {
+            objeto[elem.attr('id')] = elem.val()
+        }
+        else if (elem.attr('type') == 'password') {
+            objeto[elem.attr('id')] = elem.val()
+        }
     })
 
     return objeto;
+}
+
+function LlenarFormulario(obj) {
+
+    var elem;
+
+    for (var key in obj) {
+        if (obj.hasOwnProperty(key)) {
+
+            elem = $('#' + key + '');
+            value = obj[key];
+
+            if (elem.is(':checkbox')) {
+                if (value == true) {
+                    elem.prop('checked', true);
+                }
+            }
+            else if (elem.is('select')) {
+                
+                elem.val(value).change();
+            }
+            else {
+                elem.val(value);
+            }
+            //console.log(key + " -> " + obj[key]);
+        }
+    }
 }

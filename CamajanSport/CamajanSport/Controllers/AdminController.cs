@@ -32,10 +32,5 @@ namespace CamajanSport.Controllers
             return View("MantDeportes");
         }
         #endregion
-        [SessionHandle]
-        public ActionResult MantUsuarios()
-        {
-            return View("MantUsuarios");
-        }
     }
 }

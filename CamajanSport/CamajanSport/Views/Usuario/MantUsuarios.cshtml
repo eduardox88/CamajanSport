@@ -1,0 +1,305 @@
+﻿@{
+    ViewBag.Title = "Mantenimiento Usuarios";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="page-content">
+
+    <!-- begin PAGE TITLE AREA -->
+    <!-- Use this section for each page's title and breadcrumb layout. In this example a date range picker is included within the breadcrumb. -->
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="page-title">
+                <h1>
+                    Mantenimiento de Usuarios
+                    @*<small>Deportes</small>*@
+                </h1>
+                <ol class="breadcrumb">
+                    <li class="active"><i class="fa fa-dashboard"></i> Mantenimiento de Usuarios</li>
+                </ol>
+            </div>
+        </div>
+        <!-- /.col-lg-12 -->
+    </div>
+    <!-- /.row -->
+    <!-- end PAGE TITLE AREA -->
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="portlet portlet-default">
+                <div class="portlet-heading">
+                    <div class="portlet-title">
+                        <h4><i class="fa fa-exchange fa-fw"></i> Usuarios registrados</h4>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <div id="transactionsPortlet" class="panel-collapse collapse in">
+                    <div class="portlet-body">
+                        <div class="table-responsive dashboard-demo-table">
+                            <table class="table table-bordered table-striped table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Usuario</th>
+                                        <th>Persona</th>
+                                        <th>Email</th>
+                                        <th>Telefono</th>
+                                        <th>Biografía</th>
+                                        <th>País</th>
+                                        <th>Estado</th>
+                                        <th>Rol</th>
+                                        <th>Debe cambiar contraseña</th>
+                                        <th>FechaIngreso</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tbUsuarios"></tbody>
+                            </table>
+                        </div>
+                        <!-- Advanced Modal Trigger -->
+                        <button id="btnModal" class="btn btn-default btn-md" data-toggle="modal" data-target="#flexModal">
+                            Agregar Usuario
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br>
+    <br>
+
+    <!-- Flex Modal -->
+    <div class="modal modal-flex fade" id="flexModal" role="dialog" aria-labelledby="flexModalLabel" aria-hidden="true">
+        <div class="modal-dialog" style="width:40%">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="flexModalLabel">Creación de Usuario</h4>
+                </div>
+                <div id="formUsuario" class="modal-body form-group">
+
+                    <form id="Validaciones">
+                        <input id="IdUsuario" type="hidden" class="objeto" />
+                        <div class="row">
+                            <div class="col-xs-3">
+                                <label for="NombreUsuario">Usuario</label>
+                                <input type="text" name="NombreUsuario" class="form-control objeto" id="NombreUsuario" placeholder="Nombre de Usuario" />
+                            </div>
+                            <div class="col-xs-3">
+                                <label for="NombreCompleto">Persona</label>
+                                <input type="text" name="NombreCompleto" class="form-control objeto" id="NombreCompleto" placeholder="Nombre" />
+                            </div>
+                            <div class="col-xs-3">
+                                <label for="CorreoElec">Email</label>
+                                <input type="text" name="CorreoElec" class="form-control objeto" id="CorreoElec" />
+                            </div>
+                            <div class="col-xs-3">
+                                <label for="Telefono">Telefono</label>
+                                <input type="text" name="Telefono" class="form-control objeto" id="Telefono" />
+                            </div>
+                        </div>
+                        <br />
+                        <div class="row">
+                            <div class="col-xs-4">
+                                <label for="IdPais">País</label>
+                                <select id="IdPais" name="IdPais" class="objeto" style="width:100%"></select>
+                            </div>
+                            <div class="col-xs-3">
+                                <label for="IdEstado">Estado</label>
+                                <select id="IdEstado" name="IdEstado" class="objeto" style="width:100%"></select>
+                            </div>
+                            <div class="col-xs-3">
+                                <label for="IdRol">Rol</label>
+                                <select id="IdRol" name="IdRol" class="objeto" style="width:100%"></select>
+                            </div>
+
+                            <div class="col-xs-2">
+                                <label for="CambiarContrasena">Cambiar</label>
+                                <input id="CambiarContrasena" type="checkbox" class="checkbox objeto" />
+                            </div>
+                        </div>
+                        <br />
+
+                        <div id="rowPass" class="row hidden">
+                            <div class="col-xs-12">
+                                <label for="Contrasena">Contraseña a Asignar:</label>
+                                <input id="Contrasena" name="Contrasena" type="password" class="form-control objeto" />
+                            </div>
+                        </div>
+
+                        <br />
+
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <label>Biografía:</label>
+
+                                <textarea id="Biografia" class="form-control objeto" rows="3"></textarea>
+                            </div>
+                        </div>
+                    </form>
+
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-green" onclick="GuardarDatos()">Guardar</button>
+                </div>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+    <!-- /.modal -->
+</div>
+@Scripts.Render("~/js/helpers/Utilities.js")
+
+@section Scripts{
+
+    <script type="text/javascript">
+
+    var resultado;
+    var objUsuario;
+
+
+    function InicializarDropDowns() {
+
+        AjaxCall('@Url.Action("GetPaises_Select", "Pais")', undefined, 'IdPais', CargarDropDown, true)
+        AjaxCall('@Url.Action("GetRol_Select", "Rol")', undefined, 'IdRol', CargarDropDown, true)
+        AjaxCall('@Url.Action("GetEstado_Select", "Estado")', undefined, 'IdEstado', CargarDropDown, true)
+
+            Init_SingleSelect2($('#IdPais'));
+            Init_SingleSelect2($('#IdRol'));
+            Init_SingleSelect2($('#IdEstado'));
+        }
+
+        function InicializarValidaciones() {
+
+            $("#Validaciones").validate({
+                errorClass: 'control-label text-danger',
+                rules: {
+                    NombreUsuario: {
+                        required: true,
+                        minlength: 5,
+                        maxlength: 20
+                    },
+                    NombreCompleto: {
+                        required: true,
+                        minlength: 5,
+                        maxlength: 50
+                    },
+                    CorreoElec: {
+                        required: true
+                    },
+                    Telefono: {
+                        required: true
+                    },
+                    IdPais: {
+                        required: true
+                    },
+                    IdEstado: {
+                        required: true
+                    },
+                    IdRol: {
+                        required: true
+                    },
+                    Contrasena: {
+                        required: true,
+                        minlength: 6,
+                        maxlength: 20
+                    }
+
+                }
+            });
+        }
+
+        function SuccessCargarData(response) {
+            objUsuario = response;
+            var html;
+            var usuario;
+            var tbody = $('#tbUsuarios');
+
+            tbody.empty();
+
+            if (objUsuario.length > 0) {
+
+                for (var i = 0; i < objUsuario.length; i++) {
+
+                    usuario = objUsuario[i];
+                    html = '<tr>' +
+                    '<td>' + usuario.NombreUsuario + '</td>' +
+                    '<td>' + usuario.NombreCompleto + '</td>' +
+                    '<td>' + usuario.CorreoElec + '</td>' +
+                    '<td>' + ((usuario.Telefono == null) ? "N/A" : usuario.Telefono) + '</td>' +
+                    //'<td>' + ((usuario.Biografia == null) ? "N/A" : usuario.Biografia) + '</td>' +
+                    '<td><input id="btn_' + i + '" type="button" class="btn btn-success" onclick="MostrarBio(\'' + ((usuario.Biografia == null) ? "N/A" : usuario.Biografia) + '\')" value="Ver Biografia" /></td>' +
+                    '<td>' + ((usuario.IdPais == null) ? "N/A" : usuario.IdPais) + '</td>' +
+                    '<td>' + ((usuario.IdEstado == null) ? "N/A" : usuario.IdEstado) + '</td>' +
+                    '<td>' + ((usuario.IdRol == null) ? "N/A" : usuario.IdRol) + '</td>' +
+                    '<td>' + ((usuario.CambiarContrasena == true) ? "SI" : "NO") + '</td>' +
+                    '<td>' + formatFecha(usuario.FechaIngreso) + '</td>' +
+                    '<td>' + '<input type="button" class="btn btn-danger" onclick="EditarUsuario(' + i + ')" value="Editar"/>' + '</td>' +
+                    '</tr>';
+                    tbody.append(html);
+
+                }
+            }
+            else {
+                MostrarAlerta("Error", 'info', 'No existen usuarios para mostrar');
+            }
+        }
+
+        function CargarData() {
+
+            AjaxCall('@Url.Action("GetUsuarios", "Usuario")', undefined, "", SuccessCargarData, true);
+         }
+
+    function GuardarDatos() {
+
+        var validator = $("#Validaciones").validate();
+
+
+        if (validator.form()) {
+            var obj = CrearObjeto('formUsuario');
+            AjaxCall("@Url.Action("InsertarUsuario","Usuario")", obj, "", SuccessOrFail, true)
+        }
+    }
+
+    function MostrarBio(mensaje) {
+
+        MostrarDialogo('ajaxSuccessModal', "Mensaje informativo", mensaje);
+    }
+
+
+    function SuccessOrFail(data) {
+        if (data != undefined) {
+            MostrarAlerta("¡Enhorabuena!", 'success', data);
+            limpiarTodosCampos('formUsuario')
+            $('#flexModal').modal('hide');
+            CargarData();
+        }
+    }
+
+    function EditarUsuario(indice) {
+
+        $('#rowPass').addClass('hidden')
+
+        var obj = objUsuario[indice];
+
+        LlenarFormulario(obj);
+
+        $('#flexModal').modal('show');
+    }
+
+    $(document).ready(function () {
+        InicializarDropDowns();
+        InicializarValidaciones();
+        CargarData();
+
+
+        $('#btnModal').click(function () {
+            $('#rowPass').removeClass('hidden')
+            limpiarTodosCampos('formUsuario')
+            return;
+        })
+    })
+
+    </script>
+}

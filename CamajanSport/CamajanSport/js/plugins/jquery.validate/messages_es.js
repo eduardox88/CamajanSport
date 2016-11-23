@@ -13,7 +13,7 @@
  * Locale: ES (Spanish; Español)
  */
 $.extend( $.validator.messages, {
-	required: "Este campo es obligatorio.",
+	required: "Campo requerido.",
 	remote: "Por favor, rellena este campo.",
 	email: "Por favor, escribe una dirección de correo válida.",
 	url: "Por favor, escribe una URL válida.",

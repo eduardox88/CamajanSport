@@ -108,6 +108,29 @@ namespace CamajanSport.Controllers
             }
         }
 
+
+        [SessionHandle]
+        public async Task<JsonResult> GetCountEquipos()
+        {
+            try
+            {
+                int cantidad = 0;
+                var response = await ApiHelper.GET("Equipo/GetCountEquipos", (Session["Token"] as Token));
+
+                if (response.IsSuccessStatusCode)
+                {
+                    cantidad = await response.Content.ReadAsAsync<int>();
+                }
+
+                return Json(cantidad, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                return Json("Ha ocurrido un error al momento de obtener la cantidad de equipos registrados, si el problema persiste contacte al administrador");
+            }
+        }
+
         [SessionHandle]
         public async Task<JsonResult> GetEquipos_Select()
         {
