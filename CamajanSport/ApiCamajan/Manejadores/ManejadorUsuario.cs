@@ -17,10 +17,10 @@ namespace ApiCamajan.Manejadores
             _db = new CamajanSportContext();
         }
 
-        public async Task<Usuario> Autenticar(string user, string contraseña) {
+        public async Task<Usuario> Autenticar(string correo, string contraseña) {
             string password = Encrypt.ComputeHash(contraseña, "SHA512", null);
 
-            Usuario usuario = _db.usuarios.Where(m => m.NombreUsuario == user).FirstOrDefault();
+            Usuario usuario = _db.usuarios.Where(m => m.CorreoElec == correo).FirstOrDefault();
 
             if (usuario != null) {
                 bool success = Encrypt.VerifyHash(contraseña, "SHA512", usuario.Contrasena.Trim());
