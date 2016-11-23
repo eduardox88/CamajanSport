@@ -25,7 +25,7 @@ namespace CamajanSport.BOL
         public int? IdEstado { get; set; }
         public int? IdRol { get; set; }
         public bool CambiarContrasena { get; set; }
-        public DateTime FechaIngreso { get; set; }
+        public DateTime FechaIngreso { get { return DateTime.Now; } }
 
         public virtual Rol rol { get; set; }
 
