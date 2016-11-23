@@ -23,14 +23,33 @@ namespace Utilidades
             return result;
         }
 
-        public static async Task<HttpResponseMessage> GET_By_ID(string nombreControladorAccion, int id, Token token)
+        public static async Task<T> GET_By_ID<T>(string nombreControladorAccion, int id, Token token) where T: class
         {
+            T objeto = null;
 
             HttpClient client = new HttpClient();
 
             client.DefaultRequestHeaders.Add("Authorization", "Bearer " + token.AccessToken);
 
             HttpResponseMessage result = await client.GetAsync("http://localhost:14678/api/" + nombreControladorAccion + "/" + id);
+
+            if (result.IsSuccessStatusCode)
+            {
+                objeto = await result.Content.ReadAsAsync<T>();
+            }
+
+
+            return objeto;
+        }
+
+        public static async Task<HttpResponseMessage> GET(string nombreControladorAccion, Token token)
+        {
+
+            HttpClient client = new HttpClient();
+
+            client.DefaultRequestHeaders.Add("Authorization", "Bearer " + token.AccessToken);
+
+            HttpResponseMessage result = await client.GetAsync("http://localhost:14678/api/" + nombreControladorAccion);
 
             return result;
         }
