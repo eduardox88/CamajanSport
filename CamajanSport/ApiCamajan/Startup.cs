@@ -35,7 +35,7 @@ namespace ApiCamajan
             {
                 AllowInsecureHttp = true,
                 TokenEndpointPath = new PathString("/token"),
-                AccessTokenExpireTimeSpan = TimeSpan.FromHours(2),
+                AccessTokenExpireTimeSpan = TimeSpan.FromMinutes(20),
                 Provider = new AuthorizationServerProvider()
             };
 
