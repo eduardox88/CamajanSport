@@ -23,6 +23,13 @@ namespace ApiCamajan.Controllers
         {
             return db.Equipoes.ToList();
         }
+
+        [Authorize]
+        public int GetCountEquipos()
+        {
+            return db.Equipoes.ToList().Count;
+        }
+
         [Authorize]
         public List<SelectAttributes> GetEquipos_Select()
         {
