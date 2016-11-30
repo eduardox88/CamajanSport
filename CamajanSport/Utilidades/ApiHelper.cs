@@ -6,18 +6,34 @@ using System.Threading.Tasks;
 using System.Web;
 using System.Net.Http.Formatting;
 using CamajanSport.BOL;
+using System.Text;
 
 namespace Utilidades
 {
     public class ApiHelper
     {
+        public static async Task<HttpResponseMessage> GetBearerToken(string siteUrl, string Username, string Password)
+        {
+            HttpClient client = new HttpClient();
+
+            client.BaseAddress = new Uri(siteUrl);
+            client.DefaultRequestHeaders.Accept.Clear();
+
+            HttpContent requestContent = new StringContent("grant_type=password&username=" + Username + "&password=" + Password, Encoding.UTF8, "application/x-www-form-urlencoded");
+
+            HttpResponseMessage responseMessage = await client.PostAsync("Token", requestContent);
+
+            return responseMessage;
+        }
         public static async Task<HttpResponseMessage> POST<T>(string nombreControladorAccion, T objeto, Token token) where T : class
         { 
         
             HttpClient client = new HttpClient();
 
-            client.DefaultRequestHeaders.Add("Authorization", "Bearer " + token.AccessToken);
-
+            if (token != null) {
+                client.DefaultRequestHeaders.Add("Authorization", "Bearer " + token.AccessToken);
+            }
+                
             HttpResponseMessage result = await client.PostAsync<T>("http://localhost:14678/api/" + nombreControladorAccion, objeto, new JsonMediaTypeFormatter());
 
             return result;
@@ -29,7 +45,11 @@ namespace Utilidades
 
             HttpClient client = new HttpClient();
 
-            client.DefaultRequestHeaders.Add("Authorization", "Bearer " + token.AccessToken);
+            if (token != null)
+            {
+                client.DefaultRequestHeaders.Add("Authorization", "Bearer " + token.AccessToken);
+            }
+                
 
             HttpResponseMessage result = await client.GetAsync("http://localhost:14678/api/" + nombreControladorAccion + "/" + id);
 
@@ -47,7 +67,10 @@ namespace Utilidades
 
             HttpClient client = new HttpClient();
 
-            client.DefaultRequestHeaders.Add("Authorization", "Bearer " + token.AccessToken);
+            if (token != null)
+            {
+                client.DefaultRequestHeaders.Add("Authorization", "Bearer " + token.AccessToken);
+            }
 
             HttpResponseMessage result = await client.GetAsync("http://localhost:14678/api/" + nombreControladorAccion);
 
@@ -59,7 +82,10 @@ namespace Utilidades
 
             HttpClient client = new HttpClient();
 
-            client.DefaultRequestHeaders.Add("Authorization", "Bearer " + token.AccessToken);
+            if (token != null)
+            {
+                client.DefaultRequestHeaders.Add("Authorization", "Bearer " + token.AccessToken);
+            }
 
             HttpResponseMessage result = await client.PutAsync<T>("http://localhost:14678/api/" + nombreControladorAccion, objeto, new JsonMediaTypeFormatter());
 
@@ -71,7 +97,10 @@ namespace Utilidades
 
             HttpClient client = new HttpClient();
 
-            client.DefaultRequestHeaders.Add("Authorization", "Bearer " + token.AccessToken);
+            if (token != null)
+            {
+                client.DefaultRequestHeaders.Add("Authorization", "Bearer " + token.AccessToken);
+            }
 
             HttpResponseMessage result = await client.DeleteAsync("http://localhost:14678/api/" + nombreControladorAccion + "/" + ID);
 
@@ -84,7 +113,10 @@ namespace Utilidades
 
             HttpClient client = new HttpClient();
 
-            client.DefaultRequestHeaders.Add("Authorization", "Bearer " + token.AccessToken);
+            if (token != null)
+            {
+                client.DefaultRequestHeaders.Add("Authorization", "Bearer " + token.AccessToken);
+            }
 
             HttpResponseMessage result = await client.GetAsync("http://localhost:14678/api/" + nombreControladorAccion);
 
@@ -103,7 +135,10 @@ namespace Utilidades
 
             HttpClient client = new HttpClient();
 
-            client.DefaultRequestHeaders.Add("Authorization", "Bearer " + token.AccessToken);
+            if (token != null)
+            {
+                client.DefaultRequestHeaders.Add("Authorization", "Bearer " + token.AccessToken);
+            }
 
             HttpResponseMessage result = await client.GetAsync("http://localhost:14678/api/" + nombreControladorAccion + "/" + ID);
 
