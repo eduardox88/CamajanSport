@@ -1,6 +1,10 @@
 ﻿@{
     Layout = null;
 }
+@using Utilidades;
+@using System.Web.Script.Serialization;
+@using CamajanSport.BOL;
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -93,6 +97,19 @@
         <!-- /.navbar-top -->
         <!-- end TOP NAVIGATION -->
         <!-- begin SIDE NAVIGATION -->
+
+        @{
+            
+            var ticket = Utilidades.CookieHandler.GetDecryptTicket();
+
+            Usuario modelo = new Usuario();
+            JavaScriptSerializer js = new JavaScriptSerializer();
+
+            modelo = js.Deserialize<Usuario>(ticket.UserData);
+                
+
+        }
+
         <nav class="navbar-side" role="navigation">
             <div class="navbar-collapse sidebar-collapse collapse">
                 <ul id="side" class="nav navbar-nav side-nav">
@@ -103,8 +120,7 @@
                             <i class="fa fa-key"></i> Ha iniciado sesion como:
                         </p>
                         <p class="name tooltip-sidebar-logout">
-                            Héctor
-                            <span class="last-name">Figuereo</span> <a style="color: inherit" class="logout_open" href="#logout" data-toggle="tooltip" data-placement="top" title="terminar sesión"><i class="fa fa-sign-out"></i></a>
+                            <span class="last-name">@modelo.NombreCompleto</span> <a style="color: inherit" class="logout_open" href="#logout" data-toggle="tooltip" data-placement="top" title="terminar sesión"><i class="fa fa-sign-out"></i></a>
                         </p>
                         <div class="clearfix"></div>
                     </li>
