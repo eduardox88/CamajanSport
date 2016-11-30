@@ -51,6 +51,22 @@ namespace ApiCamajan.Controllers
             return Ok(usuario);
         }
 
+        [HttpPost]
+        public bool ExisteUsuarioPorCorreo(Usuario user)
+        {
+            bool existe = db.usuarios.Count(m => m.CorreoElec == user.CorreoElec) > 0;
+
+            return existe;
+        }
+
+        [HttpPost]
+        public bool ExisteUsuarioPorNombre(Usuario user)
+        {
+            bool existe = db.usuarios.Count(m => m.NombreUsuario == user.NombreUsuario) > 0;
+
+            return existe;
+        }
+
         [Authorize]
         public int GetCountUsuarios()
         {
@@ -59,6 +75,7 @@ namespace ApiCamajan.Controllers
 
 
         // PUT api/Usuario/5
+        [Authorize]
         public async Task<IHttpActionResult> PutUsuario(Usuario usuario)
         {
             if (!ModelState.IsValid)
@@ -82,6 +99,23 @@ namespace ApiCamajan.Controllers
             return StatusCode(HttpStatusCode.NoContent);
         }
 
+        [HttpPut]
+        public void ConfirmacionUsuario(Usuario usuario)
+        {
+       
+            db.usuarios.Attach(usuario);
+            db.Entry(usuario).Property(x => x.IdEstado).IsModified = true;
+
+            try
+            {
+                db.SaveChanges();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                throw;
+            }
+        }
+
         // POST api/Usuario
         [ResponseType(typeof(Usuario))]
         public async Task<IHttpActionResult> PostUsuario(Usuario usuario)
@@ -94,7 +128,7 @@ namespace ApiCamajan.Controllers
             db.usuarios.Add(usuario);
             await db.SaveChangesAsync();
 
-            return CreatedAtRoute("DefaultApi", new { id = usuario.IdUsuario }, usuario);
+            return Ok(usuario.IdUsuario);
         }
 
         // DELETE api/Usuario/5

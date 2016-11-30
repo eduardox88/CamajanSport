@@ -18,14 +18,17 @@ namespace ApiCamajan.Manejadores
         }
 
         public async Task<Usuario> Autenticar(string correo, string contraseña) {
+
             string password = Encrypt.ComputeHash(contraseña, "SHA512", null);
 
             Usuario usuario = _db.usuarios.Where(m => m.CorreoElec == correo).FirstOrDefault();
 
-            if (usuario != null) {
+            if (usuario != null)
+            {
                 bool success = Encrypt.VerifyHash(contraseña, "SHA512", usuario.Contrasena.Trim());
 
-                if (!success) {
+                if (!success)
+                {
                     usuario = null;
                 }
                 usuario.Contrasena = string.Empty;
