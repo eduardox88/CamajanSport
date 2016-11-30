@@ -1,5 +1,4 @@
-﻿using CamajanSport.App_Start;
-using CamajanSport.BOL;
+﻿using CamajanSport.BOL;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -15,12 +14,12 @@ namespace CamajanSport.Controllers
 {
     public class PaisController : Controller
     {
-        [SessionHandle]
+        private Token token = CookieHandler.GetDecryptToken();
         public async Task<JsonResult> GetPaises_Select() {
 
             try
             {
-                var lista = await ApiHelper.GET_List<SelectAttributes>("Pais/GetPaises_Select", (Session["Token"] as Token));
+                var lista = await ApiHelper.GET_List<SelectAttributes>("Pais/GetPaises_Select", token);
 
                 return Json(lista, JsonRequestBehavior.AllowGet);
             }

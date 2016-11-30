@@ -19,69 +19,88 @@ namespace CamajanSport.Controllers
 {
     public class LogInController : Controller
     {
+
+
+        [System.Web.Mvc.AllowAnonymous]
         public ActionResult Index() {
 
+            var ticket = CookieHandler.GetDecryptTicket();
             ViewBag.Checked = false;
-            HttpCookie cookie = Request.Cookies[FormsAuthentication.FormsCookieName];
 
+            Usuario model  = new Usuario();
             JavaScriptSerializer js = new JavaScriptSerializer();
 
-            if (cookie != null)
+            if (ticket != null)
             {
-                ViewBag.Checked = true;
-                FormsAuthenticationTicket ticket = FormsAuthentication.Decrypt(cookie.Value);
-
                 if (ticket.IsPersistent)
                 {
-                    Usuario model = js.Deserialize<Usuario>(ticket.UserData);
+                    ViewBag.Checked = true;
+                    model = js.Deserialize<Usuario>(ticket.UserData);
+                }
+            }
 
-                    return View(model);
-                }
-                else {
-                    return View(new Usuario());
-                }
-            }
-            else {
-                return View(new Usuario());
-            }
+            return View(model);
+
         }
 
-        public async Task<JsonResult> SignIn(string correo, string password)
+        public async Task<JsonResult> SignIn(string correo, string password, bool recordar )
         {
 
             try
             {
-                HttpResponseMessage responseMessage = await Helper.GetBearerToken("http://localhost:14678/", correo, password);
+                HttpResponseMessage responseMessage = await ApiHelper.GetBearerToken("http://localhost:14678/", correo, password);
 
                 if (responseMessage.IsSuccessStatusCode)
                 {
-                    Usuario user = new Usuario();
+
                     Token token = await responseMessage.Content.ReadAsAsync<Token>();
-                    Session.Add("Token", token);
-                    Session.Timeout = (token.ExpiresIn / 60);
+                    int expire = (token.ExpiresIn / 60);
 
-                    HttpResponseMessage responseUser = await ApiHelper.POST<Usuario>("Usuario/GetUsuarioByEmail", new Usuario() { CorreoElec = correo }, Session["Token"] as Token);
+                    HttpResponseMessage responseUser = await ApiHelper.POST<Usuario>("Usuario/GetUsuarioByEmail", new Usuario() { CorreoElec = correo }, token);
 
-                    if (responseUser.IsSuccessStatusCode) {
-                       user =  await responseUser.Content.ReadAsAsync<Usuario>();
+                    if (responseUser.IsSuccessStatusCode)
+                    {
+                        
+                        Usuario user = new Usuario();
+                        user = await responseUser.Content.ReadAsAsync<Usuario>();
+                        user.Contrasena = password;
+
+                        if (user.IdEstado != 2)
+                        {
+                            Response.Cookies.Add(CookieHandler.GetAuthenticationCookie(token, recordar, expire));
+                            Response.Cookies.Add(CookieHandler.GetAuthenticationCookie(user, recordar, expire));
+
+                            return Json(true, JsonRequestBehavior.AllowGet);
+                        }
+                        else {
+                            return Json(false);
+                        }
                     }
-
-                    user.Contrasena = password;
-
-                    Response.Cookies.Add(Manejadores.ManejadorUsuario.GetAuthenticationCookie(user, true));
-
-                    return Json(true, JsonRequestBehavior.AllowGet);
+                    else {
+                        throw new Exception();
+                    } 
                 }
                 else
                 {
                     Response.StatusCode = (int)HttpStatusCode.BadRequest;
-                    return Json(0);
+                    return Json("Usuario y/o Contraseña son inválidas");
                 }
             }
             catch (Exception ex)
             {
-                return Json(0);
+                return Json("Ha ocurrido un error");
             }
+        }
+
+        public ActionResult CrearUsuario() {
+
+
+            return View();
+        }
+
+        public ActionResult VistaConfirmacion()
+        {
+            return View();
         }
     }
 }

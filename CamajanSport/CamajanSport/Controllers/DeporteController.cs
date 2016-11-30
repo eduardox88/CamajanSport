@@ -9,21 +9,21 @@ using System.Threading.Tasks;
 using Newtonsoft.Json;
 using System.Net.Http.Formatting;
 using CamajanSport.BOL;
-using CamajanSport.App_Start;
 using Utilidades;
 using System.Net;
 
 namespace CamajanSport.Controllers
 {
+    [Authorize]
     public class DeporteController : Controller
     {
-
+        private Token token = CookieHandler.GetDecryptToken();
         public ActionResult MantDeportes()
         {
             return View("MantDeportes");
         }
        
-        [SessionHandle]
+
         public async Task<JsonResult> SaveUploadedFile()
         {
             bool isSavedSuccessfully = true;
@@ -68,11 +68,11 @@ namespace CamajanSport.Controllers
 
                 if (idDeporte > 0)
                 {
-                    respuesta = await ApiHelper.PUT<Deporte>("Deporte/PutDeporte", deporte, (Token)Session["Token"]);
+                    respuesta = await ApiHelper.PUT<Deporte>("Deporte/PutDeporte", deporte, token);
                 }
                 else
                 {
-                    respuesta = await ApiHelper.POST<Deporte>("Deporte/PostDeporte", deporte, (Token)Session["Token"]);
+                    respuesta = await ApiHelper.POST<Deporte>("Deporte/PostDeporte", deporte, token);
                 }
                 
                 if (respuesta.IsSuccessStatusCode)
@@ -93,13 +93,13 @@ namespace CamajanSport.Controllers
             }
             
         }
-        [SessionHandle]
+
         [HttpPost]
         public async Task<JsonResult> Getdeportes() 
         {
             try
             {
-                var lista = await ApiHelper.GET_List<Deporte>("Deporte/Getdeportes", (Session["Token"] as Token));
+                var lista = await ApiHelper.GET_List<Deporte>("Deporte/Getdeportes", token);
                 return Json(lista, JsonRequestBehavior.AllowGet);
             }
             catch (Exception ex)
@@ -110,12 +110,11 @@ namespace CamajanSport.Controllers
         }
 
 
-        [SessionHandle]
         public async Task<JsonResult> GetDeportes_Select()
         {
             try
             {
-                var lista = await ApiHelper.GET_List<SelectAttributes>("Deporte/GetDeportes_Select", (Session["Token"] as Token));
+                var lista = await ApiHelper.GET_List<SelectAttributes>("Deporte/GetDeportes_Select", token);
 
                 return Json(lista, JsonRequestBehavior.AllowGet);
             }
@@ -127,13 +126,13 @@ namespace CamajanSport.Controllers
         }
 
 
-        [SessionHandle]
+
         public async Task<JsonResult> GetCountDeporte()
         {
             try
             {
                 int cantidad = 0;
-                var response = await ApiHelper.GET("Deporte/GetCountDeporte", (Session["Token"] as Token));
+                var response = await ApiHelper.GET("Deporte/GetCountDeporte", token);
 
                 if (response.IsSuccessStatusCode)
                 {

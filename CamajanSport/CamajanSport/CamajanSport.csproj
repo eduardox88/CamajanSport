@@ -20,6 +20,7 @@
     <IISExpressAnonymousAuthentication />
     <IISExpressWindowsAuthentication />
     <IISExpressUseClassicPipelineMode />
+    <WebGreaseLibPath>..\packages\WebGrease.1.5.2\lib</WebGreaseLibPath>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -39,6 +40,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Antlr3.Runtime">
+      <HintPath>..\packages\Antlr.3.4.1.9004\lib\Antlr3.Runtime.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -64,6 +68,9 @@
     <Reference Include="System.Web.Http.WebHost, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.AspNet.WebApi.WebHost.5.2.3\lib\net45\System.Web.Http.WebHost.dll</HintPath>
       <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web.Optimization">
+      <HintPath>..\packages\Microsoft.AspNet.Web.Optimization.1.1.3\lib\net40\System.Web.Optimization.dll</HintPath>
     </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Web" />
@@ -110,17 +117,22 @@
       <Private>True</Private>
       <HintPath>..\packages\Microsoft.AspNet.WebPages.2.0.30506.0\lib\net40\System.Web.WebPages.Razor.dll</HintPath>
     </Reference>
+    <Reference Include="WebGrease">
+      <HintPath>..\packages\WebGrease.1.5.2\lib\WebGrease.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="App_Start\SessionHandle.cs" />
     <Compile Include="Controllers\AdminController.cs" />
     <Compile Include="Controllers\CamajanController.cs" />
     <Compile Include="Controllers\DeporteController.cs" />
     <Compile Include="Controllers\EquipoController.cs" />
+    <Compile Include="Controllers\EstadoController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\LogInController.cs" />
+    <Compile Include="Controllers\PaisController.cs" />
     <Compile Include="Controllers\PublicacionController.cs" />
-    <Compile Include="Controllers\UserController.cs" />
+    <Compile Include="Controllers\RolController.cs" />
+    <Compile Include="Controllers\UsuarioController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -343,6 +355,7 @@
     <Content Include="img\flex-admin-logo%401x.png" />
     <Content Include="img\flex-admin-logo%402x.png" />
     <Content Include="img\flex-admin-logo.png" />
+    <Content Include="img\gif\pageloader.gif" />
     <Content Include="img\profile-full.jpg" />
     <Content Include="img\profile-pic-small.jpg" />
     <Content Include="img\profile-pic.jpg" />
@@ -418,6 +431,7 @@
     <Content Include="js\plugins\jquery.validate\utilities\dateFA.js" />
     <Content Include="js\plugins\jquery.validate\utilities\dateITA.js" />
     <Content Include="js\plugins\jquery.validate\utilities\dateNL.js" />
+    <Content Include="js\plugins\jquery.validate\utilities\email.js" />
     <Content Include="js\plugins\jquery.validate\utilities\extension.js" />
     <Content Include="js\plugins\jquery.validate\utilities\giroaccountNL.js" />
     <Content Include="js\plugins\jquery.validate\utilities\iban.js" />
@@ -482,6 +496,8 @@
     <Content Include="js\plugins\summernote\summernote.js" />
     <Content Include="js\plugins\summernote\summernote.min.js" />
     <Content Include="js\plugins\sweetalert\sweetalert.min.js" />
+    <Content Include="js\plugins\validate\jquery.validate.js" />
+    <Content Include="js\plugins\validate\jquery.validate.min.js" />
     <Content Include="js\respond.min.js" />
     <Content Include="js\plugins\bootstrap-datetimepicker\bootstrap-datetimepicker.js" />
     <Content Include="js\plugins\bootstrap-datetimepicker\bootstrap-datetimepicker.min.js" />
@@ -655,9 +671,6 @@
     <Content Include="Views\Deporte\MantDeportes.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Admin\MantUsuarios.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
     <Content Include="Views\LogIn\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
@@ -671,22 +684,28 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Publicacion\MantPublicaciones.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
     <Content Include="Views\Equipo\MantEquipos.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="fonts\glyphicons-halflings-regular.woff" />
+    <Content Include="Views\Usuario\MantUsuarios.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Publicacion\MantPublicaciones.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.ttf" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="fonts\glyphicons-halflings-regular.woff" />
+  </ItemGroup>
+  <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.eot" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="css\plugins\bootstrap\css\bootstrap-theme.css.map" />
+    <Content Include="Views\LogIn\CrearUsuario.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\LogIn\VistaConfirmacion.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

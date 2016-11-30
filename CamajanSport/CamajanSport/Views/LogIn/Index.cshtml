@@ -17,20 +17,20 @@
     <title>CamajanSport</title>
 
     <!-- GLOBAL STYLES -->
-    <link href="css/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="~/css/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <link href='http://fonts.googleapis.com/css?family=Ubuntu:300,400,500,700,300italic,400italic,500italic,700italic' rel="stylesheet" type="text/css">
     <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel="stylesheet" type="text/css">
-    <link href="icons/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+    <link href="~/icons/font-awesome/css/font-awesome.min.css" rel="stylesheet">
     <link href="~/css/style.css" rel="stylesheet" />
     <link href="~/css/plugins/sweetalert/sweetalert.css" rel="stylesheet" />
 
     <!-- PAGE LEVEL PLUGIN STYLES -->
     <!-- THEME STYLES -->
-    <link href="css/style.css" rel="stylesheet">
-    <link href="css/plugins.css" rel="stylesheet">
+    <link href="~/css/style.css" rel="stylesheet">
+    <link href="~/css/plugins.css" rel="stylesheet">
 
     <!-- THEME DEMO STYLES -->
-    <link href="css/demo.css" rel="stylesheet">
+    <link href="~/css/demo.css" rel="stylesheet">
 
     <!--[if lt IE 9]>
     <script src="js/html5shiv.js"></script>
@@ -55,7 +55,7 @@
                             </h4>
                         </div>
                         <div class="portlet-widgets">
-                            <button class="btn btn-white btn-xs"><i class="fa fa-plus-circle"></i> Crear usuario</button>
+                            <button id="CrearUsuario" class="btn btn-white btn-xs"><i class="fa fa-plus-circle"></i> Crear usuario</button>
                         </div>
                         <div class="clearfix"></div>
                     </div>
@@ -70,7 +70,7 @@
                                 </div>
                                 <div class="checkbox">
                                     <label>
-                                        @Html.CheckBox("recuerdame",(bool)ViewBag.Checked) Recuerdame
+                                        @Html.CheckBox("recuerdame", (bool)ViewBag.Checked, new { id="chkRecuerdame"}) Recuerdame
                                     </label>
                                 </div>
                                 <br>
@@ -87,18 +87,13 @@
         </div>
     </div>
 
-    <!-- GLOBAL SCRIPTS -->
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
-    <script src="js/plugins/bootstrap/bootstrap.min.js"></script>
-    <script src="js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+    <script src="~/js/plugins/bootstrap/bootstrap.min.js"></script>
+    <script src="~/js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
     <script src="~/js/plugins/sweetalert/sweetalert.min.js"></script>
-    <!-- HISRC Retina Images -->
-    <script src="js/plugins/hisrc/hisrc.js"></script>
+    <script src="~/js/plugins/hisrc/hisrc.js"></script>
     <script src="~/js/helpers/Utilities.js"></script>
-
-    <!-- PAGE LEVEL PLUGIN SCRIPTS -->
-    <!-- THEME SCRIPTS -->
-    <script src="js/flex.js"></script>
+    <script src="~/js/flex.js"></script>
 
 </body>
 
@@ -109,8 +104,16 @@
 
     function SuccessOrError(data){
         
-        if(data == true){
-            window.location = "Admin/Dashboard";
+        if (data == true) {
+            window.location.href = "@Url.Action("Dashboard", "Admin")";
+        }
+        else {
+            swal({
+                title: 'Lo sentimos!!',
+                text: 'Debe de activar su cuenta mediante el correo de confirmación que le hemos enviado. Recuerde revisar en su buzón de entrada como en los correos no deseados.',
+                type: 'error',
+                confirmButtonText: "Cerrar"
+            });
         }
     }
 
@@ -118,10 +121,15 @@
         $('#btnSignIn').click(function () {
             var objeto = {
                 'correo': $('#txtEmail').val(),
-                'password': $('#txtPassword').val()
+                'password': $('#txtPassword').val(),
+                'recordar': $('#chkRecuerdame').is(':checked')
             };
             AjaxCall('@Url.Action("SignIn","LogIn")', objeto, "", SuccessOrError, true);
         });
+
+        $('#CrearUsuario').click(function () {
+            window.location.href = "@Url.Action("CrearUsuario","LogIn")";
+        })
     });
 
 

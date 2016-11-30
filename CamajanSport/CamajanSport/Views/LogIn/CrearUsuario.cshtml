@@ -1,0 +1,265 @@
+﻿@{
+    Layout = null;
+}
+
+@model  CamajanSport.BOL.Usuario
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>CamajanSport</title>
+
+    <link href="~/css/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href='http://fonts.googleapis.com/css?family=Ubuntu:300,400,500,700,300italic,400italic,500italic,700italic' rel="stylesheet" type="text/css">
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel="stylesheet" type="text/css">
+    <link href="~/icons/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+    <link href="~/css/style.css" rel="stylesheet" />
+    <link href="~/css/plugins/sweetalert/sweetalert.css" rel="stylesheet" />
+    <link href="~/css/style.css" rel="stylesheet">
+    <link href="~/css/plugins.css" rel="stylesheet">
+    <link href="~/css/demo.css" rel="stylesheet">
+    <link href="~/css/plugins/select2/select2.min.css" rel="stylesheet" />
+
+</head>
+
+<body>
+
+    <div class="container">
+        <div class="col-md-6 col-md-offset-3">
+            <div class="login-banner text-center">
+                <h1><i class="fa fa-gears"></i> CamajanSport</h1>
+            </div>
+            <div class="portlet portlet-green">
+                <div class="portlet-heading login-heading">
+                    <div class="portlet-title">
+                        <h3>
+                            <strong>Registro de Usuario</strong>
+                        </h3>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="portlet-body">
+                    <form id="Validaciones">
+                        <div class="row">
+                            <div class="col-md-8">
+                                <label>Usuario:</label>
+                                <input id="NombreUsuario" name="NombreUsuario" class="form-control objeto" type="text" placeholder="Usuario" />
+                                <label id="lbExiste" class="hidden" style="font-style:italic"></label>
+                            </div>
+                        </div>
+                        <br />
+
+                        <div class="row">
+                            <div class="col-md-12">
+                                <label>Contraseña:</label>
+                                <input id="Contrasena" type="password" name="Contrasena" placeholder="Contraseña" class="form-control objeto" />
+                            </div>
+                        </div>
+                        <br />
+
+                        <div class="row">
+                            <div class="col-md-12">
+                                <label>Confirmar Contraseña:</label>
+                                <input id="ConfContrasena" type="password" name="ConfContrasena" placeholder="Contraseña" class="form-control" />
+                            </div>
+                        </div>
+                        <br />
+
+                        <div class="row">
+                            <div class="col-md-12">
+                                <label>Nombre Completo:</label>
+                                <input id="NombreCompleto" name="NombreCompleto" class="form-control objeto" type="text" placeholder="Nombres y Apellidos" />
+                            </div>
+                        </div>
+                        <br />
+
+                        <div class="row">
+                            <div class="col-md-8">
+                                <label>Correo Electrónico:</label>
+                                <input id="CorreoElec" name="CorreoElec" class="form-control objeto" type="text" placeholder="Correo Electrónico" />
+                                <label id="lbExisteCorreo" class="hidden" style="font-style:italic"></label>
+                            </div>
+                        </div>
+                        <br />
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label>País:</label>
+                                <select id="IdPais" name="IdPais" class="form-control objeto"></select>
+                            </div>
+                            <div class="col-md-6">
+                                <label>Telefono:</label>
+                                <input id="Telefono" name="Telefono" class="form-control objeto" type="text" placeholder="Telefono" />
+                            </div>
+                        </div>
+                        <br />
+
+                        <input id="btnSignIn" type="button" class="btn btn-lg btn-green btn-block" value="Registrar" />
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- GLOBAL SCRIPTS -->
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+    <script src="~/js/plugins/bootstrap/bootstrap.min.js"></script>
+    <script src="~/js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+    <script src="~/js/plugins/sweetalert/sweetalert.min.js"></script>
+    <script src="~/js/plugins/select2/select2.min.js"></script>
+    <!-- HISRC Retina Images -->
+    <script src="~/js/plugins/hisrc/hisrc.js"></script>
+
+    <script src="~/js/plugins/jquery.validate/jquery.validate.js"></script>
+    <script src="~/js/plugins/jquery.validate/messages_es.js"></script>
+    <script src="~/js/plugins/jquery.validate/utilities/lettersonly.js"></script>
+    <script src="~/js/plugins/jquery.validate/utilities/email.js"></script>
+    <script src="~/js/helpers/Utilities.js"></script>
+
+
+    <!-- PAGE LEVEL PLUGIN SCRIPTS -->
+    <!-- THEME SCRIPTS -->
+    <script src="~/js/flex.js"></script>
+
+</body>
+
+</html>
+
+<script type="text/javascript">
+
+    var esUsuarioValido = false;
+    var esCorreoValido = false;
+
+    function SuccessOrFail(data) {
+        swal({
+            title: 'Enhorabuena!!',
+            text: 'Usuario creado satisfactoriamente. Le hemos enviado un correo de activación',
+            type: 'success',
+            confirmButtonText: "Cerrar"
+        },
+        function () {
+            window.location.href = '@Url.Action("Index", "LogIn")';
+        });
+    }
+
+    function existeUsuario(data) {
+
+        if ($('#NombreUsuario-error').is(':visible') == false) {
+            if (data) {
+                esUsuarioValido = false;
+                $('#lbExiste').removeClass('hidden').removeClass('text-success').addClass('text-danger').text('Nombre no disponible');
+            }
+            else {
+                esUsuarioValido = true;
+                $('#lbExiste').removeClass('hidden').removeClass('text-danger').addClass('text-success').text('Nombre disponible');
+            }
+        }
+    }
+
+    function existeCorreo(data) {
+
+        if (!($('#CorreoElec-error').is(':visible'))) {
+            if (data) {
+                esCorreoValido = false;
+                $('#lbExisteCorreo').removeClass('hidden').removeClass('text-success').addClass('text-danger').text('Ya existe este correo');
+            }
+            else {
+                esCorreoValido = true;
+                $('#lbExisteCorreo').removeClass('hidden').removeClass('text-danger').addClass('text-success').text('Puede usar este correo');
+            }
+        }
+
+    }
+
+    function InicializarValidaciones() {
+
+        $("#Validaciones").validate({
+            errorClass: 'control-label text-danger',
+            rules: {
+                NombreUsuario: {
+                    required: true,
+                    minlength: 5,
+                    maxlength: 20
+                },
+                NombreCompleto: {
+                    required: true,
+                    minlength: 5,
+                    maxlength: 50
+                },
+                Contrasena: {
+                    required: true,
+                    minlength: 6,
+                    maxlength: 20
+                },
+                ConfContrasena: {
+                    equalTo: '#Contrasena'
+                },
+                CorreoElec: {
+                    required: true,
+                    email: true
+                },
+                Telefono: {
+                    required: true
+                },
+                IdPais: {
+                    required: true
+                }
+            }
+        });
+    }
+
+    $(document).ready(function () {
+
+        InicializarValidaciones();
+        AjaxCall('@Url.Action("GetPaises_Select", "Pais")', undefined, 'IdPais', CargarDropDown, false)
+        Init_SingleSelect2($('#IdPais'));
+
+        $('#NombreUsuario').blur(function () {
+
+            if ($('#NombreUsuario').val() == '') {
+                $('#lbExiste').addClass('hidden')
+            }
+
+            if ($('#NombreUsuario').val().length > 5) {
+                var obj = { 'usuario': $('#NombreUsuario').val() };
+
+                AjaxCall('@Url.Action("ExisteUsuarioPorNombre", "Usuario")', obj, "", existeUsuario, true)
+            }
+
+        });
+
+        $('#CorreoElec').blur(function () {
+
+            if ($('#CorreoElec').val() != '') {
+                var obj = { 'correo': $('#CorreoElec').val() };
+
+                AjaxCall('@Url.Action("ExisteUsuarioPorCorreo", "Usuario")', obj, "", existeCorreo, true)
+            }
+            else {
+                $('#lbExisteCorreo').addClass('hidden');
+            }
+        });
+
+        $('#btnSignIn').click(function () {
+
+            var validator = $("#Validaciones").validate();
+            if (validator.form() && esCorreoValido && esUsuarioValido) {
+                var obj = CrearObjeto('Validaciones');
+                AjaxCall("@Url.Action("InsertarUsuario","Usuario")", obj, "", SuccessOrFail, false)
+            }
+            else {
+
+                swal('Debe de llenar el formulario correctamente')
+            }
+        });
+    });
+
+
+</script>

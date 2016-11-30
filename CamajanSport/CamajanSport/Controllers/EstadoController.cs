@@ -1,5 +1,4 @@
-﻿using CamajanSport.App_Start;
-using CamajanSport.BOL;
+﻿using CamajanSport.BOL;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,13 +11,14 @@ using Utilidades;
 
 namespace CamajanSport.Controllers
 {
+    [System.Web.Mvc.Authorize]
     public class EstadoController : Controller
     {
-        [SessionHandle]
+        private Token token = CookieHandler.GetDecryptToken();
         public async Task<JsonResult> GetEstado_Select() {
             try
             {
-                var lista = await ApiHelper.GET_List<SelectAttributes>("Estado/GetEstados_Select", (Session["Token"] as Token));
+                var lista = await ApiHelper.GET_List<SelectAttributes>("Estado/GetEstados_Select", token);
 
                 return Json(lista, JsonRequestBehavior.AllowGet);
             }

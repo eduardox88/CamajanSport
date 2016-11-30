@@ -1,5 +1,4 @@
-﻿using CamajanSport.App_Start;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -13,6 +12,7 @@ using CamajanSport.BOL;
 
 namespace CamajanSport.Controllers
 {
+    [Authorize]
     public class AdminController : Controller
     {
         //
@@ -26,7 +26,6 @@ namespace CamajanSport.Controllers
 
         #region Deportes
 
-        [SessionHandle]
         public ActionResult MantDeportes() 
         {
             return View("MantDeportes");

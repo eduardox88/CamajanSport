@@ -6,6 +6,7 @@ using System.Web.Mvc;
 
 namespace CamajanSport.Controllers
 {
+    [Authorize]
     public class HomeController : Controller
     {
         //

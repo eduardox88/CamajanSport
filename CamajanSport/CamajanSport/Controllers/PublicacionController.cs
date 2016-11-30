@@ -1,5 +1,4 @@
-﻿using CamajanSport.App_Start;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -15,8 +14,10 @@ using System.Net;
 
 namespace CamajanSport.Controllers
 {
+    [Authorize]
     public class PublicacionController : Controller
     {
+        private Token token = CookieHandler.GetDecryptToken();
         //
         // GET: /Admin/
 
@@ -24,7 +25,6 @@ namespace CamajanSport.Controllers
         {
             return View();
         }
-        [SessionHandle]
         public async Task<JsonResult> GuardarPublicacion(Publicacion publicacion)
         {
 
@@ -34,13 +34,13 @@ namespace CamajanSport.Controllers
                 publicacion.IdUsuario = 5;
                 if (publicacion.IdPublicacion > 0)
                 {
-                    await ApiHelper.PUT<Publicacion>("Publicacion/PutPublicacion", publicacion, (Token)Session["Token"]);
+                    await ApiHelper.PUT<Publicacion>("Publicacion/PutPublicacion", publicacion, token);
                     return Json("La publicación se ha editado exitosamente.");
                 }
                 else
                 {
                     publicacion.FechaIngreso = DateTime.Now;
-                    await ApiHelper.POST<Publicacion>("Publicacion/PostPublicacion", publicacion, (Token)Session["Token"]);
+                    await ApiHelper.POST<Publicacion>("Publicacion/PostPublicacion", publicacion, token);
                     return Json("La publicación se ha guardado exitosamente.");
                 }
                 
@@ -53,13 +53,12 @@ namespace CamajanSport.Controllers
 
         }
 
-        [SessionHandle]
         [HttpPost]
         public async Task<JsonResult> GetPublicaciones() 
         {
             try
             {
-                var publicaciones = await ApiHelper.GET_List<Publicacion>("Publicacion/GetPublicaciones", (Token)Session["Token"]);
+                var publicaciones = await ApiHelper.GET_List<Publicacion>("Publicacion/GetPublicaciones", token);
                 return Json(publicaciones, JsonRequestBehavior.AllowGet);
             }
             catch (Exception)

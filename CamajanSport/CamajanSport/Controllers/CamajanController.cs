@@ -6,11 +6,12 @@ using System.Web.Mvc;
 
 namespace CamajanSport.Controllers
 {
+    [Authorize]
     public class CamajanController : Controller
     {
         //
         // GET: /Camajan/
-
+        
         public ActionResult Index()
         {
             return View();

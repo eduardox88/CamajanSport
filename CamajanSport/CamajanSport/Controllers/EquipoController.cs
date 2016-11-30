@@ -1,5 +1,4 @@
-﻿using CamajanSport.App_Start;
-using CamajanSport.BOL;
+﻿using CamajanSport.BOL;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,14 +12,14 @@ using Utilidades;
 
 namespace CamajanSport.Controllers
 {
+    [System.Web.Mvc.Authorize]
     public class EquipoController : Controller
     {
+        private Token token = CookieHandler.GetDecryptToken();
         public ActionResult MantEquipos() {
-
             return View();
         }
 
-        [SessionHandle]
         public async Task<ActionResult> SaveUploadedFile()
         {
             bool isSavedSuccessfully = true;
@@ -69,11 +68,11 @@ namespace CamajanSport.Controllers
 
                 if (idEquipo > 0)
                 {
-                    respuesta = await ApiHelper.PUT<Equipo>("Equipo/PutEquipo", equipo, (Token)Session["Token"]);
+                    respuesta = await ApiHelper.PUT<Equipo>("Equipo/PutEquipo", equipo, token);
                 }
                 else
                 {
-                    respuesta = await ApiHelper.POST<Equipo>("Equipo/PostEquipo", equipo, (Token)Session["Token"]);
+                    respuesta = await ApiHelper.POST<Equipo>("Equipo/PostEquipo", equipo, token);
                 }
 
                 if (respuesta.IsSuccessStatusCode)
@@ -93,12 +92,11 @@ namespace CamajanSport.Controllers
             }
         }
 
-        [SessionHandle]
         public async Task<JsonResult> GetEquipos() {
 
             try
             {
-                var lista = await ApiHelper.GET_List<Equipo>("Equipo/GetListEquipos", (Session["Token"] as Token));
+                var lista = await ApiHelper.GET_List<Equipo>("Equipo/GetListEquipos", token);
                 return Json(lista, JsonRequestBehavior.AllowGet);
             }
             catch (Exception ex)
@@ -108,14 +106,12 @@ namespace CamajanSport.Controllers
             }
         }
 
-
-        [SessionHandle]
         public async Task<JsonResult> GetCountEquipos()
         {
             try
             {
                 int cantidad = 0;
-                var response = await ApiHelper.GET("Equipo/GetCountEquipos", (Session["Token"] as Token));
+                var response = await ApiHelper.GET("Equipo/GetCountEquipos", token);
 
                 if (response.IsSuccessStatusCode)
                 {
@@ -131,13 +127,12 @@ namespace CamajanSport.Controllers
             }
         }
 
-        [SessionHandle]
         public async Task<JsonResult> GetEquipos_Select()
         {
 
             try
             {
-                var lista = await ApiHelper.GET_List<SelectAttributes>("Equipo/GetEquipos_Select", (Session["Token"] as Token));
+                var lista = await ApiHelper.GET_List<SelectAttributes>("Equipo/GetEquipos_Select", token);
                 return Json(lista, JsonRequestBehavior.AllowGet);
             }
             catch (Exception ex)
@@ -146,13 +141,12 @@ namespace CamajanSport.Controllers
                 return Json("Ha ocurrido un error al momento de obtener el listado de equipos, si el problema persiste contacte al administrador");
             }
         }
-        [SessionHandle]
         public async Task<JsonResult> GetEquiposByDeporte_Select(int idDeporte)
         {
 
             try
             {
-                var lista = await ApiHelper.GET_ListById<SelectAttributes>("Equipo/GetEquiposByDeporte_Select", idDeporte, (Session["Token"] as Token));
+                var lista = await ApiHelper.GET_ListById<SelectAttributes>("Equipo/GetEquiposByDeporte_Select", idDeporte, token);
                 return Json(lista, JsonRequestBehavior.AllowGet);
             }
             catch (Exception ex)
