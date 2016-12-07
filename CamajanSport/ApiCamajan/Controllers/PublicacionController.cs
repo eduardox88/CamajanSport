@@ -36,6 +36,29 @@ namespace ApiCamajan.Controllers
 
             return Ok(publicacion);
         }
+
+        [Authorize]
+        // GET: api/Publicacion/5
+        [ResponseType(typeof(Publicacion))]
+        public async Task<IHttpActionResult> CambiarEstatus(Publicacion pub)
+        {
+            Publicacion publicacion = await db.Publicacions.FindAsync(pub.IdPublicacion);
+            if (publicacion == null)
+            {
+                return NotFound();
+            }
+            publicacion.Resultado = pub.Resultado;            
+            try
+            {
+                await db.SaveChangesAsync();
+                return Ok(publicacion);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+            
+        }
         [Authorize]
         // PUT: api/Publicacion/5
         [ResponseType(typeof(void))]
