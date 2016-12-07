@@ -53,6 +53,25 @@ namespace CamajanSport.Controllers
 
         }
 
+        public async Task<JsonResult> CambiarEstatus(int IdPublicacion,bool? Resultado)
+        {
+
+            try
+            {
+                Publicacion pub = new Publicacion();
+                pub.IdPublicacion = IdPublicacion;
+                pub.Resultado = Resultado;
+                await ApiHelper.POST<Publicacion>("Publicacion/CambiarEstatus", pub, token);
+                    return Json("El estatus se ha cambiado satisfactoriamente.");
+            }
+            catch (Exception)
+            {
+                Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                return Json("Ha ocurrido un error al cambiar el estatus de la publicación. Si el problema persiste contacte su administrador.");
+            }
+
+        }
+
         [HttpPost]
         public async Task<JsonResult> GetPublicaciones() 
         {
