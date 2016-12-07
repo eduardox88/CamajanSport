@@ -387,12 +387,12 @@
                         '<div class="portlet-widgets">' +
                         '<div class="btn-group">' +
                         '<button type="button" class="btn btn-sm btn-warning dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">' +
-                        ((publicacion.Resultado == null) ? 'Sin estatus' : (publicacion.Resultado == true) ? 'GANÓ' : 'PERDIÓ') + '<span class="caret"></span>' +
+                        ((publicacion.Resultado == null) ? 'Pendiente' : (publicacion.Resultado == true) ? 'Ganó' : 'Perdió') + '<span class="caret"></span>' +
                         '</button>' +
                         '<ul class="dropdown-menu">' +
                         '<li><a href="#" onclick="CambiarEstatus(' + publicacion.IdPublicacion + ',1)">Ganó</a></li>' +
                         '<li><a href="#" onclick="CambiarEstatus(' + publicacion.IdPublicacion + ',2)">Perdió</a></li>' +
-                        '<li><a href="#" onclick="CambiarEstatus(' + publicacion.IdPublicacion + ',null)">Sin estatus</a></li>' +
+                        '<li><a href="#" onclick="CambiarEstatus(' + publicacion.IdPublicacion + ',null)">Pendiente</a></li>' +
 
                         '</ul>' +
                         '</div>' +
