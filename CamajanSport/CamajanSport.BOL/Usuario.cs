@@ -10,6 +10,7 @@ namespace CamajanSport.BOL
     [Table("usuarios")]
     public class Usuario
     {
+
         [Key]
         public int IdUsuario { get; set; }
 
@@ -26,9 +27,15 @@ namespace CamajanSport.BOL
         public int? IdRol { get; set; }
         public bool CambiarContrasena { get; set; }
 
+        public byte[] Imagen { get; set; }
+
         public DateTime FechaIngreso { get { return DateTime.Now; } }
 
         public virtual Rol rol { get; set; }
+
+        public virtual Pais pais { get; set; }
+
+        public virtual Estado estado { get; set; }
 
     }
 }
