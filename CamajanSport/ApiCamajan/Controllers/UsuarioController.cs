@@ -74,6 +74,28 @@ namespace ApiCamajan.Controllers
         }
 
 
+        [Authorize]
+        [Route("api/Usuario/GetUsuariosByEstado/{idEstado}")]
+        public int GetUsuariosByEstado(int idEstado)
+        {
+            return db.usuarios.Count(m => m.IdEstado == idEstado);
+        }
+
+        [Authorize]
+        [ResponseType(typeof(byte []))]
+        [Route("api/Usuario/GetImagenUsuario/{CodUsuario}")]
+        public IHttpActionResult GetImagenUsuario(int CodUsuario)
+        {
+             Usuario usuario = db.usuarios.Where(m => m.IdUsuario == CodUsuario).FirstOrDefault();
+
+            if (usuario == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(usuario.Imagen);
+        }
+
         // PUT api/Usuario/5
         [Authorize]
         public async Task<IHttpActionResult> PutUsuario(Usuario usuario)

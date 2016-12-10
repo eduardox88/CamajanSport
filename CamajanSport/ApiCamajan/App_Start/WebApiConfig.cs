@@ -20,7 +20,6 @@ namespace ApiCamajan
                 defaults: new { id = RouteParameter.Optional }
             );
 
-
         }
     }
 }
