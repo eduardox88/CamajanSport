@@ -5,8 +5,10 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
+using System.Web;
 using System.Web.Http;
 using System.Web.Mvc;
+using System.Web.Script.Serialization;
 using Utilidades;
 
 namespace CamajanSport.Controllers
@@ -18,6 +20,129 @@ namespace CamajanSport.Controllers
         public ActionResult MantUsuarios()
         {
             return View();
+        }
+
+        [System.Web.Mvc.HttpGet]
+        public ActionResult PerfilUsuario() {
+
+            var ticket = Utilidades.CookieHandler.GetDecryptTicket();
+
+            Usuario modelo = new Usuario();
+            JavaScriptSerializer js = new JavaScriptSerializer();
+
+            modelo = js.Deserialize<Usuario>(ticket.UserData);
+
+            return View(modelo);
+        }
+
+        [System.Web.Mvc.HttpPost]
+        public async Task<ActionResult> PerfilUsuario(Usuario modelo)
+        {
+
+            if (ModelState.IsValid) {
+                try
+                {
+                    HttpResponseMessage respuesta = await ApiHelper.PUT<Usuario>("Usuario/PutUsuario", modelo, token);
+
+                    if (!respuesta.IsSuccessStatusCode) {
+                        ModelState.AddModelError("", "Ha ocurrido un problema");
+                    }
+                }
+                catch (Exception)
+                {
+                    ModelState.AddModelError("", "Ha ocurrido un problema");
+                    throw;
+                }
+            }
+
+            return View(modelo);
+        }
+
+
+
+        public async Task<ActionResult> SaveUploadedFile()
+        {
+            try
+            {
+
+            
+                string fName = "";
+                int idUsuario = int.Parse(Request.Form["idUsuario"]);
+                string Nombre = Request.Form["Nombre"];
+                string Persona = Request.Form["NombrePersona"];
+                string Correo = Request.Form["Correo"];
+                string Telefono = Request.Form["Telefono"];
+                int idPais = Convert.ToInt32(Request.Form["Pais"]);
+                int idEstado = Convert.ToInt32(Request.Form["Estado"]);
+                int idRol = Convert.ToInt32(Request.Form["Rol"]);
+                string Pass = Request.Form["pass"];
+                string Biografia = Request.Form["Biografia"];
+
+                bool newFile = Convert.ToBoolean(Request.Form["newFile"].ToString());
+                Byte[] imgByte = null;
+
+                if (newFile)
+                {
+                    string fileName;
+                    HttpPostedFileBase file;
+                    fileName = Request.Files.AllKeys[0];
+                    file = Request.Files[fileName];
+                    fName = file.FileName;
+                    if (file != null && file.ContentLength > 0)
+                    {
+                        imgByte = new Byte[file.ContentLength];
+                        //force the control to load data in array
+                        file.InputStream.Read(imgByte, 0, file.ContentLength);
+
+                    }
+                }
+                else
+                {
+                    int len = Request.Form["afile"].ToString().Split(',').Length;
+                    imgByte = new Byte[len];
+                    imgByte = Request.Form["afile"].ToString().Split(',').Select(s => Convert.ToByte(s)).ToArray();
+                }
+
+                Usuario user = new Usuario();
+
+                user.IdUsuario = idUsuario;
+                user.NombreUsuario = Nombre;
+                user.NombreCompleto = Persona;
+                user.CorreoElec = Correo;
+                user.Telefono = Telefono;
+                user.IdPais = idPais;
+                user.IdRol = idRol;
+                user.IdEstado = idEstado;
+                user.Contrasena = Encrypt.ComputeHash(Pass, "SHA512", null); ;
+                user.Biografia = Biografia;
+                user.Imagen = imgByte;
+
+                HttpResponseMessage respuesta;
+
+                if (idUsuario > 0)
+                {
+                    respuesta = await ApiHelper.PUT<Usuario>("Usuario/PutUsuario", user, token);
+                }
+                else
+                {
+                    respuesta = await ApiHelper.POST<Usuario>("Usuario/PostUsuario", user, token);
+                }
+
+                if (respuesta.IsSuccessStatusCode)
+                {
+                    return Json((idUsuario > 0) ? "El usuario se ha editado satisfactoriamente" : "El usuario ha sido guardado satisfactoriamente", JsonRequestBehavior.AllowGet);
+                }
+                else
+                {
+                    Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                    return Json("Ha ocurrido un error al guardar. Si el problema persiste contacte su administrador.");
+                }
+            }
+            catch (Exception)
+            {
+                Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                return Json("Ha ocurrido un error al guardar. Si el problema persiste contacte su administrador.");
+            }
         }
 
         [System.Web.Mvc.HttpPost]
@@ -133,16 +258,24 @@ namespace CamajanSport.Controllers
             }
         }
 
-        public async Task<JsonResult> GetCountUsuarios()
+        public async Task<JsonResult> GetUsuariosByEstado(int idEstado)
         {
             try
             {
                 int cantidad = 0;
-                var response = await ApiHelper.GET("Usuario/GetCountUsuarios", token);
 
-                if (response.IsSuccessStatusCode)
+                HttpClient client = new HttpClient();
+
+                if (token != null)
                 {
-                    cantidad = await response.Content.ReadAsAsync<int>();
+                    client.DefaultRequestHeaders.Add("Authorization", "Bearer " + token.AccessToken);
+                }
+
+                HttpResponseMessage result = await client.GetAsync("http://localhost:14678/api/Usuario/GetUsuariosByEstado/" + idEstado );
+
+                if (result.IsSuccessStatusCode)
+                {
+                    cantidad = await result.Content.ReadAsAsync<int>();
                 }
 
                 return Json(cantidad, JsonRequestBehavior.AllowGet);
@@ -150,7 +283,38 @@ namespace CamajanSport.Controllers
             catch (Exception ex)
             {
                 Response.StatusCode = (int)HttpStatusCode.BadRequest;
-                return Json("Ha ocurrido un error al momento de obtener la cantidad de usuarios registrados, si el problema persiste contacte al administrador");
+                return Json("Ha ocurrido un error, si el problema persiste contacte al administrador");
+            }
+        }
+
+        public async Task<JsonResult> GetImagenUsuario(int CodUsuario)
+        {
+            try
+            {
+                HttpClient client = new HttpClient();
+
+                if (token != null)
+                {
+                    client.DefaultRequestHeaders.Add("Authorization", "Bearer " + token.AccessToken);
+                }
+
+                HttpResponseMessage result = await client.GetAsync("http://localhost:14678/api/Usuario/GetImagenUsuario/" + CodUsuario);
+
+                if (result.IsSuccessStatusCode)
+                {
+                    var img = await result.Content.ReadAsAsync<byte[]>();
+
+                    if (img != null) {
+                        return Json(img, JsonRequestBehavior.AllowGet);
+                    }
+                }
+
+                return Json(false, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                return Json("Ha ocurrido un error, si el problema persiste contacte al administrador");
             }
         }
 

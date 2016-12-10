@@ -81,7 +81,7 @@ function AjaxCall(url, data,idContenedor ,callBackFunction, IsAsync)
                 callBackFunction(data);
             }
         }, error: function (jqXHR, textStatus, errorThrown) {
-            MostrarAlerta("Error", 'error', 'Ha ocurrido un error al realizar el llamado.');
+            MostrarAlerta("Error", 'error', 'Ha ocurrido un error al realizar el llamado.' + url);
         }
     });
     

@@ -67,6 +67,19 @@ namespace CamajanSport.Controllers
 
                         if (user.IdEstado != 2)
                         {
+                            Response.Cookies.Clear();
+
+                            FormsAuthentication.SignOut();
+
+                            HttpCookie c = new HttpCookie("Token");
+                            HttpCookie c2 = new HttpCookie(FormsAuthentication.FormsCookieName);
+
+                            c.Expires = DateTime.Now.AddDays(-1);
+                            c2.Expires = DateTime.Now.AddDays(-1);
+
+                            Response.Cookies.Add(c);
+                            Response.Cookies.Add(c2);
+
                             Response.Cookies.Add(CookieHandler.GetAuthenticationCookie(token, recordar, expire));
                             Response.Cookies.Add(CookieHandler.GetAuthenticationCookie(user, recordar, expire));
 

@@ -15,7 +15,8 @@
                     @*<small>Deportes</small>*@
                 </h1>
                 <ol class="breadcrumb">
-                    <li class="active"><i class="fa fa-dashboard"></i> Mantenimiento de Usuarios</li>
+                    <li><i class="fa fa-dashboard"></i> Dashboard</li>
+                    <li class="active"> Mantenimiento de Usuarios</li>
                 </ol>
             </div>
         </div>
@@ -78,6 +79,14 @@
 
                     <form id="Validaciones">
                         <input id="IdUsuario" type="hidden" class="objeto" />
+
+                        <div class="row">
+                            <div class="col-xs-1">
+                                <input type="hidden" id="hdfId" />
+                                <input type="hidden" id="hdfOldImg" />
+                            </div>
+                        </div>
+
                         <div class="row">
                             <div class="col-xs-3">
                                 <label for="NombreUsuario">Usuario</label>
@@ -124,6 +133,24 @@
 
                         <div class="row">
                             <div class="col-xs-12">
+                                <div class="portlet portlet-default dropzone-portlet">
+                                    <div class="portlet-heading">
+                                        <div class="portlet-title">
+                                            <h4>Si desea, seleccione una imagen para el usuario</h4>
+                                        </div>
+                                        <div class="clearfix"></div>
+                                    </div>
+                                    <div class="portlet-body">
+                                        <input type="file" id="fileUploader" />
+                                    </div>
+                                    <div id="oldImg"></div>
+                                </div>
+                            </div>
+                            <!-- /.col-lg-12 -->
+                        </div>
+
+                        <div class="row">
+                            <div class="col-xs-12">
                                 <label>Biografía:</label>
 
                                 <textarea id="Biografia" class="form-control objeto" rows="3"></textarea>
@@ -163,7 +190,7 @@
             Init_SingleSelect2($('#IdPais'));
             Init_SingleSelect2($('#IdRol'));
             Init_SingleSelect2($('#IdEstado'));
-        }
+    }
 
         function InicializarValidaciones() {
 
@@ -215,6 +242,7 @@
 
             if (objUsuario.length > 0) {
 
+                
                 for (var i = 0; i < objUsuario.length; i++) {
 
                     usuario = objUsuario[i];
@@ -225,9 +253,9 @@
                     '<td>' + ((usuario.Telefono == null) ? "N/A" : usuario.Telefono) + '</td>' +
                     //'<td>' + ((usuario.Biografia == null) ? "N/A" : usuario.Biografia) + '</td>' +
                     '<td><input id="btn_' + i + '" type="button" class="btn btn-success" onclick="MostrarBio(\'' + ((usuario.Biografia == null) ? "N/A" : usuario.Biografia) + '\')" value="Ver Biografia" /></td>' +
-                    '<td>' + ((usuario.IdPais == null) ? "N/A" : usuario.IdPais) + '</td>' +
-                    '<td>' + ((usuario.IdEstado == null) ? "N/A" : usuario.IdEstado) + '</td>' +
-                    '<td>' + ((usuario.IdRol == null) ? "N/A" : usuario.IdRol) + '</td>' +
+                    '<td>' + ((usuario.IdPais == null) ? "N/A" : usuario.pais.Nombre) + '</td>' +
+                    '<td>' + ((usuario.IdEstado == null) ? "N/A" : usuario.estado.Nombre) + '</td>' +
+                    '<td>' + ((usuario.IdRol == null) ? "N/A" : usuario.rol.Nombre) + '</td>' +
                     '<td>' + ((usuario.CambiarContrasena == true) ? "SI" : "NO") + '</td>' +
                     '<td>' + formatFecha(usuario.FechaIngreso) + '</td>' +
                     '<td>' + '<input type="button" class="btn btn-danger" onclick="EditarUsuario(' + i + ')" value="Editar"/>' + '</td>' +
@@ -252,8 +280,46 @@
 
 
         if (validator.form()) {
-            var obj = CrearObjeto('formUsuario');
-            AjaxCall("@Url.Action("InsertarUsuario","Usuario")", obj, "", SuccessOrFail, true)
+
+
+            var formData = new FormData();
+            var fileUpload = document.getElementById('fileUploader');
+            formData.append("idUsuario", ($('#hdfId').val() != "") ? $('#hdfId').val() : 0);
+            formData.append("Nombre", $('#NombreUsuario').val());
+            formData.append("NombrePersona", $('#NombreCompleto').val());
+            formData.append("Correo", $('#CorreoElec').val());
+            formData.append("Telefono", $('#Telefono').val());
+            formData.append("Pais", $('#IdPais :selected').val());
+            formData.append("Estado", $('#IdEstado :selected').val());
+            formData.append("Rol", $('#IdRol :selected').val());
+            formData.append("pass", $('#Contrasena').val());
+            formData.append("Biografia", $('#Biografia').val());
+
+            if (fileUpload.files[0] == null) {
+                formData.append("newFile", false);
+                var array = new Array($('#hdfOldImg').val().split(','));
+                formData.append("afile", array);
+            } else {
+                formData.append("newFile", true);
+                formData.append("afile", fileUpload.files[0]);
+            }
+
+            var xhr = new XMLHttpRequest();
+            xhr.open("POST", "/Usuario/SaveUploadedFile");
+            xhr.onreadystatechange = function (aEvt) {
+                if (xhr.readyState == 4) {
+                    if (xhr.status == 200) {
+                        MostrarAlerta("¡Enhorabuena!", 'success', xhr.responseText.replace('"', ""));
+                        CargarData();
+                        //limpiarTodosCampos("flexModal");
+                        $('#flexModal').modal('hide');
+                    }
+                    else {
+                        MostrarAlerta("Error", 'error', xhr.responseText.replace('"', ""));
+                    }
+                }
+            }
+            xhr.send(formData);
         }
     }
 
@@ -277,19 +343,27 @@
         $('#rowPass').addClass('hidden')
 
         var obj = objUsuario[indice];
-
+        
         LlenarFormulario(obj);
+
+        $('#oldImg').empty();
+        $('#hdfId').val(obj.IdUsuario);
+        $('#hdfOldImg').val(obj.Imagen);
+
+        if (obj.Imagen != null) {
+            $('#oldImg').append('<img width="100" heigth="50" src="data:image/png;base64,' + _arrayBufferToBase64(obj.Imagen).toString() + '"/>');
+        }
 
         $('#flexModal').modal('show');
     }
 
     $(document).ready(function () {
-        InicializarDropDowns();
-        InicializarValidaciones();
+
         CargarData();
 
-
         $('#btnModal').click(function () {
+            InicializarDropDowns();
+            InicializarValidaciones();
             $('#rowPass').removeClass('hidden')
             limpiarTodosCampos('formUsuario')
             return;

@@ -25,157 +25,151 @@
     <!-- end PAGE TITLE AREA -->
     <!-- begin DASHBOARD CIRCLE TILES -->
 
-    <div id="contenedor">
-
+    <div class="row">
+        <div class="row">
+            <div class="col-lg-1">
+            </div>
+            <div class="col-lg-2 col-sm-6">
+                <div class="circle-tile">
+                    <a href="#">
+                        <div class="circle-tile-heading green">
+                            <i class="fa fa-users fa-fw fa-3x"></i>
+                        </div>
+                    </a>
+                    <div class="circle-tile-content green">
+                        <div class="circle-tile-description text-faded">
+                            Usuarios Activos
+                        </div>
+                        <div class="circle-tile-number text-faded">
+                            <p id="usrActivos">0</p>
+                            <span id="sparklineA"></span>
+                        </div>
+                        <a href="#" class="circle-tile-footer">Más información <i class="fa fa-chevron-circle-right"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-2 col-sm-6">
+                <div class="circle-tile">
+                    <a href="#">
+                        <div class="circle-tile-heading blue">
+                            <i class="fa fa-users fa-fw fa-3x"></i>
+                        </div>
+                    </a>
+                    <div class="circle-tile-content blue">
+                        <div class="circle-tile-description text-faded">
+                            Usuarios pendientes
+                        </div>
+                        <div class="circle-tile-number text-faded">
+                            <p id="usrPendiente">0</p>
+                            <span id="sparklineB"></span>
+                        </div>
+                        <a href="#" class="circle-tile-footer">Más información<i class="fa fa-chevron-circle-right"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-2 col-sm-6">
+                <div class="circle-tile">
+                    <a href="#">
+                        <div class="circle-tile-heading red">
+                            <i class="fa fa-users fa-fw fa-3x"></i>
+                        </div>
+                    </a>
+                    <div class="circle-tile-content red">
+                        <div class="circle-tile-description text-faded">
+                            Usuarios Inactivos
+                        </div>
+                        <div class="circle-tile-number text-faded">
+                            <p id="usrInactivos">0</p>
+                            <span id="sparklineC"></span>
+                        </div>
+                        <a href="#" class="circle-tile-footer">Más información<i class="fa fa-chevron-circle-right"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-2 col-sm-6">
+                <div class="circle-tile">
+                    <a href="#">
+                        <div class="circle-tile-heading purple">
+                            <i class="fa fa-comments fa-fw fa-3x"></i>
+                        </div>
+                    </a>
+                    <div class="circle-tile-content purple">
+                        <div class="circle-tile-description text-faded">
+                            Publicaciones Free
+                        </div>
+                        <div class="circle-tile-number text-faded">
+                            <p>95</p>
+                            <span id="sparklineD"></span>
+                        </div>
+                        <a href="#" class="circle-tile-footer">Más información<i class="fa fa-chevron-circle-right"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-2 col-sm-6">
+                <div class="circle-tile">
+                    <a href="#">
+                        <div class="circle-tile-heading purple">
+                            <i class="fa fa-comments fa-fw fa-3x"></i>
+                        </div>
+                    </a>
+                    <div class="circle-tile-content purple">
+                        <div class="circle-tile-description text-faded">
+                            Publicaciones VIP
+                        </div>
+                        <div class="circle-tile-number text-faded">
+                            <p>95</p>
+                            <span id="sparklineD"></span>
+                        </div>
+                        <a href="#" class="circle-tile-footer">More Info <i class="fa fa-chevron-circle-right"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-1">
+            </div>
+        </div>'
     </div>
 </div>
+
 @section Scripts{
 
     <script type="text/javascript">
 
-        
-        $('#spinner').ajaxStart(function () {
-            console.log('entre')
-            $(this).fadeIn('fast');
-        }).ajaxStop(function () {
-            $(this).stop().fadeOut('fast');
-        });
-
-
-        var countGlobal = 0;
-
         function CargarData() {
 
-            var cantDeportes = 0;
-            var cantEquipos = 0;
-            var cantUsuarios = 0;
 
-            AjaxCall("@Url.Action("GetCountDeporte", "Deporte")", undefined, "", SuccessOrFail, false)
-            cantDeportes = countGlobal;
+            var objeto = new Object();
 
-            AjaxCall("@Url.Action("GetCountEquipos", "Equipo")", undefined, "", SuccessOrFail, false)
-            cantEquipos = countGlobal;
+            objeto.idEstado = 1;
 
-            AjaxCall("@Url.Action("GetCountUsuarios", "Usuario")", undefined, "", SuccessOrFail, false)
-            cantUsuarios = countGlobal;
+            AjaxCall("@Url.Action("GetUsuariosByEstado", "Usuario")", objeto, "", Activos, true)
 
-        }
+            objeto.idEstado = 2;
 
-        function RenderizarDashBoard(CantDeportes, CantEquipos, CantUsuarios) {
-            var html = '';
-            html += '<div class="row">' +
-                        '<div class="col-lg-1">' +
-                           '</div>' +
-                               '<div class="col-lg-2 col-sm-6">' +
-                                    '<div class="circle-tile">' +
-                                        '<a href="#">' +
-                                            '<div class="circle-tile-heading orange">' +
-                                                 '<i class="fa fa-bell fa-fw fa-3x"></i>' +
-                                            '</div>' +
-                                        '</a>' +
-                                        '<div class="circle-tile-content orange">' +
-                                            '<div class="circle-tile-description text-faded">' +
-                                                'DINAMICO' +
-                                        '</div>' +
-                                        '<div class="circle-tile-number text-faded">' +
-                                                '9 New' +
-                                        '</div>' +
-                                            '<a href="#" class="circle-tile-footer">More Info <i class="fa fa-chevron-circle-right"></i></a>' +
-                                    '</div>' +
-                                '</div>' +
-                           '</div>' +
-                           '<div class="col-lg-2 col-sm-6">' +
-                           '<div class="circle-tile">' +
-                           '<a href="#">' +
-                           '<div class="circle-tile-heading blue">' +
-                           '<i class="fa fa-tasks fa-fw fa-3x"></i>' +
-                           '</div>' +
-                           '</a>' +
-                           '<div class="circle-tile-content blue">' +
-                           '<div class="circle-tile-description text-faded">' +
-                           'Tasks' +
-                           '</div>' +
-                           '<div class="circle-tile-number text-faded">' +
-                           '10' +
-                           '<span id="sparklineB"></span>' +
-                           '</div>' +
-                           '<a href="#" class="circle-tile-footer">More Info <i class="fa fa-chevron-circle-right"></i></a>' +
-                           '</div>' +
-                           '</div>' +
-                           '</div>' +
-                           '<div class="col-lg-2 col-sm-6">' +
-                                '<div class="circle-tile">' +
-                                    '<a href="#">' +
-                                        '<div class="circle-tile-heading red">' +
-                                            '<i class="fa fa-shopping-cart fa-fw fa-3x"></i>' +
-                                        '</div>' +
-                                    '</a>' +
-                                    '<div class="circle-tile-content red">' +
-                                        '<div class="circle-tile-description text-faded">' +
-                                            'Orders' +
-                                        '</div>' +
-                                        '<div class="circle-tile-number text-faded">' +
-                                            '24' +
-                                            '<span id="sparklineC"></span>' +
-                                        '</div>' +
-                                        '<a href="#" class="circle-tile-footer">More Info <i class="fa fa-chevron-circle-right"></i></a>' +
-                                    '</div>' +
-                                '</div>' +
-                            '</div>' +
-                            '<div class="col-lg-2 col-sm-6">' +
-                                '<div class="circle-tile">' +
-                                    '<a href="#">' +
-                                        '<div class="circle-tile-heading purple">' +
-                                            '<i class="fa fa-comments fa-fw fa-3x"></i>' +
-                                        '</div>' +
-                                    '</a>' +
-                                    '<div class="circle-tile-content purple">' +
-                                        '<div class="circle-tile-description text-faded">' +
-                                            'Mentions' +
-                                        '</div>' +
-                                        '<div class="circle-tile-number text-faded">' +
-                                            '96' +
-                                            '<span id="sparklineD"></span>' +
-                                        '</div>' +
-                                        '<a href="#" class="circle-tile-footer">More Info <i class="fa fa-chevron-circle-right"></i></a>' +
-                                    '</div>' +
-                                '</div>' +
-                            '</div>' +
-                            '<div class="col-lg-2 col-sm-6">' +
-                                '<div class="circle-tile">' +
-                                    '<a href="#">' +
-                                        '<div class="circle-tile-heading purple">' +
-                                            '<i class="fa fa-comments fa-fw fa-3x"></i>' +
-                                        '</div>' +
-                                    '</a>' +
-                                    '<div class="circle-tile-content purple">' +
-                                        '<div class="circle-tile-description text-faded">' +
-                                            'Mentions' +
-                                        '</div>' +
-                                        '<div class="circle-tile-number text-faded">' +
-                                            '96' +
-                                            '<span id="sparklineD"></span>' +
-                                        '</div>' +
-                                        '<a href="#" class="circle-tile-footer">More Info <i class="fa fa-chevron-circle-right"></i></a>' +
-                                    '</div>' +
-                                '</div>' +
-                            '</div>' +
-                            '<div class="col-lg-1">' +
-                            '</div>' +
-                   '</div>';
+            AjaxCall("@Url.Action("GetUsuariosByEstado", "Usuario")", objeto, "", Pendientes, true)
 
-            $('#contenedor').html(html);;
+            objeto.idEstado = 3;
+
+            AjaxCall("@Url.Action("GetUsuariosByEstado", "Usuario")", objeto, "", Inactivos, true)
 
         }
 
-        function SuccessOrFail(data) {
-            countGlobal = data;
+
+        function Activos(data) {
+            $('#usrActivos').text(data);
+        }
+
+        function Pendientes(data) {
+            $('#usrPendiente').text(data);
+        }
+
+        function Inactivos(data) {
+            $('#usrInactivos').text(data);
         }
 
         $(document).ready(function () {
 
             CargarData();
-            RenderizarDashBoard();
+
         });
 
     </script>
