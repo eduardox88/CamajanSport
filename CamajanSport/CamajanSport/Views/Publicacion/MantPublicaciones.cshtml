@@ -185,7 +185,7 @@
         Init_SingleSelect2($('#drpDeportes'));
         Init_SingleSelect2($('#drpTipoPublicacion'));
         $('#txtFecha').datetimepicker({
-            format: 'D/MM/YYYY hh:mm A'
+            format: 'DD/MM/YYYY hh:mm A'
         });
 
         $('#divEsMatchup').find('input[name="optEsMatchup"]').change(function () {
@@ -253,8 +253,8 @@
         publicacion = objPublicaciones[index];
         $('#fechaIngreso').val(formatFecha(publicacion.FechaIngreso));
         $('#idPublicacion').val(publicacion.IdPublicacion);
-        $('#txtTitulo', '#frmNuevaPublicacion').val(publicacion.Titulo);
-        $('#txtFecha', '#frmNuevaPublicacion').val(new FechaUtility(publicacion.FechaJuego).GetDateTime());
+        $('#txtTitulo', '#frmNuevaPublicacion').val(publicacion.Titulo);  
+        $('#txtFecha', '#frmNuevaPublicacion').data("DateTimePicker").date(new FechaUtility(publicacion.FechaJuego).GetDateTime());
         $('#drpDeportes', '#frmNuevaPublicacion').val(publicacion.Equipo1.Deporte.IdDeporte).change();
         AjaxCall('@Url.Action("GetEquiposByDeporte_Select", "Equipo")', { 'idDeporte': +publicacion.Equipo1.Deporte.IdDeporte }, '', CargarYSeleccionarDropDownEquipos);
         if (publicacion.EsMatchup) {
@@ -339,11 +339,10 @@
     function CambiarEstatus(IdPublicacion, Resultado)
     {
         //alert(IdPublicacion+" ,el resultado es "+Resultado);
-        AjaxCall('@Url.Action("CambiarEstatus", "Publicacion")', { "IdPublicacion": IdPublicacion, "Resultado": Resultado }, '', undefined);
-        CargarData();
+        AjaxCall('@Url.Action("CambiarEstatus", "Publicacion")', { "IdPublicacion": IdPublicacion, "Resultado": Resultado }, '', CargarData);        
     }
 
-    function CargarData() {
+    function CargarData(data) {
             $.ajax({
             type: "POST",
             async: true,
@@ -386,17 +385,18 @@
                         '</div>' +
                         '<div class="portlet-widgets">' +
                         '<div class="btn-group">' +
-                        '<button type="button" class="btn btn-sm btn-warning dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">' +
-                        ((publicacion.Resultado == null) ? 'Pendiente' : (publicacion.Resultado == true) ? 'Ganó' : 'Perdió') + '<span class="caret"></span>' +
-                        '</button>' +
+                        '<a class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">' +
+                        /*((publicacion.Resultado == null) ? 'Pendiente' : (publicacion.Resultado == true) ? 'Ganó' : 'Perdió') + '<span class="caret"></span>' +*/
+                        '<i class="fa fa-tasks pointer"></i>' +
+                        '</a>' +
                         '<ul class="dropdown-menu">' +
                         '<li><a href="#" onclick="CambiarEstatus(' + publicacion.IdPublicacion + ',1)">Ganó</a></li>' +
-                        '<li><a href="#" onclick="CambiarEstatus(' + publicacion.IdPublicacion + ',2)">Perdió</a></li>' +
+                        '<li><a href="#" onclick="CambiarEstatus(' + publicacion.IdPublicacion + ',0)">Perdió</a></li>' +
                         '<li><a href="#" onclick="CambiarEstatus(' + publicacion.IdPublicacion + ',null)">Pendiente</a></li>' +
 
                         '</ul>' +
-                        '</div>' +
-                        '<a onclick="EditarPublicacion(' + i + ')" title="Editar"><i class="fa fa-edit"></i></a>';
+                        '</div><span class="divider"></span>' +
+                        '<a onclick="EditarPublicacion(' + i + ')" title="Editar"><i class="fa fa-edit pointer"></i></a>';
                         //if (publicacion.Resultado == null) {
 
                         //            html += '<span class="divider"></span>' +
@@ -461,6 +461,9 @@
 
                     }
                     $('#divPublicaciones').append(html);
+                    if (data) {
+                        MostrarAlerta("¡Enhorabuena!", 'success', 'La acción se realizó exitosamente.');
+                    }
                 }
                 else {
                     MostrarAlerta("Información", 'info', 'No existen publicaciones para mostrar');
