@@ -24,7 +24,7 @@ namespace CamajanSport.BOL
         public string Analisis { get; set; }
         public DateTime FechaJuego { get; set; }
         public bool EsPremium { get; set; }
-        public bool Resultado { get; set; }
+        public bool? Resultado { get; set; }
         public DateTime FechaIngreso { get; set; }
         public int IdUsuario { get; set; }
 
