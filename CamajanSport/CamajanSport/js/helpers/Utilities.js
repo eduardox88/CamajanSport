@@ -1,4 +1,5 @@
-﻿function MostrarAlerta(titulo,tipoAlerta,mensaje)
+﻿
+function MostrarAlerta(titulo, tipoAlerta, mensaje)
 {
     
     swal({
@@ -7,7 +8,7 @@
         type: tipoAlerta,
         confirmButtonText: "Cerrar"
     });
-}
+};
 
 
 function MostrarDialogo(id, titulo, mensaje, showBtnCerrar, botones, showTopCloseBtn, backdropClose) {
@@ -59,7 +60,7 @@ function MostrarDialogo(id, titulo, mensaje, showBtnCerrar, botones, showTopClos
         $(this).remove();
     });
     $('#' + id).modal();
-}
+};
 
 function AjaxCall(url, data,idContenedor ,callBackFunction, IsAsync)
 {
@@ -86,12 +87,12 @@ function AjaxCall(url, data,idContenedor ,callBackFunction, IsAsync)
     });
     
 
-}
+};
 //Reinicia el dropdown de direcciones por el id.
 function restartDropDown(id,value,text) {
     $('#' + id).empty();
     $('#' + id).append($('<option value="'+value+'" selected="selected">'+text+'</option>'));
-}
+};
 
 function CargarDropDown(idDropDown, options) {
     var drp = $('#' + idDropDown);
@@ -103,7 +104,7 @@ function CargarDropDown(idDropDown, options) {
 
         drp.html(html);
     }
-}
+};
 
 function CargarDropDownDeportes(idDropDown, options) {
     if (options.length > 0) {
@@ -111,7 +112,7 @@ function CargarDropDownDeportes(idDropDown, options) {
             $('#' + idDropDown).append($('<option value="' + options[i].IdDeporte + '">' + options[i].Nombre + '</option>'));
         }
     }
-}
+};
 
 function LimpiarRecibirEnvioModal() {
 
@@ -129,7 +130,7 @@ function LimpiarRecibirEnvioModal() {
     $('#pnlRecepcion').addClass('hidden');
     $('#divRecepcionEnvio').appendTo('body');
     
-}
+};
 
 function formatFecha(milisegundos) {
 
@@ -140,7 +141,7 @@ function formatFecha(milisegundos) {
 
     return ((date.getUTCDate()) + "/" + (date.getMonth() + 1) + "/" + date.getFullYear());
 
-}
+};
 
 function _arrayBufferToBase64(bytes) {
     var binary = '';
@@ -149,21 +150,21 @@ function _arrayBufferToBase64(bytes) {
         binary += String.fromCharCode(bytes[i]);
     }
     return window.btoa(binary);
-}
+};
 
 function limpiarTodosCampos(id) {
     $('#' + id + ' input').not(':button, :submit, :reset, :checkbox, :radio').val('');
     $(':checkbox, :radio').prop('checked', false);
 
     $('#' + id).find('textarea').val('')
-}
+};
 
 function Init_SingleSelect2($elem) {
     $elem.select2({
         placeholder: "Seleccione",
         allowClear: true
     });
-}
+};
 
 function CrearObjeto(idContenedor) {
 
@@ -194,7 +195,7 @@ function CrearObjeto(idContenedor) {
     })
 
     return objeto;
-}
+};
 
 function LlenarFormulario(obj) {
 
@@ -221,4 +222,114 @@ function LlenarFormulario(obj) {
             //console.log(key + " -> " + obj[key]);
         }
     }
+};
+
+function FechaUtility(milisecs)
+{
+
+    this.date = new Date(parseInt(milisecs.substr(6)));
+
+    this.GetDate = function () {        
+        return ((this.date.getDate()) + "/" + (this.date.getMonth() + 1) + "/" + this.date.getFullYear());
+    };
+    this.GetDateTime = function()
+    {
+        return this.GetDate() + ' '+this.GetTime();
+    };
+    this.GetTime = function (sec) {
+        var tiempo = this.date.toLocaleTimeString().split(':');
+        var hora = tiempo[0].substr(1, tiempo[0].length-1);
+        var result = ((parseInt(hora) < 10) ? ('0' + hora) : hora) + ':' + tiempo[1];
+        var am = tiempo[2].split(' ')[1];
+        if (sec) {
+            result += ':'+tiempo[2];
+        }
+        result += ' '+am;
+        return result;
+    };
+
+    this.GetMonthName = function()
+    {
+        switch (this.date.getMonth() + 1) {
+            case 1:
+                return 'Ene';
+                break;
+            case 2:
+                return 'Feb';
+                break;
+            case 3:
+                return 'Mar';
+                break;
+            case 4:
+                return 'Abr';
+                break;
+            case 5:
+                return 'May';
+                break;
+            case 6:
+                return 'Jun';
+                break;
+            case 7:
+                return 'Jul';
+                break;
+            case 8:
+                return 'Ago';
+                break;
+            case 9:
+                return 'Sep';
+                break;
+            case 10:
+                return 'Oct';
+                break;
+            case 11:
+                return 'Nov';
+                break;
+            case 12:
+                return 'Dic';
+                break;
+
+            default:
+
+        }
+
+    };
+    this.GetDay = function () {
+        return this.date.getDate();
+         
+
+    }
+    this.GetDayName = function()
+    {
+        switch (this.date.getDay()) {
+            case 1:
+                return 'Lun';
+                break;
+            case 2:
+                return 'Mar';
+                break;
+            case 3:
+                return 'Mie';
+                break;
+            case 4:
+                return 'Jue';
+                break;
+            case 5:
+                return 'Vie';
+                break;
+            case 6:
+                return 'Sab';
+                break;
+            case 0:
+                return 'Dom';
+                break;
+            default:
+
+        }
+
+    }
+
+
 }
+
+
+
