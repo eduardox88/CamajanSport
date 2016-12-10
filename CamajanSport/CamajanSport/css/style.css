@@ -21,6 +21,11 @@
     font-family: "Open Sans","Helvetica Neue",Helvetica,Arial,sans-serif;
 }
 
+.pointer:hover {
+
+    cursor:pointer
+}
+
 h1,
 h2,
 h3,
