@@ -14,6 +14,7 @@ namespace Utilidades
     {
         public static HttpCookie GetAuthenticationCookie(Usuario model, bool persistLogin, int minutes_expire)
         {
+            model.Imagen = null;
             // userData storing data in ticktet and then cookie 
             JavaScriptSerializer js = new JavaScriptSerializer();
 
@@ -84,5 +85,6 @@ namespace Utilidades
                 return null;
             }
         }
+
     }
 }
