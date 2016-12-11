@@ -253,7 +253,7 @@
         publicacion = objPublicaciones[index];
         $('#fechaIngreso').val(formatFecha(publicacion.FechaIngreso));
         $('#idPublicacion').val(publicacion.IdPublicacion);
-        $('#txtTitulo', '#frmNuevaPublicacion').val(publicacion.Titulo);  
+        $('#txtTitulo', '#frmNuevaPublicacion').val(publicacion.Titulo);
         $('#txtFecha', '#frmNuevaPublicacion').data("DateTimePicker").date(new FechaUtility(publicacion.FechaJuego).GetDateTime());
         $('#drpDeportes', '#frmNuevaPublicacion').val(publicacion.Equipo1.Deporte.IdDeporte).change();
         AjaxCall('@Url.Action("GetEquiposByDeporte_Select", "Equipo")', { 'idDeporte': +publicacion.Equipo1.Deporte.IdDeporte }, '', CargarYSeleccionarDropDownEquipos);
@@ -310,14 +310,12 @@
             //TODO si el form no es válido
         }
     }
-    function NuevaPublicacion()
-    {
+    function NuevaPublicacion() {
         $('#idPublicacion').val('');
         $('#flexModal').modal("show");
     }
 
-    function LimpiarForm()
-    {
+    function LimpiarForm() {
         publicacion = undefined;
         $('#idPublicacion').val('');
         $('#fechaIngreso').val('');
@@ -336,145 +334,150 @@
         CargarData();
     }
 
-    function CambiarEstatus(IdPublicacion, Resultado)
-    {
+    function CambiarEstatus(IdPublicacion, Resultado) {
         //alert(IdPublicacion+" ,el resultado es "+Resultado);
-        AjaxCall('@Url.Action("CambiarEstatus", "Publicacion")', { "IdPublicacion": IdPublicacion, "Resultado": Resultado }, '', CargarData);        
+        AjaxCall('@Url.Action("CambiarEstatus", "Publicacion")', { "IdPublicacion": IdPublicacion, "Resultado": Resultado }, '', CargarData);
     }
 
     function CargarData(data) {
-            $.ajax({
-            type: "POST",
-            async: true,
-            url: '@Url.Action("GetPublicaciones","Publicacion")',
-            dataType: "json",
-            success: function (response) {
-                $('#divPublicaciones').empty();
-                objPublicaciones = response;
-                var cantRows = Math.ceil(objPublicaciones.length / 3);
-                var cont = 1;
-                var crearRow = true;
-                var html = "";
-                if (objPublicaciones.length > 0) {
-                    for (var i = 0; i < objPublicaciones.length; i++) {
-                        var publicacion = objPublicaciones[i];
-                        var srcImgDeporte = "data:image/png;base64," + _arrayBufferToBase64(publicacion.Equipo1.Deporte.Imagen).toString();
-                        var imgDeporte = '<img width="80" class="pull-right" heigth="40" src="' + srcImgDeporte + '" alt="Deporte"/>';
-                        var srcImgEquipo1 = "data:image/png;base64," + _arrayBufferToBase64(publicacion.Equipo1.Imagen).toString();
-                        var srcImgEquipo2 = "data:image/png;base64," + _arrayBufferToBase64(publicacion.Equipo2.Imagen).toString();
-                        var imgEquipo1 = '<img width="100" heigth="50" src="' + srcImgEquipo1 + '" class="center-block" alt="Equipo 1"/>';
-                        var imgEquipo2 = '<img width="100" heigth="50" src="' + srcImgEquipo2 + '" class="center-block" alt="Equipo 2"/>';
-                        var fechaJuego = new FechaUtility(publicacion.FechaJuego);
-                        if (crearRow) {
-                            html += "<div class='row'>";
-                            crearRow = false;
-                        }
 
-                        html += '<div class="col-lg-4 col-xs-12">';
-                        if (publicacion.Resultado == null) {
-                            html += '<div class="portlet portlet-default">';
-                        } else if (publicacion.Resultado == true) {
-                            html += '<div class="portlet portlet-green">';
-                        } else {
-                            html += '<div class="portlet portlet-red">';
-                        }
+        AjaxCall('@Url.Action("GetPublicaciones", "Publicacion")', "" /*{ "IdPublicacion": IdPublicacion, "Resultado": Resultado }*/, '', CargarPublicaciones);
+        @*$.ajax({
+        type: "POST",
+        async: true,
+        url: '@Url.Action("GetPublicaciones","Publicacion")',
+        dataType: "json",
+        success: function (response) {
 
-                        html += '<div class="portlet-heading">' +
-                        '<div class="portlet-title">' +
-                        '<h4>' + publicacion.Equipo1.Deporte.Nombre + ' - ' + fechaJuego.GetDayName() + ' ' + fechaJuego.GetDay() + ' ' + fechaJuego.GetMonthName() + ' </h4>' +
-                        '</div>' +
-                        '<div class="portlet-widgets">' +
-                        '<div class="btn-group">' +
-                        '<a class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">' +
-                        /*((publicacion.Resultado == null) ? 'Pendiente' : (publicacion.Resultado == true) ? 'Ganó' : 'Perdió') + '<span class="caret"></span>' +*/
-                        '<i class="fa fa-tasks pointer"></i>' +
-                        '</a>' +
-                        '<ul class="dropdown-menu">' +
-                        '<li><a href="#" onclick="CambiarEstatus(' + publicacion.IdPublicacion + ',1)">Ganó</a></li>' +
-                        '<li><a href="#" onclick="CambiarEstatus(' + publicacion.IdPublicacion + ',0)">Perdió</a></li>' +
-                        '<li><a href="#" onclick="CambiarEstatus(' + publicacion.IdPublicacion + ',null)">Pendiente</a></li>' +
+        },
+        error: function (xhr, status) {
+            MostrarAlerta("Error", 'error', xhr.responseText);
+        }
+    });*@
+    }
 
-                        '</ul>' +
-                        '</div><span class="divider"></span>' +
-                        '<a onclick="EditarPublicacion(' + i + ')" title="Editar"><i class="fa fa-edit pointer"></i></a>';
-                        //if (publicacion.Resultado == null) {
-
-                        //            html += '<span class="divider"></span>' +
-                        //                '<a title="En espera del resultado"><i class="glyphicon glyphicon-hourglass"></i></a>';
-                        //        }
-
-                        html += '<span class="divider"></span>' +
-                            '<a data-toggle="collapse" data-parent="#accordion" href="#' + publicacion.IdPublicacion + '"><i class="fa fa-chevron-down"></i></a>' +
-                            '</div>' +
-                            '<div class="clearfix"></div>' +
-                            '</div>' +
-                            '<div id="' + publicacion.IdPublicacion + '" class="panel-collapse collapse ">' +
-                            '<div class="portlet-body">' +
-                            '<p>' + publicacion.Analisis + '</p>' +
-                            '</div>' +
-                            '</div>' +
-                            '<div class="portlet-footer">' +
-                            '<div class="row">' +
-                            '<p class="text-center">' + publicacion.Titulo + '</p>' +
-                        '</div>' +
-                        //Equipos
-                            '<div class="row">' +
-                        '<div class="col-xs-5 col-xs-offset-1 col-md-5 col-md-offset-1">' +
-                            imgEquipo1 +
-                             '<p class="text-center"><strong>' + publicacion.Equipo1.Abrev + '</strong></p>';
-                        if (publicacion.EsMatchup) {
-                            html += '<p class="text-center"><strong>' + publicacion.Jugador1 + '</strong></p>';
-                        }
-
-                        html += '</div>' +
-                        '<div class="col-xs-5 col-xs-offset-0 col-md-5">' +
-                            imgEquipo2 +
-                            '<p class="text-center"><strong>' + publicacion.Equipo2.Abrev + '</strong></p>';
-                        if (publicacion.EsMatchup) {
-                            html += '<p class="text-center"><strong>' + publicacion.Jugador2 + '</strong></p>';
-                        }
-                        html += '</div>' +
-                        '</div>';
-                        html +=
-                        //Pronostico
-                            '<div class"row">' +
-                        '<div class="center-block">' +
-                        'PICK:' + publicacion.Pronostico +
-                        '</div>' +
-                        '</div>' +
-                        //end pronostico
-                        '</div>' +
-                        '</div>' +
-                        '</div>';
-                        if (cont == 3) {
-                            html += "</div>";
-                            cont = 1;
-                            crearRow = true;
-                        } else {
-                            cont++;
-                        }
-
-
-                    }
-                    if (cont <= 3) {
-                        html += "</div>";
-
-                    }
-                    $('#divPublicaciones').append(html);
-                    if (data) {
-                        MostrarAlerta("¡Enhorabuena!", 'success', 'La acción se realizó exitosamente.');
-                    }
+    function CargarPublicaciones(response) {
+        $('#divPublicaciones').empty();
+        objPublicaciones = response;
+        var cantRows = Math.ceil(objPublicaciones.length / 3);
+        var cont = 1;
+        var crearRow = true;
+        var html = "";
+        if (objPublicaciones.length > 0) {
+            for (var i = 0; i < objPublicaciones.length; i++) {
+                var publicacion = objPublicaciones[i];
+                var srcImgDeporte = "data:image/png;base64," + _arrayBufferToBase64(publicacion.Equipo1.Deporte.Imagen).toString();
+                var imgDeporte = '<img width="80" class="pull-right" heigth="40" src="' + srcImgDeporte + '" alt="Deporte"/>';
+                var srcImgEquipo1 = "data:image/png;base64," + _arrayBufferToBase64(publicacion.Equipo1.Imagen).toString();
+                var srcImgEquipo2 = "data:image/png;base64," + _arrayBufferToBase64(publicacion.Equipo2.Imagen).toString();
+                var imgEquipo1 = '<img width="100" heigth="50" src="' + srcImgEquipo1 + '" class="center-block" alt="Equipo 1"/>';
+                var imgEquipo2 = '<img width="100" heigth="50" src="' + srcImgEquipo2 + '" class="center-block" alt="Equipo 2"/>';
+                var fechaJuego = new FechaUtility(publicacion.FechaJuego);
+                if (crearRow) {
+                    html += "<div class='row'>";
+                    crearRow = false;
                 }
-                else {
-                    MostrarAlerta("Información", 'info', 'No existen publicaciones para mostrar');
+
+                html += '<div class="col-lg-4 col-xs-12">';
+                if (publicacion.Resultado == null) {
+                    html += '<div class="portlet portlet-default">';
+                } else if (publicacion.Resultado == true) {
+                    html += '<div class="portlet portlet-green">';
+                } else {
+                    html += '<div class="portlet portlet-red">';
                 }
-            },
-            error: function (xhr, status) {
-                MostrarAlerta("Error", 'error', xhr.responseText);
+
+                html += '<div class="portlet-heading">' +
+                '<div class="portlet-title">' +
+                '<h4>' + publicacion.Equipo1.Deporte.Nombre + ' - ' + fechaJuego.GetDayName() + ' ' + fechaJuego.GetDay() + ' ' + fechaJuego.GetMonthName() + ' </h4>' +
+                '</div>' +
+                '<div class="portlet-widgets">' +
+                '<div class="btn-group">' +
+                '<a class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">' +
+                /*((publicacion.Resultado == null) ? 'Pendiente' : (publicacion.Resultado == true) ? 'Ganó' : 'Perdió') + '<span class="caret"></span>' +*/
+                '<i class="fa fa-tasks pointer"></i>' +
+                '</a>' +
+                '<ul class="dropdown-menu">' +
+                '<li><a href="#" onclick="CambiarEstatus(' + publicacion.IdPublicacion + ',1)">Ganó</a></li>' +
+                '<li><a href="#" onclick="CambiarEstatus(' + publicacion.IdPublicacion + ',0)">Perdió</a></li>' +
+                '<li><a href="#" onclick="CambiarEstatus(' + publicacion.IdPublicacion + ',null)">Pendiente</a></li>' +
+
+                '</ul>' +
+                '</div><span class="divider"></span>' +
+                '<a onclick="EditarPublicacion(' + i + ')" title="Editar"><i class="fa fa-edit pointer"></i></a>';
+                //if (publicacion.Resultado == null) {
+
+                //            html += '<span class="divider"></span>' +
+                //                '<a title="En espera del resultado"><i class="glyphicon glyphicon-hourglass"></i></a>';
+                //        }
+
+                html += '<span class="divider"></span>' +
+                    '<a data-toggle="collapse" data-parent="#accordion" href="#' + publicacion.IdPublicacion + '"><i class="fa fa-chevron-down"></i></a>' +
+                    '</div>' +
+                    '<div class="clearfix"></div>' +
+                    '</div>' +
+                    '<div id="' + publicacion.IdPublicacion + '" class="panel-collapse collapse ">' +
+                    '<div class="portlet-body">' +
+                    '<p>' + publicacion.Analisis + '</p>' +
+                    '</div>' +
+                    '</div>' +
+                    '<div class="portlet-footer">' +
+                    '<div class="row">' +
+                    '<p class="text-center">' + publicacion.Titulo + '</p>' +
+                '</div>' +
+                //Equipos
+                    '<div class="row">' +
+                '<div class="col-xs-5 col-xs-offset-1 col-md-5 col-md-offset-1">' +
+                    imgEquipo1 +
+                     '<p class="text-center"><strong>' + publicacion.Equipo1.Abrev + '</strong></p>';
+                if (publicacion.EsMatchup) {
+                    html += '<p class="text-center"><strong>' + publicacion.Jugador1 + '</strong></p>';
+                }
+
+                html += '</div>' +
+                '<div class="col-xs-5 col-xs-offset-0 col-md-5">' +
+                    imgEquipo2 +
+                    '<p class="text-center"><strong>' + publicacion.Equipo2.Abrev + '</strong></p>';
+                if (publicacion.EsMatchup) {
+                    html += '<p class="text-center"><strong>' + publicacion.Jugador2 + '</strong></p>';
+                }
+                html += '</div>' +
+                '</div>';
+                html +=
+                //Pronostico
+                    '<div class"row">' +
+                '<div class="center-block">' +
+                'PICK:' + publicacion.Pronostico +
+                '</div>' +
+                '</div>' +
+                //end pronostico
+                '</div>' +
+                '</div>' +
+                '</div>';
+                if (cont == 3) {
+                    html += "</div>";
+                    cont = 1;
+                    crearRow = true;
+                } else {
+                    cont++;
+                }
+
+
             }
-        });
+            if (cont <= 3) {
+                html += "</div>";
+
+            }
+            $('#divPublicaciones').append(html);
+            if (data) {
+                MostrarAlerta("¡Enhorabuena!", 'success', 'La acción se realizó exitosamente.');
+            }
+        }
+        else {
+            MostrarAlerta("Información", 'info', 'No existen publicaciones para mostrar');
+        }
     }
 
 
-    </script>
+</script>
 }

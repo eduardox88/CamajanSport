@@ -161,7 +161,6 @@
     <Content Include="css\plugins\dropzone\css\dropzone.css" />
     <Content Include="css\plugins\dropzone\images\spritemap%402x.png" />
     <Content Include="css\plugins\dropzone\images\spritemap.png" />
-    <Content Include="css\plugins\fonts\glyphicons-halflings-regular.svg" />
     <Content Include="css\plugins\fullcalendar\fullcalendar.css" />
     <Content Include="css\plugins\jvectormap\jquery-jvectormap-1.1.1.css" />
     <Content Include="css\plugins\jvectormap\jquery-jvectormap-1.2.2.css" />
@@ -179,7 +178,7 @@
     <Content Include="css\plugins\summernote\summernote.css" />
     <Content Include="css\plugins\sweetalert\sweetalert.css" />
     <Content Include="css\style.css" />
-    <Content Include="fonts\glyphicons-halflings-regular.svg" />
+    <Content Include="css\plugins\bootstrap\fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Guia\404.html" />
     <Content Include="Guia\500.html" />
@@ -520,6 +519,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Manejadores\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
@@ -653,15 +653,6 @@
     <Content Include="icons\font-awesome\scss\font-awesome.scss" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="css\plugins\fonts\glyphicons-halflings-regular.eot" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="css\plugins\fonts\glyphicons-halflings-regular.ttf" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="css\plugins\fonts\glyphicons-halflings-regular.woff" />
-  </ItemGroup>
-  <ItemGroup>
     <Content Include="Views\Home\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
@@ -693,22 +684,22 @@
     <Content Include="Views\Publicacion\MantPublicaciones.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="fonts\glyphicons-halflings-regular.ttf" />
+    <Content Include="css\plugins\bootstrap\fonts\glyphicons-halflings-regular.woff" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="fonts\glyphicons-halflings-regular.woff" />
+    <Content Include="css\plugins\bootstrap\fonts\glyphicons-halflings-regular.ttf" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="fonts\glyphicons-halflings-regular.eot" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\LogIn\CrearUsuario.cshtml" />
+    <Content Include="css\plugins\bootstrap\fonts\glyphicons-halflings-regular.eot" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\LogIn\VistaConfirmacion.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Usuario\PerfilUsuario.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Usuario\MantUsuarios.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
