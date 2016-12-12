@@ -23,6 +23,42 @@ namespace ApiCamajan.Controllers
         {
             return db.Publicacions.ToList();
         }
+
+        [Authorize]
+        public List<SelectAttributes> GetEstadosResultado_Select()
+        {
+            return db.estadosResultado.Select(m => new SelectAttributes { Value = m.IdEstadoResultado, DisplayText = m.Descripcion}).ToList();
+        }
+
+        [Authorize]
+        // GET: api/Publicacion
+        public List<Publicacion> GetPublicacionesByFiltro(string FechaJuego,int IdDeporte,int IdEstadoResultado,string TipoPublicacion)
+        {
+
+            var query = from s in db.Publicacions
+                            select s;            
+            if (FechaJuego != null)
+            {
+                DateTime fecha = Convert.ToDateTime(FechaJuego);
+                query = query.Where(f => f.FechaJuego == fecha);
+            }
+            if (IdDeporte > 0)
+            {
+                query = query.Where(f => f.Equipo1.idDeporte == IdDeporte);
+            }
+            if (TipoPublicacion != null)
+            {
+                bool EsPremium = Convert.ToBoolean(int.Parse(TipoPublicacion));
+                query = query.Where(f => f.EsPremium == EsPremium);
+            }
+            if (IdEstadoResultado > 0)
+            {
+                query = query.Where(f => f.IdEstadoResultado == IdEstadoResultado);
+            }
+            return query.ToList();
+            
+        }
+
         [Authorize]
         // GET: api/Publicacion/5
         [ResponseType(typeof(Publicacion))]
@@ -47,7 +83,7 @@ namespace ApiCamajan.Controllers
             {
                 return NotFound();
             }
-            publicacion.Resultado = pub.Resultado;            
+            publicacion.IdEstadoResultado = pub.IdEstadoResultado;            
             try
             {
                 await db.SaveChangesAsync();
