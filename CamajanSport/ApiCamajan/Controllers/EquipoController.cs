@@ -38,7 +38,7 @@ namespace ApiCamajan.Controllers
         [Authorize]
         public List<SelectAttributes> GetEquiposByDeporte_Select(int id)
         {
-            return db.Equipoes.Where(e => e.idDeporte == id).Select(e => new SelectAttributes { Value = e.idEquipo, DisplayText = e.Nombre }).ToList();
+            return db.Equipoes.Where(e => e.idDeporte == id && e.Activo == true).Select(e => new SelectAttributes { Value = e.idEquipo, DisplayText = e.Nombre }).ToList();
         }
 
         
