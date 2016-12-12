@@ -160,13 +160,62 @@
         <div class="col-xs-5 col-xs-offset-1 col-sm-5 col-md-4 col-lg-4 col-md-offset-0">
             <a class="btn btn-primary" onclick="NuevaPublicacion()">Nueva Publicación</a>
         </div>
-    </div>
+    </div><br />
+    <div class="row" id="divFiltro">
+        <div class="col-xs-6 col-md-3">
+            <label for="txtFechaJuegoFiltro">Fecha Juego:</label>
+            <input type="text" class="form-control" id="txtFechaJuegoFiltro" />
+        </div>
+        <div class="col-xs-6 col-md-3">
+            <label for="drpDeportesFiltro">Deporte:</label>
+            <select id="drpDeportesFiltro" class="form-control"></select>
+        </div>
+        <div class="col-xs-6 col-md-3">
+            <label for="drpTipoPublicacion">Tipo Publicación:</label>
+            <select id="drpTipoPublicacion" class="form-control">
+                <option value="">TODO</option>
+                <option value="1">Premium</option>
+                <option value="0">Gratis</option>
+            </select>
+        </div>
+        <div class="col-xs-6 col-md-3">
+            <label for="drpEstadoFiltro">Estado Publicación:</label>
+            <div class="input-group">
 
- 
+                <select id="drpEstadoFiltro" class="form-control">                  
+                </select>
+                <span class="input-group-btn">
+                    <input class="btn btn-primary" type="button" value="Buscar" onclick="Buscar()" />
+                </span>
+            </div>
+        </div>        
+    </div>
     </div><br />
     <div class="row">
         <div id="divPublicaciones" class="col-xs-11 col-xs-offset-1 col-md-offset-0 col-sm-9 col-md-12">
 
+        </div>
+        <div class="row">
+            <div class="col-xs-12 col-sm-8 col-md-4 col-sm-offset-2 col-md-offset-5">
+            <nav aria-label="Page navigation">
+                <ul class="pagination">
+                    <li>
+                        <a href="#" aria-label="Previous">
+                            <span aria-hidden="true">&laquo;</span>
+                        </a>
+                    </li>
+                    <li><a href="#">1</a></li>
+                    <li><a href="#">2</a></li>
+                    <li><a href="#">3</a></li>
+                    <li><a href="#">4</a></li>
+                    <li><a href="#">5</a></li>
+                    <li>
+                        <a href="#" aria-label="Next">
+                            <span aria-hidden="true">&raquo;</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
         </div>
     </div>
 
@@ -184,9 +233,13 @@
         Init_SingleSelect2($('#drpEquipo2'));
         Init_SingleSelect2($('#drpDeportes'));
         Init_SingleSelect2($('#drpTipoPublicacion'));
+        $('#txtFechaJuegoFiltro','#divFiltro').datepicker({
+            format: 'dd/mm/yyyy'
+        });
         $('#txtFecha').datetimepicker({
             format: 'DD/MM/YYYY hh:mm A'
         });
+
 
         $('#divEsMatchup').find('input[name="optEsMatchup"]').change(function () {
             if ($(this).val() == '1') {
@@ -197,6 +250,8 @@
                 $('#txtJugador2', '#frmNuevaPublicacion').val('');
             }
         });
+        AjaxCall('@Url.Action("GetEstadosResultado_Select", "Publicacion")', '', 'drpEstadoFiltro', CargarDropDown, false,"TODO");
+        AjaxCall('@Url.Action("GetDeportes_Select", "Deporte")', '', 'drpDeportesFiltro', CargarDropDown, false,"TODO");
         AjaxCall('@Url.Action("GetDeportes_Select", "Deporte")', '', 'drpDeportes', CargarDropDown);
 
         $('#drpDeportes').on("change", function () {
@@ -249,6 +304,10 @@
         publicacion = undefined;
     }
 
+    function Buscar() {
+        CargarData();
+    }
+
     function EditarPublicacion(index) {
         publicacion = objPublicaciones[index];
         $('#fechaIngreso').val(formatFecha(publicacion.FechaIngreso));
@@ -297,7 +356,7 @@
             publicacion.Jugador1 = $('#txtJugador1', '#frmNuevaPublicacion').val();
             publicacion.Jugador2 = $('#txtJugador2', '#frmNuevaPublicacion').val();
             publicacion.Pronostico = $('#txtPronostico', '#frmNuevaPublicacion').val();
-            publicacion.Resultado = 1;
+            publicacion.IdEstadoResultado = 1;
             publicacion.EsPremium = Boolean(parseInt($('#drpTipoPublicacion', '#frmNuevaPublicacion').val()));
             publicacion.Analisis = $('#txtAnalisis', '#frmNuevaPublicacion').text();
 
@@ -334,26 +393,26 @@
         CargarData();
     }
 
-    function CambiarEstatus(IdPublicacion, Resultado) {
+    function CambiarEstatus(IdPublicacion, IdEstadoResultado) {
         //alert(IdPublicacion+" ,el resultado es "+Resultado);
-        AjaxCall('@Url.Action("CambiarEstatus", "Publicacion")', { "IdPublicacion": IdPublicacion, "Resultado": Resultado }, '', CargarData);
+        AjaxCall('@Url.Action("CambiarEstatus", "Publicacion")', { "IdPublicacion": IdPublicacion, "IdEstadoResultado": IdEstadoResultado }, '', CargarData);
     }
 
-    function CargarData(data) {
-
-        AjaxCall('@Url.Action("GetPublicaciones", "Publicacion")', "" /*{ "IdPublicacion": IdPublicacion, "Resultado": Resultado }*/, '', CargarPublicaciones);
-        @*$.ajax({
-        type: "POST",
-        async: true,
-        url: '@Url.Action("GetPublicaciones","Publicacion")',
-        dataType: "json",
-        success: function (response) {
-
-        },
-        error: function (xhr, status) {
-            MostrarAlerta("Error", 'error', xhr.responseText);
+        function CargarData(data) {
+        AjaxCall(
+            '@Url.Action("GetPublicacionesByFiltro", "Publicacion")',
+            {
+                "FechaJuego": ($('#txtFechaJuegoFiltro', '#divFiltro').val()!= "")?$('#txtFechaJuegoFiltro', '#divFiltro').val():null,
+                "IdDeporte": ($('#drpDeportesFiltro', '#divFiltro').val() == "") ? 0 : $('#drpDeportesFiltro', '#divFiltro').val(),
+                "IdEstadoResultado": ($('#drpEstadoFiltro', '#divFiltro').val() == "") ? 0 : $('#drpEstadoFiltro', '#divFiltro').val(),
+                "TipoPublicacion": $('#drpTipoPublicacion', '#divFiltro').val()
+            },
+            '',
+            CargarPublicaciones
+        );
+        if (data) {
+            MostrarAlerta("¡Enhorabuena!", 'success', 'La acción se realizó exitosamente.');
         }
-    });*@
     }
 
     function CargarPublicaciones(response) {
@@ -379,9 +438,9 @@
                 }
 
                 html += '<div class="col-lg-4 col-xs-12">';
-                if (publicacion.Resultado == null) {
+                if (publicacion.IdEstadoResultado == 1) {
                     html += '<div class="portlet portlet-default">';
-                } else if (publicacion.Resultado == true) {
+                } else if (publicacion.IdEstadoResultado == 2) {
                     html += '<div class="portlet portlet-green">';
                 } else {
                     html += '<div class="portlet portlet-red">';
@@ -398,9 +457,9 @@
                 '<i class="fa fa-tasks pointer"></i>' +
                 '</a>' +
                 '<ul class="dropdown-menu">' +
-                '<li><a href="#" onclick="CambiarEstatus(' + publicacion.IdPublicacion + ',1)">Ganó</a></li>' +
-                '<li><a href="#" onclick="CambiarEstatus(' + publicacion.IdPublicacion + ',0)">Perdió</a></li>' +
-                '<li><a href="#" onclick="CambiarEstatus(' + publicacion.IdPublicacion + ',null)">Pendiente</a></li>' +
+                '<li><a href="#" onclick="CambiarEstatus(' + publicacion.IdPublicacion + ',2)">Ganado</a></li>' +
+                '<li><a href="#" onclick="CambiarEstatus(' + publicacion.IdPublicacion + ',3)">Perdido</a></li>' +
+                '<li><a href="#" onclick="CambiarEstatus(' + publicacion.IdPublicacion + ',1)">Pendiente</a></li>' +
 
                 '</ul>' +
                 '</div><span class="divider"></span>' +
@@ -427,15 +486,18 @@
                 '</div>' +
                 //Equipos
                     '<div class="row">' +
-                '<div class="col-xs-5 col-xs-offset-1 col-md-5 col-md-offset-1">' +
+                '<div class="col-xs-4 col-xs-offset-0 col-md-4 col-md-offset-0">' +
                     imgEquipo1 +
                      '<p class="text-center"><strong>' + publicacion.Equipo1.Abrev + '</strong></p>';
                 if (publicacion.EsMatchup) {
                     html += '<p class="text-center"><strong>' + publicacion.Jugador1 + '</strong></p>';
                 }
+                
 
-                html += '</div>' +
-                '<div class="col-xs-5 col-xs-offset-0 col-md-5">' +
+                html += '</div>';
+                html += '<div class="col-xs-4 col-xs-offset-0 col-md-4"> <p class="text-center"><strong>' + fechaJuego.GetTime() + '</strong></p>'+
+                    '<p class="text-center"><strong>' + publicacion.EstadoResultado.Descripcion + '</strong></p></div>';
+                html += '<div class="col-xs-4 col-xs-offset-0 col-md-4 ">' +
                     imgEquipo2 +
                     '<p class="text-center"><strong>' + publicacion.Equipo2.Abrev + '</strong></p>';
                 if (publicacion.EsMatchup) {
@@ -469,9 +531,6 @@
 
             }
             $('#divPublicaciones').append(html);
-            if (data) {
-                MostrarAlerta("¡Enhorabuena!", 'success', 'La acción se realizó exitosamente.');
-            }
         }
         else {
             MostrarAlerta("Información", 'info', 'No existen publicaciones para mostrar');
