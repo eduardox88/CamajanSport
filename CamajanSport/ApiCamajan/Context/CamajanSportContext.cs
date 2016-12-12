@@ -21,6 +21,8 @@ namespace ApiCamajan.Context
 
         public DbSet<Estado> estados { get; set; }
 
+        public DbSet<EstadoResultado> estadosResultado { get; set; }
+
         public System.Data.Entity.DbSet<CamajanSport.BOL.Equipo> Equipoes { get; set; }
 
         public System.Data.Entity.DbSet<CamajanSport.BOL.Publicacion> Publicacions { get; set; }
