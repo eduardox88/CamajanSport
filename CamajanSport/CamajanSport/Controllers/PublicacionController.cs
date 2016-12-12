@@ -53,31 +53,44 @@ namespace CamajanSport.Controllers
 
         }
 
-        public async Task<JsonResult> CambiarEstatus(int IdPublicacion,bool? Resultado)
+        public async Task<JsonResult> CambiarEstatus(int IdPublicacion, int IdEstadoResultado)
         {
-
             try
             {
                 Publicacion pub = new Publicacion();
                 pub.IdPublicacion = IdPublicacion;
-                pub.Resultado = Resultado;
+                pub.IdEstadoResultado = IdEstadoResultado;
                 await ApiHelper.POST<Publicacion>("Publicacion/CambiarEstatus", pub, token);
-                    return Json("El estatus se ha cambiado satisfactoriamente.");
+                return Json("El estatus se ha cambiado satisfactoriamente.");
             }
             catch (Exception)
             {
                 Response.StatusCode = (int)HttpStatusCode.BadRequest;
                 return Json("Ha ocurrido un error al cambiar el estatus de la publicación. Si el problema persiste contacte su administrador.");
             }
-
         }
-
-        [HttpPost]
-        public async Task<JsonResult> GetPublicaciones() 
+        public async Task<JsonResult> GetEstadosResultado_Select()
         {
             try
             {
-                var publicaciones = await ApiHelper.GET_List<Publicacion>("Publicacion/GetPublicaciones", token);
+
+                var estadosResultado = await ApiHelper.GET_List<SelectAttributes>("Publicacion/GetEstadosResultado_Select", token);
+                return Json(estadosResultado, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception)
+            {
+                Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                return Json("Ha ocurrido un error al obtener los estados de la publicación. Si el problema persiste contacte su administrador.");
+            }
+        }
+        
+       
+        [HttpPost]
+        public async Task<JsonResult> GetPublicacionesByFiltro(DateTime? FechaJuego, int IdDeporte, int IdEstadoResultado, string TipoPublicacion) 
+        {
+            try
+            {
+                var publicaciones = await ApiHelper.GET_List_ByFilter<Publicacion>("Publicacion/GetPublicacionesByFiltro", "FechaJuego=" + ((FechaJuego.HasValue) ? FechaJuego.Value.ToShortDateString() : "") + "&IdDeporte=" + IdDeporte.ToString() + "&IdEstadoResultado=" + IdEstadoResultado.ToString() + "&TipoPublicacion=" + TipoPublicacion, token);
                 return Json(publicaciones, JsonRequestBehavior.AllowGet);
             }
             catch (Exception)
