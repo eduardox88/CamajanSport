@@ -62,7 +62,7 @@ function MostrarDialogo(id, titulo, mensaje, showBtnCerrar, botones, showTopClos
     $('#' + id).modal();
 };
 
-function AjaxCall(url, data,idContenedor ,callBackFunction, IsAsync)
+function AjaxCall(url, data,idContenedor ,callBackFunction, IsAsync,optionalParameter)
 {
     $.ajax({
         type: "POST",
@@ -77,7 +77,7 @@ function AjaxCall(url, data,idContenedor ,callBackFunction, IsAsync)
                 //MostrarDialogo('ajaxSuccessModal', "Mensaje informativo", "La acción se realizó exitosamente.");
                 MostrarAlerta("¡Enhorabuena!", 'success', 'La acción se realizó exitosamente.');
             } else if (idContenedor != "") {
-                callBackFunction(idContenedor, data);
+                callBackFunction(idContenedor, data, optionalParameter);
             } else {
                 callBackFunction(data);
             }
@@ -94,9 +94,15 @@ function restartDropDown(id,value,text) {
     $('#' + id).append($('<option value="'+value+'" selected="selected">'+text+'</option>'));
 };
 
-function CargarDropDown(idDropDown, options) {
+function CargarDropDown(idDropDown, options,defaultOptionText) {
     var drp = $('#' + idDropDown);
-    var html = '<option value="">Seleccione</option>';
+    var html = "";
+    if (defaultOptionText != undefined) {
+        html += '<option value="">' +defaultOptionText+ '</option>';
+    } else {
+        html += '<option value="">Seleccione</option>';
+    }
+    
     if (options.length > 0) {
         for (var i = 0; i < options.length; i++) {
             html += '<option value="' + options[i].Value + '">' + options[i].DisplayText + '</option>';
@@ -327,8 +333,6 @@ function FechaUtility(milisecs)
         }
 
     }
-
-
 }
 
 
