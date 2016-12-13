@@ -1,4 +1,5 @@
 ﻿using CamajanSport.BOL;
+using CamajanSport.Properties;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,6 +9,7 @@ using System.Threading.Tasks;
 using System.Web;
 using System.Web.Http;
 using System.Web.Mvc;
+using System.Web.Security;
 using Utilidades;
 
 namespace CamajanSport.Controllers
@@ -15,7 +17,29 @@ namespace CamajanSport.Controllers
     [System.Web.Mvc.Authorize]
     public class EquipoController : Controller
     {
-        private Token token = CookieHandler.GetDecryptToken();
+        #region Propiedades
+        private Token GetAuthToken
+        {
+
+            get
+            {
+                Token token = CookieHandler.GetCookieDecrypted<Token>(Settings.Default.TokenCookie);
+
+                return token;
+            }
+        }
+
+        private Usuario GetUserDecrypted
+        {
+
+            get
+            {
+                Usuario token = CookieHandler.GetCookieDecrypted<Usuario>(FormsAuthentication.FormsCookieName);
+
+                return token;
+            }
+        }
+        #endregion
         public ActionResult MantEquipos() {
             return View();
         }
@@ -47,7 +71,6 @@ namespace CamajanSport.Controllers
                         imgByte = new Byte[file.ContentLength];
                         //force the control to load data in array
                         file.InputStream.Read(imgByte, 0, file.ContentLength);
-
                     }
                 }
                 else
@@ -68,11 +91,11 @@ namespace CamajanSport.Controllers
 
                 if (idEquipo > 0)
                 {
-                    respuesta = await ApiHelper.PUT<Equipo>("Equipo/PutEquipo", equipo, token);
+                    respuesta = await ApiHelper.PUT<Equipo>("Equipo/PutEquipo", equipo, GetAuthToken);
                 }
                 else
                 {
-                    respuesta = await ApiHelper.POST<Equipo>("Equipo/PostEquipo", equipo, token);
+                    respuesta = await ApiHelper.POST<Equipo>("Equipo/PostEquipo", equipo, GetAuthToken);
                 }
 
                 if (respuesta.IsSuccessStatusCode)
@@ -96,7 +119,7 @@ namespace CamajanSport.Controllers
 
             try
             {
-                var lista = await ApiHelper.GET_List<Equipo>("Equipo/GetListEquipos", token);
+                var lista = await ApiHelper.GET_List<Equipo>("Equipo/GetListEquipos", GetAuthToken);
                 return Json(lista, JsonRequestBehavior.AllowGet);
             }
             catch (Exception ex)
@@ -111,7 +134,7 @@ namespace CamajanSport.Controllers
             try
             {
                 int cantidad = 0;
-                var response = await ApiHelper.GET("Equipo/GetCountEquipos", token);
+                var response = await ApiHelper.GET("Equipo/GetCountEquipos", GetAuthToken);
 
                 if (response.IsSuccessStatusCode)
                 {
@@ -132,7 +155,7 @@ namespace CamajanSport.Controllers
 
             try
             {
-                var lista = await ApiHelper.GET_List<SelectAttributes>("Equipo/GetEquipos_Select", token);
+                var lista = await ApiHelper.GET_List<SelectAttributes>("Equipo/GetEquipos_Select", GetAuthToken);
                 return Json(lista, JsonRequestBehavior.AllowGet);
             }
             catch (Exception ex)
@@ -146,7 +169,7 @@ namespace CamajanSport.Controllers
 
             try
             {
-                var lista = await ApiHelper.GET_ListById<SelectAttributes>("Equipo/GetEquiposByDeporte_Select", idDeporte, token);
+                var lista = await ApiHelper.GET_ListById<SelectAttributes>("Equipo/GetEquiposByDeporte_Select", idDeporte, GetAuthToken);
                 return Json(lista, JsonRequestBehavior.AllowGet);
             }
             catch (Exception ex)

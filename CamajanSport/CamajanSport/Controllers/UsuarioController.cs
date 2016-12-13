@@ -1,4 +1,5 @@
 ﻿using CamajanSport.BOL;
+using CamajanSport.Properties;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,6 +10,7 @@ using System.Web;
 using System.Web.Http;
 using System.Web.Mvc;
 using System.Web.Script.Serialization;
+using System.Web.Security;
 using Utilidades;
 
 namespace CamajanSport.Controllers
@@ -16,7 +18,28 @@ namespace CamajanSport.Controllers
  
     public class UsuarioController : Controller
     {
-        private Token token = CookieHandler.GetDecryptToken();
+        #region Propiedades
+        private Token GetAuthToken { 
+            
+            get{
+                Token token = CookieHandler.GetCookieDecrypted<Token>(Settings.Default.TokenCookie);
+
+                return token;
+            }  
+        }
+
+        private Usuario GetUserDecrypted
+        {
+
+            get
+            {
+                Usuario token = CookieHandler.GetCookieDecrypted<Usuario>(FormsAuthentication.FormsCookieName);
+
+                return token;
+            }
+        }
+        #endregion
+
         public ActionResult MantUsuarios()
         {
             return View();
@@ -25,26 +48,24 @@ namespace CamajanSport.Controllers
         [System.Web.Mvc.HttpGet]
         public ActionResult PerfilUsuario() {
 
-            var ticket = Utilidades.CookieHandler.GetDecryptTicket();
-
-            Usuario modelo = new Usuario();
-            JavaScriptSerializer js = new JavaScriptSerializer();
-
-            modelo = js.Deserialize<Usuario>(ticket.UserData);
-
-            return View(modelo);
+            return View(GetUserDecrypted);
         }
 
         [System.Web.Mvc.HttpPost]
         public async Task<ActionResult> PerfilUsuario(Usuario modelo)
         {
-
             if (ModelState.IsValid) {
                 try
                 {
-                    HttpResponseMessage respuesta = await ApiHelper.PUT<Usuario>("Usuario/PutUsuario", modelo, token);
+                    HttpResponseMessage respuesta = await ApiHelper.PUT<Usuario>("Usuario/PutUsuarioPerfil", modelo, GetAuthToken);
 
-                    if (!respuesta.IsSuccessStatusCode) {
+                    if (respuesta.IsSuccessStatusCode)
+                    {
+                        Usuario nuevo = await ApiHelper.GET_By_ID<Usuario>("Usuario/GetUsuario", modelo.IdUsuario, GetAuthToken);
+                        HttpContext.Response.Cookies.Set(CookieHandler.UpdateTicket(nuevo));
+                        
+                    }
+                    else {
                         ModelState.AddModelError("", "Ha ocurrido un problema");
                     }
                 }
@@ -55,17 +76,45 @@ namespace CamajanSport.Controllers
                 }
             }
 
-            return View(modelo);
+            return RedirectToAction("PerfilUsuario");
         }
 
+        [System.Web.Mvc.Authorize]
+        public async Task<JsonResult> UpdatePassword(string oldPass, string newPass, string RePass) {
 
+            Usuario aux = GetUserDecrypted;
 
+            if (oldPass == aux.Contrasena)
+            {
+                if (newPass == RePass)
+                {
+
+                    HttpResponseMessage respuesta = await ApiHelper.PUT<Usuario>("Usuario/PutChangePassword", new Usuario() { IdUsuario = aux.IdUsuario, Contrasena = Encrypt.ComputeHash(newPass,"SHA512",null) }, GetAuthToken);
+
+                    if (respuesta.IsSuccessStatusCode)
+                    {
+                        Usuario nuevo = await ApiHelper.GET_By_ID<Usuario>("Usuario/GetUsuario", aux.IdUsuario, GetAuthToken);
+                        HttpContext.Response.Cookies.Set(CookieHandler.UpdateTicket(nuevo, newPass));
+
+                        return Json(new { message="Contraseña actualizada exitosamente", property = "alert alert-success" }, JsonRequestBehavior.AllowGet);
+                    }
+                    else
+                    {
+                        return Json(new { message = "Ha ocurrido un problema al momento de actualizar la contraseña", property = "alert alert-danger" }, JsonRequestBehavior.AllowGet);
+                    }
+                }
+                else {
+                    return Json(new { message = "Las contraseñas no coinciden", property = "alert alert-danger" }, JsonRequestBehavior.AllowGet);
+                }
+            }
+            else {
+                return Json(new { message = "Contraseña Inválida", property = "alert alert-danger" }, JsonRequestBehavior.AllowGet);
+            }
+        }
         public async Task<ActionResult> SaveUploadedFile()
         {
             try
             {
-
-            
                 string fName = "";
                 int idUsuario = int.Parse(Request.Form["idUsuario"]);
                 string Nombre = Request.Form["Nombre"];
@@ -80,6 +129,7 @@ namespace CamajanSport.Controllers
 
                 bool newFile = Convert.ToBoolean(Request.Form["newFile"].ToString());
                 Byte[] imgByte = null;
+                string path = string.Empty;
 
                 if (newFile)
                 {
@@ -90,17 +140,12 @@ namespace CamajanSport.Controllers
                     fName = file.FileName;
                     if (file != null && file.ContentLength > 0)
                     {
-                        imgByte = new Byte[file.ContentLength];
-                        //force the control to load data in array
-                        file.InputStream.Read(imgByte, 0, file.ContentLength);
+                        string pic = System.IO.Path.GetFileName(fName);
 
+                        path = System.IO.Path.Combine(Server.MapPath("~/ProfileImages"), pic);
+                        file.SaveAs(path);
+                        path = "/ProfileImages/" + pic;
                     }
-                }
-                else
-                {
-                    int len = Request.Form["afile"].ToString().Split(',').Length;
-                    imgByte = new Byte[len];
-                    imgByte = Request.Form["afile"].ToString().Split(',').Select(s => Convert.ToByte(s)).ToArray();
                 }
 
                 Usuario user = new Usuario();
@@ -115,17 +160,17 @@ namespace CamajanSport.Controllers
                 user.IdEstado = idEstado;
                 user.Contrasena = Encrypt.ComputeHash(Pass, "SHA512", null); ;
                 user.Biografia = Biografia;
-                user.Imagen = imgByte;
+                user.Imagen = path;
 
                 HttpResponseMessage respuesta;
 
                 if (idUsuario > 0)
                 {
-                    respuesta = await ApiHelper.PUT<Usuario>("Usuario/PutUsuario", user, token);
+                    respuesta = await ApiHelper.PUT<Usuario>("Usuario/PutUsuario", user, GetAuthToken).ConfigureAwait(false);
                 }
                 else
                 {
-                    respuesta = await ApiHelper.POST<Usuario>("Usuario/PostUsuario", user, token);
+                    respuesta = await ApiHelper.POST<Usuario>("Usuario/PostUsuario", user, GetAuthToken).ConfigureAwait(false);
                 }
 
                 if (respuesta.IsSuccessStatusCode)
@@ -158,10 +203,10 @@ namespace CamajanSport.Controllers
                     data.Contrasena = Encrypt.ComputeHash(data.Contrasena, "SHA512", null);
                     data.IdEstado = 2; // El 2 significa Pendiente por verificacion
                     data.IdRol = 1; // Significa que es un usuario comun y corriente
-                    respuesta = await ApiHelper.POST<Usuario>("Usuario/PostUsuario", data, token);
+                    respuesta = await ApiHelper.POST<Usuario>("Usuario/PostUsuario", data, GetAuthToken).ConfigureAwait(false);
                 }
                 else {
-                    respuesta = await ApiHelper.PUT<Usuario>("Usuario/PutUsuario", data, token);
+                    respuesta = await ApiHelper.PUT<Usuario>("Usuario/PutUsuario", data, GetAuthToken).ConfigureAwait(false);
                 }
 
                 if (respuesta.IsSuccessStatusCode)
@@ -169,7 +214,7 @@ namespace CamajanSport.Controllers
                     //Tener acceso a la cuenta camajan
                     if (data.IdUsuario == 0)
                     {
-                        int idUsuarioInsertado = await respuesta.Content.ReadAsAsync<int>();
+                        int idUsuarioInsertado = await respuesta.Content.ReadAsAsync<int>().ConfigureAwait(false);
 
                         MailHandler.SendEmail(idUsuarioInsertado, data.CorreoElec);
                     }
@@ -195,12 +240,12 @@ namespace CamajanSport.Controllers
             try
             {
 
-                var response = await ApiHelper.POST<Usuario>("Usuario/ExisteUsuarioPorCorreo", new Usuario() { CorreoElec = correo }, token);
+                var response = await ApiHelper.POST<Usuario>("Usuario/ExisteUsuarioPorCorreo", new Usuario() { CorreoElec = correo }, GetAuthToken).ConfigureAwait(false);
                 bool success = false;
 
                 if (response.IsSuccessStatusCode)
                 {
-                    success = await response.Content.ReadAsAsync<bool>();
+                    success = await response.Content.ReadAsAsync<bool>().ConfigureAwait(false);
                     return Json(success);
                 }
                 else {
@@ -221,12 +266,12 @@ namespace CamajanSport.Controllers
             try
             {
 
-                var response = await ApiHelper.POST<Usuario>("Usuario/ExisteUsuarioPorNombre", new Usuario() { NombreUsuario = usuario }, token);
+                var response = await ApiHelper.POST<Usuario>("Usuario/ExisteUsuarioPorNombre", new Usuario() { NombreUsuario = usuario }, GetAuthToken).ConfigureAwait(false);
                 bool success = false;
 
                 if (response.IsSuccessStatusCode)
                 {
-                    success = await response.Content.ReadAsAsync<bool>();
+                    success = await response.Content.ReadAsAsync<bool>().ConfigureAwait(false);
 
                     return Json(success);
                 }
@@ -248,7 +293,7 @@ namespace CamajanSport.Controllers
 
             try
             {
-                var lista = await ApiHelper.GET_List<Usuario>("Usuario/Getusuarios", token);
+                var lista = await ApiHelper.GET_List<Usuario>("Usuario/Getusuarios", GetAuthToken).ConfigureAwait(false);
                 return Json(lista, JsonRequestBehavior.AllowGet);
             }
             catch (Exception ex)
@@ -266,16 +311,16 @@ namespace CamajanSport.Controllers
 
                 HttpClient client = new HttpClient();
 
-                if (token != null)
+                if (GetAuthToken != null)
                 {
-                    client.DefaultRequestHeaders.Add("Authorization", "Bearer " + token.AccessToken);
+                    client.DefaultRequestHeaders.Add("Authorization", "Bearer " + GetAuthToken.AccessToken);
                 }
 
-                HttpResponseMessage result = await client.GetAsync("http://localhost:14678/api/Usuario/GetUsuariosByEstado/" + idEstado );
+                HttpResponseMessage result = await client.GetAsync("http://localhost:14678/api/Usuario/GetUsuariosByEstado/" + idEstado).ConfigureAwait(false);
 
                 if (result.IsSuccessStatusCode)
                 {
-                    cantidad = await result.Content.ReadAsAsync<int>();
+                    cantidad = await result.Content.ReadAsAsync<int>().ConfigureAwait(false);
                 }
 
                 return Json(cantidad, JsonRequestBehavior.AllowGet);
@@ -287,22 +332,23 @@ namespace CamajanSport.Controllers
             }
         }
 
-        public async Task<JsonResult> GetImagenUsuario(int CodUsuario)
+        public async Task<JsonResult> GetImagenUsuario()
         {
             try
             {
+                int CodUsuario = Convert.ToInt32(Request.Form["idUsuario"]);
                 HttpClient client = new HttpClient();
 
-                if (token != null)
+                if (GetAuthToken != null)
                 {
-                    client.DefaultRequestHeaders.Add("Authorization", "Bearer " + token.AccessToken);
+                    client.DefaultRequestHeaders.Add("Authorization", "Bearer " + GetAuthToken.AccessToken);
                 }
 
-                HttpResponseMessage result = await client.GetAsync("http://localhost:14678/api/Usuario/GetImagenUsuario/" + CodUsuario);
+                HttpResponseMessage result = await client.GetAsync("http://localhost:14678/api/Usuario/GetImagenUsuario/" + CodUsuario).ConfigureAwait(false);
 
                 if (result.IsSuccessStatusCode)
                 {
-                    var img = await result.Content.ReadAsAsync<byte[]>();
+                    var img = await result.Content.ReadAsAsync<byte[]>().ConfigureAwait(false);
 
                     if (img != null) {
                         return Json(img, JsonRequestBehavior.AllowGet);
@@ -324,7 +370,7 @@ namespace CamajanSport.Controllers
             {
                 int idDecrypted = Convert.ToInt32(Encrypt.RijndaelDecrypt(id));
 
-                var response = ApiHelper.PUT<Usuario>("Usuario/ConfirmacionUsuario", new Usuario() { IdUsuario = idDecrypted, IdEstado = 1 }, token);
+                var response = ApiHelper.PUT<Usuario>("Usuario/ConfirmacionUsuario", new Usuario() { IdUsuario = idDecrypted, IdEstado = 1 }, GetAuthToken).ConfigureAwait(false);
 
                 return RedirectToAction("VistaConfirmacion", "LogIn");
             }
@@ -332,6 +378,7 @@ namespace CamajanSport.Controllers
             {
                 return RedirectToAction("VistaConfirmacion", "LogIn");
             }
+
             
         }
     }

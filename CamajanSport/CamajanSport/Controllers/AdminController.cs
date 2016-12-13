@@ -9,10 +9,12 @@ using System.Threading.Tasks;
 using Newtonsoft.Json;
 using System.Net.Http.Formatting;
 using CamajanSport.BOL;
+using CamajanSport.App_Start;
 
 namespace CamajanSport.Controllers
 {
     [Authorize]
+    [AuthorizationFilter]
     public class AdminController : Controller
     {
         //

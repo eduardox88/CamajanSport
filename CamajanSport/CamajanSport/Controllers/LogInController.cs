@@ -14,32 +14,59 @@ using CamajanSport.BOL;
 using System.Web;
 using System.Web.Script.Serialization;
 using System.Web.Security;
+using CamajanSport.Properties;
 
 namespace CamajanSport.Controllers
 {
     public class LogInController : Controller
     {
+        #region Propiedades
+        private Token GetAuthToken
+        {
 
+            get
+            {
+                Token token = CookieHandler.GetCookieDecrypted<Token>(Settings.Default.TokenCookie);
+
+                return token;
+            }
+        }
+
+        private Usuario GetUserDecrypted
+        {
+
+            get
+            {
+                Usuario token = CookieHandler.GetCookieDecrypted<Usuario>(FormsAuthentication.FormsCookieName);
+
+                return token;
+            }
+        }
+        #endregion
 
         [System.Web.Mvc.AllowAnonymous]
         public ActionResult Index() {
 
-            var ticket = CookieHandler.GetDecryptTicket();
-            ViewBag.Checked = false;
+            Usuario user = new Usuario();
+            HttpCookie cookie = HttpContext.Request.Cookies[FormsAuthentication.FormsCookieName];
 
-            Usuario model  = new Usuario();
-            JavaScriptSerializer js = new JavaScriptSerializer();
-
-            if (ticket != null)
+            ViewBag.RecordarUsuario = false;
+            
+            if (cookie != null)
             {
-                if (ticket.IsPersistent)
+                FormsAuthenticationTicket ticket = FormsAuthentication.Decrypt(cookie.Value);
+
+                if (ticket != null)
                 {
-                    ViewBag.Checked = true;
-                    model = js.Deserialize<Usuario>(ticket.UserData);
+                    if (ticket.IsPersistent)
+                    {
+                        ViewBag.RecordarUsuario = true;
+                        user = GetUserDecrypted;
+                    }
                 }
             }
 
-            return View(model);
+            return View(user);
 
         }
 
@@ -64,25 +91,13 @@ namespace CamajanSport.Controllers
                         Usuario user = new Usuario();
                         user = await responseUser.Content.ReadAsAsync<Usuario>();
                         user.Contrasena = password;
-
                         if (user.IdEstado != 2)
                         {
-                            Response.Cookies.Clear();
+                            ClearAllCookieSession();
 
-                            FormsAuthentication.SignOut();
-
-                            HttpCookie c = new HttpCookie("Token");
-                            HttpCookie c2 = new HttpCookie(FormsAuthentication.FormsCookieName);
-
-                            c.Expires = DateTime.Now.AddDays(-1);
-                            c2.Expires = DateTime.Now.AddDays(-1);
-
-                            Response.Cookies.Add(c);
-                            Response.Cookies.Add(c2);
-
-                            Response.Cookies.Add(CookieHandler.GetAuthenticationCookie(token, recordar, expire));
+                            Response.Cookies.Add(CookieHandler.GetAuthenticationCookie(Settings.Default.TokenCookie,token, recordar, expire));
                             Response.Cookies.Add(CookieHandler.GetAuthenticationCookie(user, recordar, expire));
-
+                           
                             return Json(true, JsonRequestBehavior.AllowGet);
                         }
                         else {
@@ -114,6 +129,19 @@ namespace CamajanSport.Controllers
         public ActionResult VistaConfirmacion()
         {
             return View();
+        }
+
+        private void ClearAllCookieSession() {
+            Response.Cookies.Clear();
+
+            HttpCookie c = new HttpCookie(Settings.Default.TokenCookie);
+            HttpCookie c2 = new HttpCookie(FormsAuthentication.FormsCookieName);
+
+            c.Expires = DateTime.Now.AddDays(-1);
+            c2.Expires = DateTime.Now.AddDays(-1);
+
+            Response.Cookies.Add(c);
+            Response.Cookies.Add(c2);
         }
     }
 }

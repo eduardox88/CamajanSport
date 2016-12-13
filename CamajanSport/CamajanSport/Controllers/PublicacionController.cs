@@ -11,13 +11,37 @@ using System.Net.Http.Formatting;
 using CamajanSport.BOL;
 using Utilidades;
 using System.Net;
+using CamajanSport.Properties;
+using System.Web.Security;
 
 namespace CamajanSport.Controllers
 {
     [Authorize]
     public class PublicacionController : Controller
     {
-        private Token token = CookieHandler.GetDecryptToken();
+        #region Propiedades
+        private Token GetAuthToken
+        {
+
+            get
+            {
+                Token token = CookieHandler.GetCookieDecrypted<Token>(Settings.Default.TokenCookie);
+
+                return token;
+            }
+        }
+
+        private Usuario GetUserDecrypted
+        {
+
+            get
+            {
+                Usuario token = CookieHandler.GetCookieDecrypted<Usuario>(FormsAuthentication.FormsCookieName);
+
+                return token;
+            }
+        }
+        #endregion
         //
         // GET: /Admin/
 
@@ -31,16 +55,16 @@ namespace CamajanSport.Controllers
             try
             {
                 //SE DEBE OBTENER EL ID DE USUARIO DE LA SESION
-                publicacion.IdUsuario = 5;
+                publicacion.IdUsuario = GetUserDecrypted.IdUsuario;
                 if (publicacion.IdPublicacion > 0)
                 {
-                    await ApiHelper.PUT<Publicacion>("Publicacion/PutPublicacion", publicacion, token);
+                    await ApiHelper.PUT<Publicacion>("Publicacion/PutPublicacion", publicacion, GetAuthToken);
                     return Json("La publicación se ha editado exitosamente.");
                 }
                 else
                 {
                     publicacion.FechaIngreso = DateTime.Now;
-                    await ApiHelper.POST<Publicacion>("Publicacion/PostPublicacion", publicacion, token);
+                    await ApiHelper.POST<Publicacion>("Publicacion/PostPublicacion", publicacion, GetAuthToken);
                     return Json("La publicación se ha guardado exitosamente.");
                 }
                 
@@ -60,7 +84,7 @@ namespace CamajanSport.Controllers
                 Publicacion pub = new Publicacion();
                 pub.IdPublicacion = IdPublicacion;
                 pub.IdEstadoResultado = IdEstadoResultado;
-                await ApiHelper.POST<Publicacion>("Publicacion/CambiarEstatus", pub, token);
+                await ApiHelper.POST<Publicacion>("Publicacion/CambiarEstatus", pub, GetAuthToken);
                 return Json("El estatus se ha cambiado satisfactoriamente.");
             }
             catch (Exception)
@@ -74,7 +98,7 @@ namespace CamajanSport.Controllers
             try
             {
 
-                var estadosResultado = await ApiHelper.GET_List<SelectAttributes>("Publicacion/GetEstadosResultado_Select", token);
+                var estadosResultado = await ApiHelper.GET_List<SelectAttributes>("Publicacion/GetEstadosResultado_Select", GetAuthToken);
                 return Json(estadosResultado, JsonRequestBehavior.AllowGet);
             }
             catch (Exception)
@@ -90,7 +114,7 @@ namespace CamajanSport.Controllers
         {
             try
             {
-                var publicaciones = await ApiHelper.GET_List_ByFilter<Publicacion>("Publicacion/GetPublicacionesByFiltro", "FechaJuego=" + ((FechaJuego.HasValue) ? FechaJuego.Value.ToShortDateString() : "") + "&IdDeporte=" + IdDeporte.ToString() + "&IdEstadoResultado=" + IdEstadoResultado.ToString() + "&TipoPublicacion=" + TipoPublicacion, token);
+                var publicaciones = await ApiHelper.GET_List_ByFilter<Publicacion>("Publicacion/GetPublicacionesByFiltro", "FechaJuego=" + ((FechaJuego.HasValue) ? FechaJuego.Value.ToShortDateString() : "") + "&IdDeporte=" + IdDeporte.ToString() + "&IdEstadoResultado=" + IdEstadoResultado.ToString() + "&TipoPublicacion=" + TipoPublicacion, GetAuthToken);
                 return Json(publicaciones, JsonRequestBehavior.AllowGet);
             }
             catch (Exception)
