@@ -40,7 +40,7 @@ namespace ApiCamajan.Controllers
             if (FechaJuego != null)
             {
                 DateTime fecha = Convert.ToDateTime(FechaJuego);
-                query = query.Where(f => f.FechaJuego == fecha);
+                query = query.Where(f => f.FechaJuego.Year == fecha.Year && f.FechaJuego.Month == fecha.Month && f.FechaJuego.Day == fecha.Day);
             }
             if (IdDeporte > 0)
             {
