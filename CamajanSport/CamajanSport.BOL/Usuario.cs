@@ -27,7 +27,7 @@ namespace CamajanSport.BOL
         public int? IdRol { get; set; }
         public bool CambiarContrasena { get; set; }
 
-        public byte[] Imagen { get; set; }
+        public string Imagen { get; set; }
 
         public DateTime FechaIngreso { get { return DateTime.Now; } }
 

@@ -83,6 +83,7 @@
     <Compile Include="Deporte.cs" />
     <Compile Include="Equipo.cs" />
     <Compile Include="Estado.cs" />
+    <Compile Include="EstadoResultado.cs" />
     <Compile Include="netfx\System\Guard.cs" />
     <Compile Include="Pais.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
