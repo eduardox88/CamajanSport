@@ -11,6 +11,17 @@ function MostrarAlerta(titulo, tipoAlerta, mensaje)
 };
 
 
+function readURL(input, $elem) {
+    if (input.files && input.files[0]) {
+        var reader = new FileReader();
+
+        reader.onload = function (e) {
+            $elem.attr('src', e.target.result);
+        }
+        reader.readAsDataURL(input.files[0]);
+    }
+}
+
 function MostrarDialogo(id, titulo, mensaje, showBtnCerrar, botones, showTopCloseBtn, backdropClose) {
     showBtnCerrar = (showBtnCerrar == undefined) ? true : showBtnCerrar;
     if (backdropClose == undefined || backdropClose == false ) {
@@ -42,7 +53,9 @@ function MostrarDialogo(id, titulo, mensaje, showBtnCerrar, botones, showTopClos
     if (showTopCloseBtn == undefined || showTopCloseBtn) {
         $('#' + id).find('.modal-header').append(btnX);
     }
-    
+
+    //Preview & Update an image before it is uploaded
+ 
     if (botones != undefined && botones.length > 0) {
         for (var i = 0; i < botones.length; i++)
         {
