@@ -25,6 +25,18 @@
 
     cursor:pointer
 }
+.resultInfo {
+    margin:0 auto;
+    background-color:rgba(184, 185, 199, 1);
+    border-radius:500px;
+    width:80px;
+    
+}
+    .resultInfo p {
+    color:white;
+    padding:0 10px;
+        
+    }
 
 h1,
 h2,
