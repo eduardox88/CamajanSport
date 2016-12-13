@@ -34,7 +34,6 @@ namespace ApiCamajan.Controllers
         // GET: api/Publicacion
         public List<Publicacion> GetPublicacionesByFiltro(string FechaJuego,int IdDeporte,int IdEstadoResultado,string TipoPublicacion)
         {
-
             var query = from s in db.Publicacions
                             select s;            
             if (FechaJuego != null)
@@ -78,6 +77,8 @@ namespace ApiCamajan.Controllers
         [ResponseType(typeof(Publicacion))]
         public async Task<IHttpActionResult> CambiarEstatus(Publicacion pub)
         {
+
+
             Publicacion publicacion = await db.Publicacions.FindAsync(pub.IdPublicacion);
             if (publicacion == null)
             {

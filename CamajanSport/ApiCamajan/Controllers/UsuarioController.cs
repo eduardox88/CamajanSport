@@ -121,6 +121,59 @@ namespace ApiCamajan.Controllers
             return StatusCode(HttpStatusCode.NoContent);
         }
 
+        [ResponseType(typeof(Usuario))]
+        [Authorize]
+        public async Task<IHttpActionResult> PutUsuarioPerfil(Usuario usuario)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            db.Entry(usuario).State = EntityState.Modified;
+            db.Entry(usuario).Property(x => x.Contrasena).IsModified = false;
+            db.Entry(usuario).Property(x => x.IdEstado).IsModified = false;
+            db.Entry(usuario).Property(x => x.IdRol).IsModified = false;
+            db.Entry(usuario).Property(x => x.NombreUsuario).IsModified = false;
+            db.Entry(usuario).Property(x => x.Imagen).IsModified = false;
+
+            try
+            {
+                await db.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                throw;
+            }
+
+            return StatusCode(HttpStatusCode.NoContent);
+        }
+
+
+        [ResponseType(typeof(Usuario))]
+        [Authorize]
+        public async Task<IHttpActionResult> PutChangePassword(Usuario usuario)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            db.usuarios.Attach(usuario);
+            db.Entry(usuario).Property(x => x.Contrasena).IsModified = true;
+
+            try
+            {
+                await db.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                throw;
+            }
+
+            return StatusCode(HttpStatusCode.NoContent);
+        }
+
         [HttpPut]
         public void ConfirmacionUsuario(Usuario usuario)
         {
