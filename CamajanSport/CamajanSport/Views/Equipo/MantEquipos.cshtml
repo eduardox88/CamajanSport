@@ -171,6 +171,7 @@
 
         function GuardarEquipo() {
             var validator = $("#Validaciones").validate();
+            var fileUpload = document.getElementById('fileUploader');
 
             if (validator.form()) {
                 var formData = new FormData();

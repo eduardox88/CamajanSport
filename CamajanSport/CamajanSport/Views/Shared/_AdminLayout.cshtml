@@ -5,6 +5,16 @@
 @using System.Web.Script.Serialization;
 @using CamajanSport.BOL;
 
+@{
+
+    var ticket = Utilidades.CookieHandler.GetDecryptTicket();
+
+    Usuario modelo = new Usuario();
+    JavaScriptSerializer js = new JavaScriptSerializer();
+
+    modelo = js.Deserialize<Usuario>(ticket.UserData);
+}
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -69,25 +79,12 @@
             </div>
         </nav>
 
-
-        @{
-
-            var ticket = Utilidades.CookieHandler.GetDecryptTicket();
-
-            Usuario modelo = new Usuario();
-            JavaScriptSerializer js = new JavaScriptSerializer();
-
-            modelo = js.Deserialize<Usuario>(ticket.UserData);
-
-
-        }
-
         <nav class="navbar-side" role="navigation">
             <div class="navbar-collapse sidebar-collapse collapse">
                 <ul id="side" class="nav navbar-nav side-nav">
                     <li class="side-user hidden-xs">
-                        @*<img class="img-circle" src="~/img/profile-pic.jpg" alt="">*@
-                        <img id="imgPerfil" class="img-circle" style="width:150px; height:150px;" alt="">
+
+                        <img id="imgPerfil" src="@modelo.Imagen" class="img-circle" style="width:150px; height:150px;" alt="">
                         <p class="welcome">
                             <i class="fa fa-key"></i> Ha iniciado sesion como:
                         </p>
@@ -227,29 +224,3 @@
 </body>
 
 </html>
-
-
-<script type="text/javascript">
-    var count = 0;
-    function initImag(imagen) {
-        var imageSrc = "data:image/png;base64," + _arrayBufferToBase64(imagen).toString();
-
-        $('#imgPerfil').attr('src', imageSrc);
-    }
-
-    function SuccessOrFail(data) {
-        if (data != false) {
-            initImag(data)
-            count++;
-        }
-    }
-
-    $(document).ready(function () {
-        console.log(count);
-        if (count == 0) {
-            var objeto = new Object();
-            objeto.CodUsuario = @(modelo.IdUsuario)
-            AjaxCall("@Url.Action("GetImagenUsuario", "Usuario")", objeto, "", SuccessOrFail, true)
-        }
-    })
-</script>

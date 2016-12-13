@@ -142,6 +142,8 @@
                                     </div>
                                     <div class="portlet-body">
                                         <input type="file" id="fileUploader" />
+                                        <br />
+                                        <img id="imgPreview" src="" />
                                     </div>
                                     <div id="oldImg"></div>
                                 </div>
@@ -234,7 +236,7 @@
 
         function SuccessCargarData(response) {
             objUsuario = response;
-            var html;
+            var html = '';
             var usuario;
             var tbody = $('#tbUsuarios');
 
@@ -261,8 +263,8 @@
                     '<td>' + '<input type="button" class="btn btn-danger" onclick="EditarUsuario(' + i + ')" value="Editar"/>' + '</td>' +
                     '</tr>';
                     tbody.append(html);
-
                 }
+                
             }
             else {
                 MostrarAlerta("Error", 'info', 'No existen usuarios para mostrar');
@@ -357,17 +359,21 @@
         $('#flexModal').modal('show');
     }
 
-    $(document).ready(function () {
 
+    $(document).ready(function () {
+        InicializarDropDowns();
         CargarData();
 
         $('#btnModal').click(function () {
-            InicializarDropDowns();
             InicializarValidaciones();
             $('#rowPass').removeClass('hidden')
             limpiarTodosCampos('formUsuario')
             return;
         })
+
+        $("#fileUploader").change(function () {
+            readURL(this, $('#imgPreview'));
+        });
     })
 
     </script>
