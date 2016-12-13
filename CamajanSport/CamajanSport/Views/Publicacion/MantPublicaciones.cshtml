@@ -487,7 +487,7 @@
                 '</div>' +
                 //Equipos
                     '<div class="row">' +
-                '<div class="col-xs-4 col-xs-offset-0 col-md-4 col-md-offset-0">' +
+                '<div class="col-xs-4 col-md-4 col-md-offset-0">' +
                     imgEquipo1 +
                      '<p class="text-center"><strong>' + publicacion.Equipo1.Abrev + '</strong></p>';
                 if (publicacion.EsMatchup) {
@@ -496,8 +496,16 @@
                 
 
                 html += '</div>';
-                html += '<div class="col-xs-4 col-xs-offset-0 col-md-4"> <p class="text-center"><strong>@@' + fechaJuego.GetTime() + '</strong></p>'+
-                    '<div class="resultInfo"><p class="text-center">' + publicacion.EstadoResultado.Descripcion + '</p></div></div>';
+                html += '<div class="col-xs-4 col-md-4"> <p class="text-center"><strong>@@' + fechaJuego.GetTime() + '</strong></p>';
+                var bgColor = undefined;
+                if (publicacion.IdEstadoResultado == 2) {
+                    bgColor = 'bgGanado';
+                } else if (publicacion.IdEstadoResultado == 3) {
+                    bgColor = 'bgPerdido';
+                } else if (publicacion.IdEstadoResultado == 1) {
+                    bgColor = 'bgPendiente';
+                }
+                html += '<div class="resultInfo '+bgColor+'"><p class="text-center">' + publicacion.EstadoResultado.Descripcion + '</p></div></div>';
                 html += '<div class="col-xs-4 col-xs-offset-0 col-md-4 ">' +
                     imgEquipo2 +
                     '<p class="text-center"><strong>' + publicacion.Equipo2.Abrev + '</strong></p>';
