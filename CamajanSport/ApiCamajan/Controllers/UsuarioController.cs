@@ -149,6 +149,30 @@ namespace ApiCamajan.Controllers
             return StatusCode(HttpStatusCode.NoContent);
         }
 
+        [ResponseType(typeof(Usuario))]
+        [Authorize]
+        public async Task<IHttpActionResult> PutImagenPerfil(Usuario usuario)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            db.usuarios.Attach(usuario);
+            db.Entry(usuario).Property(x => x.Imagen).IsModified = true;
+
+            try
+            {
+                await db.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                throw;
+            }
+
+            return StatusCode(HttpStatusCode.NoContent);
+        }
+
 
         [ResponseType(typeof(Usuario))]
         [Authorize]
