@@ -80,6 +80,57 @@ namespace CamajanSport.Controllers
         }
 
         [System.Web.Mvc.Authorize]
+        public async Task<JsonResult> ActualizarImagenPerfil()
+        {
+            try
+            {
+                HttpPostedFileBase file;
+                string fName = string.Empty;
+                string path = string.Empty;
+                string fileName;
+
+                if (Request.Files.AllKeys.Length != 0) { 
+
+                    fileName = Request.Files.AllKeys[0];
+                    file = Request.Files[fileName];
+                    fName = file.FileName;
+                    if (file != null && file.ContentLength > 0)
+                    {
+                        string pic = System.IO.Path.GetFileName(fName);
+
+                        path = System.IO.Path.Combine(Server.MapPath("~/ProfileImages"), pic);
+                        file.SaveAs(path);
+                        path = "/ProfileImages/" + pic;
+                    }
+
+                    HttpResponseMessage respuesta = await ApiHelper.PUT<Usuario>("Usuario/PutImagenPerfil", new Usuario() { IdUsuario = GetUserDecrypted.IdUsuario, Imagen = path }, GetAuthToken);
+
+                    if (respuesta.IsSuccessStatusCode)
+                    {
+                        Usuario nuevo = await ApiHelper.GET_By_ID<Usuario>("Usuario/GetUsuario",GetUserDecrypted.IdUsuario, GetAuthToken);
+                        HttpContext.Response.Cookies.Set(CookieHandler.UpdateTicket(nuevo));
+
+                        return Json("Su imagen ha sido actualizada satisfactoriamente", JsonRequestBehavior.AllowGet);
+                    }
+                    else
+                    {
+                        Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                        return Json("Ha ocurrido un error al guardar. Si el problema persiste contacte su administrador.");
+                    }
+                }
+                else
+                {
+                    return Json("Por favor, seleccione una nueva imagen");
+                }
+            }
+            catch (Exception)
+            {
+                Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                return Json("Ha ocurrido un error al guardar. Si el problema persiste contacte su administrador.");
+            }
+        }
+
+        [System.Web.Mvc.Authorize]
         public async Task<JsonResult> UpdatePassword(string oldPass, string newPass, string RePass) {
 
             Usuario aux = GetUserDecrypted;
