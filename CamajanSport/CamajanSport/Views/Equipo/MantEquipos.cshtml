@@ -35,7 +35,7 @@
                 <div id="transactionsPortlet" class="panel-collapse collapse in">
                     <div class="portlet-body">
                         <div class="table-responsive dashboard-demo-table">
-                            <table class="table table-bordered table-striped table-hover">
+                            <table id="tablaEquipo" class="table table-bordered table-striped table-hover">
                                 <thead>
                                     <tr>
                                         <th>Nombre</th>
@@ -218,7 +218,7 @@
                 dataType: "json",
                 success: function (response) {
 
-                    console.log(response)
+                    $('#tablaEquipo').DataTable().fnDestroy();
 
                     $('#tbEquipo').empty();
                     objEquipo = response;
@@ -240,6 +240,8 @@
                             '</tr>';
                             $('#tbEquipo').append(html);
                         }
+
+                        $('#tablaEquipo').DataTable();
                     }
                     else {
                         MostrarAlerta("Error", 'info', 'No existen Equipos para mostrar');

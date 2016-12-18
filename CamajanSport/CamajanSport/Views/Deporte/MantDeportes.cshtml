@@ -46,7 +46,7 @@
                    <div id="transactionsPortlet" class="panel-collapse collapse in">
                     <div class="portlet-body">
                         <div class="table-responsive dashboard-demo-table">
-                            <table class="table table-bordered table-striped table-hover">
+                            <table id="tablaDeportes" class="table table-bordered table-striped table-hover">
                                 <thead>
                                     <tr>
                                         
@@ -154,6 +154,8 @@
                 dataType: "json",
                 success: function (response) {
 
+                    $('#tablaDeportes').DataTable().fnDestroy();
+                    
                     $('#tblDeportes').empty();
                     objDeporte = response;
                     if (response.length > 0) {
@@ -170,6 +172,8 @@
                             '</tr>';
                             $('#tblDeportes').append(html);
                         }
+
+                        $('#tablaDeportes').DataTable();
                     }
                     else {
                         MostrarAlerta("Error",'info', 'No existen deportes para mostrar');

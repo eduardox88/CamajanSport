@@ -126,17 +126,16 @@
                                     <div id="userSettingsContent" class="tab-content">
                                         <div class="tab-pane fade in active" id="profilePicture">
                                             <h3>Imagen Actual:</h3>
-                                            <img class="img-responsive img-profile" src="img/profile-full.jpg" alt="">
+                                            <img id="imgPreview"  class="img-responsive img-profile" src="@Model.Imagen" alt="">
                                             <br>
-                                            <form role="form">
+                                            <div role="form">
                                                 <div class="form-group">
                                                     <label>Seleccione una imagen:</label>
-                                                    <input type="file">
-                                                    <p class="help-block"><i class="fa fa-warning"></i> Image must be no larger than 500x500 pixels. Supported formats: JPG, GIF, PNG</p>
-                                                    <button type="submit" class="btn btn-default">Update Profile Picture</button>
-                                                    <button class="btn btn-green">Cancel</button>
+                                                    <input type="file" id="fileUploader">
+                                                    <p class="help-block"><i class="fa fa-warning"></i> La imagen no puede ser mayor de 500x500 pixeles. Formatos soportados: JPG, GIF, PNG</p>
+                                                    <button id="btnActualizarImagen" type="submit" class="btn btn-default disabled">Actualizar Imagen</button>
                                                 </div>
-                                            </form>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -221,6 +220,10 @@
             $('#mensajes').addClass(data.property);
 
             $('#ref_CambiarPass').parent().addClass('active')
+
+            $('#oldPass').val('');
+            $('#newPass').val('');
+            $('#rePass').val('');
         }
 
         $(document).ready(function () {
@@ -240,6 +243,34 @@
 
                 AjaxCall('@Url.Action("UpdatePassword", "Usuario")', formObj, '', SuccessPasswordUpdated, true)
             })
+
+            $("#fileUploader").change(function () {
+                $('#btnActualizarImagen').removeClass('disabled');
+                readURL(this, $('#imgPreview'));
+            });
+
+            $('#btnActualizarImagen').click(function () {
+
+                var xhr = new XMLHttpRequest();
+                var formData = new FormData();
+                var fileUpload = document.getElementById('fileUploader');
+
+                formData.append("afile", fileUpload.files[0]);
+
+                
+                xhr.open("POST", "/Usuario/ActualizarImagenPerfil");
+                xhr.onreadystatechange = function (aEvt) {
+                    if (xhr.readyState == 4) {
+                        if (xhr.status == 200) {
+                            MostrarAlerta("¡Enhorabuena!", 'success', xhr.responseText.replace('"', ""));
+                        }
+                        else {
+                            MostrarAlerta("Error", 'error', xhr.responseText.replace('"', ""));
+                        }
+                    }
+                }
+                xhr.send(formData);
+            });
         })
 
 
