@@ -125,6 +125,7 @@
     <Compile Include="Controllers\DeporteController.cs" />
     <Compile Include="Controllers\EquipoController.cs" />
     <Compile Include="Controllers\EstadoController.cs" />
+    <Compile Include="Controllers\MembresiaController.cs" />
     <Compile Include="Controllers\PaisController.cs" />
     <Compile Include="Controllers\PublicacionController.cs" />
     <Compile Include="Controllers\RolController.cs" />
