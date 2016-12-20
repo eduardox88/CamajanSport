@@ -147,6 +147,14 @@
             InicializarValidaciones();
         });
 
+        $(document).ajaxStart(function () {
+            spinner.spin(target);
+        });
+
+        $(document).ajaxStop(function () {
+            spinner.stop();
+        });
+
         function InicializarValidaciones() {
 
             $("#Validaciones").validate({

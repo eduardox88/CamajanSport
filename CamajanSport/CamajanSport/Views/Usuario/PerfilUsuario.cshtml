@@ -46,7 +46,19 @@
 
                             <div class="row">
                                 <div class="col-lg-2 col-md-3">
-                                    <img class="img-responsive img-profile" src="@Model.Imagen" alt="">
+
+                                    @{
+                                        if (Model.Imagen == null)
+                                        {
+                                            <img class="img-responsive img-profile" src="~/img/unkown.jpg" alt="">
+                                        }
+                                        else { 
+                                            <img class="img-responsive img-profile" src="@Model.Imagen" alt="">
+                                        }
+                                        
+                                    }
+
+                                    
                                     <div class="list-group">
                                         <a href="#" class="list-group-item active">Publicaciones realizadas</a>
                                         <a href="#" class="list-group-item">MLB<span class="badge green">17</span></a>
@@ -126,7 +138,19 @@
                                     <div id="userSettingsContent" class="tab-content">
                                         <div class="tab-pane fade in active" id="profilePicture">
                                             <h3>Imagen Actual:</h3>
-                                            <img id="imgPreview"  class="img-responsive img-profile" src="@Model.Imagen" alt="">
+                                            
+                                            @{
+                                                if (Model.Imagen == null)
+                                                {
+                                                    <img id="imgPreview"  class="img-responsive img-profile" src="~/img/unkown.jpg" alt="">
+                                                }
+                                                else { 
+                                                    <img id="imgPreview"  class="img-responsive img-profile" src="@Model.Imagen" alt="">
+                                                }
+                                                
+                                            }
+
+
                                             <br>
                                             <div role="form">
                                                 <div class="form-group">

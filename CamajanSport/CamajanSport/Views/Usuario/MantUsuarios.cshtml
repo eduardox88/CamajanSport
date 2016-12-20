@@ -173,7 +173,6 @@
     </div>
     <!-- /.modal -->
 </div>
-@Scripts.Render("~/js/helpers/Utilities.js")
 
 @section Scripts{
 
@@ -240,6 +239,7 @@
             var usuario;
             var tbody = $('#tbUsuarios');
 
+            $('#tablaUsuarios').DataTable().fnDestroy();
             tbody.empty();
 
             if (objUsuario.length > 0) {
@@ -264,6 +264,8 @@
                     '</tr>';
                     tbody.append(html);
                 }
+
+                $('#tablaUsuarios').DataTable();
                 
             }
             else {
@@ -272,9 +274,7 @@
         }
 
         function CargarData() {
-            $('#tablaUsuarios').DataTable().fnDestroy();
-            AjaxCall('@Url.Action("GetUsuarios", "Usuario")', undefined, "", SuccessCargarData, false);
-            $('#tablaUsuarios').DataTable();
+            AjaxCall('@Url.Action("GetUsuarios", "Usuario")', undefined, "", SuccessCargarData, true);
          }
 
     function GuardarDatos() {
@@ -365,7 +365,7 @@
         
         InicializarDropDowns();
         CargarData();
-        
+
         $('#btnModal').click(function () {
             InicializarValidaciones();
             $('#rowPass').removeClass('hidden')
@@ -376,7 +376,16 @@
         $("#fileUploader").change(function () {
             readURL(this, $('#imgPreview'));
         });
+
     })
+
+    $(document).ajaxStart(function () {
+        spinner.spin(target);
+    });
+
+    $(document).ajaxStop(function () {
+        spinner.stop();
+    });
 
     </script>
 }

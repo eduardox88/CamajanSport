@@ -133,7 +133,8 @@
 @section Scripts{
 
     <script type="text/javascript">
-
+        
+        var spinner
         function CargarData() {
 
 
@@ -170,6 +171,14 @@
 
             CargarData();
 
+        });
+
+        $(document).ajaxStart(function () {
+            spinner.spin(target);
+        });
+
+        $(document).ajaxStop(function () {
+            spinner.stop();
         });
 
     </script>

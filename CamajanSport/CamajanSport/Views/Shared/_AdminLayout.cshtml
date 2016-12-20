@@ -84,7 +84,15 @@
                 <ul id="side" class="nav navbar-nav side-nav">
                     <li class="side-user hidden-xs">
 
+                        @{
+                            
+                            if (modelo.Imagen == null) { 
+                              <img id="imgPerfil" src="~/img/unkown.jpg" class="img-circle" style="width:150px; height:150px;" alt="">
+                            }
+                            else { 
                         <img id="imgPerfil" src="@modelo.Imagen" class="img-circle" style="width:150px; height:150px;" alt="">
+                            }
+                        }
                         <p class="welcome">
                             <i class="fa fa-key"></i> Ha iniciado sesion como:
                         </p>
@@ -146,7 +154,8 @@
         </nav>
         <div id="page-wrapper">
             <div class="page-content">
-
+                <div id="spinner">
+                </div>
                 @RenderBody()
             </div>
         </div>
@@ -225,6 +234,8 @@
     <script src="~/js/plugins/jquery.validate/utilities/decimal.js"></script>
     <script src="~/js/plugins/jquery.validate/utilities/integer.js"></script>
     <script src="~/js/plugins/autonumeric/autoNumeric.js"></script>
+    <script src="~/js/plugins/spin/spin.js"></script>
+
     @*<script src="~/js/demo/dashboard-demo.js"></script>*@
     <script src="~/js/helpers/Utilities.js"></script>
     @RenderSection("Scripts", required: false)
