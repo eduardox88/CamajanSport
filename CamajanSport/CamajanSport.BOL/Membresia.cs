@@ -16,8 +16,8 @@ namespace CamajanSport.BOL
         public string Nombre { get; set; }
        
         public decimal Precio { get; set; }
-        public Int32 Duracion { get; set; }
-        public Int32? Promocion { get; set; }
+        public int Duracion { get; set; }
+        public int? Promocion { get; set; }
         public DateTime? FechaIngreso { get; set; }
         public bool Activa { get; set; }
         public decimal? Descuento { get; set; }
