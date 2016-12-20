@@ -131,6 +131,13 @@ namespace CamajanSport.Controllers
             return View();
         }
 
+
+        public ActionResult LogOff() {
+
+            ClearAllCookieSession();
+
+            return RedirectToAction("Index", "Home");
+        }
         private void ClearAllCookieSession() {
             Response.Cookies.Clear();
 
@@ -143,5 +150,7 @@ namespace CamajanSport.Controllers
             Response.Cookies.Add(c);
             Response.Cookies.Add(c2);
         }
+
+
     }
 }
