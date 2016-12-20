@@ -6,7 +6,6 @@ using System.Web.Mvc;
 
 namespace CamajanSport.Controllers
 {
-    [Authorize]
     public class HomeController : Controller
     {
         //
@@ -18,5 +17,14 @@ namespace CamajanSport.Controllers
             return View();
         }
 
+        public ActionResult Expertos() {
+
+            return View();
+        }
+
+        public ActionResult Membresias() {
+
+            return View();
+        }
     }
 }
