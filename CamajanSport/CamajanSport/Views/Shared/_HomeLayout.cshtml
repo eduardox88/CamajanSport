@@ -36,9 +36,7 @@
                     <li><a href="@Url.Action("Membresias","Home")">Membresias</a></li>
                 </ul>
 
-                <ul class="nav navbar-nav navbar-right">
-                    <li><a href="@Url.Action("Index", "LogIn")">Iniciar sesión</a></li>
-                </ul>
+                @Html.Partial("_LoginPartial")
 
             </div>
         </div>

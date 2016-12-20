@@ -1,0 +1,22 @@
+﻿@using Microsoft.AspNet.Identity
+@if (Request.IsAuthenticated)
+{
+   
+    <ul class="nav navbar-nav navbar-right">
+        <li>
+            @*@Html.ActionLink("Hello " + User.Identity.GetUserName() + "!", "Manage", "Account", routeValues: null, htmlAttributes: new { title = "Manage" })*@
+
+            <a href="#">Bienvenido @User.Identity.GetUserName()</a>
+        </li>
+        <li><a href="@Url.Action("LogOff", "LogIn")">Log off</a></li>
+    </ul>
+    
+}
+else
+{
+    <ul class="nav navbar-nav navbar-right">
+        <li><a href="@Url.Action("Index", "LogIn")">Iniciar sesión</a></li>
+        <li><a href="@Url.Action("CrearUsuario", "LogIn")">Registrate!!</a></li>
+    </ul>
+}
+
