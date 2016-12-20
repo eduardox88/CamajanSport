@@ -183,61 +183,24 @@
     });
 
     function CargarData(response) {
-        //<th>Nombre</th>
-        //                                <th>Precio</th>
-        //                                <th>Duración</th>
-        //                                <th>Promoción</th>
-        //                                <th>Descuento</th>
-        //                                <th>Fecha Ingreso</th>
-        //                                <th>Activa</th>
 
-                                        for (var i = 0; i < response.length; i++)
-                                        {
-                                            var membresia = response[i];
-                                            var html = '<tr>' +
-                                            '<td>' + membresia.Nombre + '</td>' +
-                                            '<td>' + membresia.Precio + '</td>' +
-                                            '<td>'+ membresia.Duracion + '</td>'+
-                                            '<td>'+ membresia.Promocion + '</td>'+
-                                            '<td>'+ membresia.Descuento + '</td>'+
-                                            '<td>' + new FechaUtility(deporte.FechaIngreso).GetDate() + '</td>' +
-                                            '<td>' + ((deporte.Activo == true) ? "SI" : "NO") + '</td>' +
-                                            '<td>' + '<input type="button" class="btn btn-danger" onclick="EditarMembresia(' + i + ')" value="Editar"/>' + '</td>' +
-                                            '</tr>';
-                                            $('#tblMembresias').append(html);
-                                        }
-        @*$.ajax({
-                type: "POST",
-                url: '@Url.Action("Getdeportes","Deporte")',
-                dataType: "json",
-                success: function (response) {
-
-                    $('#tblDeportes').empty();
-                    objDeporte = response;
-                    if (response.length > 0) {
-                        for (var i = 0; i < response.length; i++) {
-                            var deporte = response[i];
-                            var imageSrc = "data:image/png;base64," + _arrayBufferToBase64(deporte.Imagen).toString();
-                            var img = '<img width="100" heigth="50" src="' + imageSrc + '" alt="prueba"/>';
-                            var html = '<tr>' +
-                            '<td>' + deporte.Nombre + '</td>' +
-                            '<td>' + img + '</td>' +
-                            '<td>' + ((deporte.Activo == true) ? "SI" : "NO") + '</td>' +
-                            '<td>' + formatFecha(deporte.FechaIngreso) + '</td>' +
-                            '<td>' + '<input type="button" class="btn btn-danger" onclick="EditarDeporte(' + i + ')" value="Editar"/>' + '</td>' +
-                            '</tr>';
-                            $('#tblDeportes').append(html);
-                        }
-                    }
-                    else {
-                        MostrarAlerta("Error", 'info', 'No existen deportes para mostrar');
-                    }
-                },
-                error: function (xhr, status) {
-
-                    MostrarAlerta("Error", 'error', xhr.responseText);
-                }
-            });*@
+        objMembresias = response;
+        $('#tblMembresias').empty();
+        for (var i = 0; i < response.length; i++)
+        {
+            var membresia = response[i];
+            var html = '<tr>' +
+            '<td>' + membresia.Nombre + '</td>' +
+            '<td>' + membresia.Precio + '</td>' +
+            '<td>'+ membresia.Duracion + ' días</td>'+
+            '<td>' + ((membresia.Promocion == null) ? 'NA' : membresia.Promocion) + '</td>' +
+            '<td>' + ((membresia.Descuento == null) ? 'NA' : membresia.Descuento) + '</td>' +
+            '<td>' + new FechaUtility(membresia.FechaIngreso).GetDate() + '</td>' +
+            '<td>' + ((membresia.Activa == true) ? "SI" : "NO") + '</td>' +
+            '<td>' + '<input type="button" class="btn btn-danger" onclick="EditarMembresia(' + i + ')" value="Editar"/>' + '</td>' +
+            '</tr>';
+            $('#tblMembresias').append(html);
+        } 
     }
     function GuardarMembresia() {
         if ($("#frmNuevaMembresia").valid()) {
@@ -273,13 +236,15 @@
     }
 
     function EditarMembresia(indice) {
-        var deporte = objDeporte[indice];
-        $('#oldImg').empty();
-        $('#hdfId').val(deporte.IdDeporte);
-        $('#hdfOldImg').val(deporte.Imagen);
-        $('#txtNombre').val(deporte.Nombre);
-        $('#chkActivo').prop('checked', deporte.Activo);
-        $('#oldImg').append('<img width="100" heigth="50" src="data:image/png;base64,' + _arrayBufferToBase64(deporte.Imagen).toString() + '"/>');
+        var membresia = objMembresias[indice];      
+        $('#hdfId').val(membresia.IdMembresia);
+        $('#hdfFechaIngreso').val(new FechaUtility(membresia.FechaIngreso).GetDate());
+        $('#txtNombre', '#frmNuevaMembresia').val(membresia.Nombre);
+        $('#txtPrecio', '#frmNuevaMembresia').val(membresia.Precio);
+        $('#txtPromocion', '#frmNuevaMembresia').val(membresia.Promocion);
+        $('#txtDescuento', '#frmNuevaMembresia').val(membresia.Descuento);
+        $('#txtDuracion', '#frmNuevaMembresia').val(membresia.Duracion);
+        $('#chkActiva').prop('checked', membresia.Activa);
         $('#flexModal').modal('show');
     }
 
