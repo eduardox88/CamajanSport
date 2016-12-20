@@ -50,9 +50,10 @@
                                     @{
                                         if (Model.Imagen == null)
                                         {
-                                            <img class="img-responsive img-profile" src="~/img/unkown.jpg" alt="">
+                                            <img class="img-responsive img-profile" src="~/img/desconocido.png" alt="">
                                         }
-                                        else { 
+                                        else
+                                        {
                                             <img class="img-responsive img-profile" src="@Model.Imagen" alt="">
                                         }
                                         
@@ -142,9 +143,10 @@
                                             @{
                                                 if (Model.Imagen == null)
                                                 {
-                                                    <img id="imgPreview"  class="img-responsive img-profile" src="~/img/unkown.jpg" alt="">
+                                                    <img id="imgPreview" class="img-responsive img-profile" src="~/img/desconocido.png" alt="">
                                                 }
-                                                else { 
+                                                else
+                                                {
                                                     <img id="imgPreview"  class="img-responsive img-profile" src="@Model.Imagen" alt="">
                                                 }
                                                 
