@@ -39,17 +39,17 @@ namespace ApiCamajan.Controllers
 
         // PUT: api/Membresia/5
         [ResponseType(typeof(void))]
-        public async Task<IHttpActionResult> PutMembresia(int id, Membresia membresia)
+        public async Task<IHttpActionResult> PutMembresia(Membresia membresia)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            if (id != membresia.IdMembresia)
-            {
-                return BadRequest();
-            }
+            //if (id != membresia.IdMembresia)
+            //{
+            //    return BadRequest();
+            //}
 
             db.Entry(membresia).State = EntityState.Modified;
 
@@ -59,7 +59,7 @@ namespace ApiCamajan.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!MembresiaExists(id))
+                if (!MembresiaExists(membresia.IdMembresia))
                 {
                     return NotFound();
                 }
