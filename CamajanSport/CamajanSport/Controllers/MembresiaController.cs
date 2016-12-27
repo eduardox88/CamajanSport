@@ -44,17 +44,17 @@ namespace CamajanSport.Controllers
             }
         }
         #endregion
+        [Authorize]
         public ActionResult MantMembresias()
         {
             return View();
         }
-
         public async Task<JsonResult> GetMembresias() 
         {
             var membresias = await ApiHelper.GET_List<Membresia>("Membresia/GetMembresias", GetAuthToken);
             return Json(membresias, JsonRequestBehavior.AllowGet);
         }
-
+        [Authorize]
         public async Task<JsonResult> GuardarMembresia(Membresia membresia)
         {
             try
