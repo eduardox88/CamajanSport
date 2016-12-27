@@ -39,54 +39,54 @@
         <div class="row">
             <div class="col-lg-12">
                 <!-- Pricing Plans Wrapper -->
-                <div class="pricing-wrapper">
+                <div id="divMembresias" class="pricing-wrapper">
                     <!-- End Pricing Plan -->
-                    <div id="basico" class="pricing-plan">
-                        <h2 id="title_basico" class="pricing-plan-title">BASICO</h2>
-                        <div id="price_basico" class="pricing-plan-price">$5<span>USD</span></div>
-                        <ul id="features_basico" class="pricing-plan-features">
-                            <li><strong>1</strong> Dias</li>
-                            <li><strong>1</strong> Pronósticos analizado</li>
-                            <li><strong>3</strong> Pronósticos diarios</li>
-                            <li>Info Whatsapp o Correo</li>
-                            <li>Atencion personalizada</li>
-                            <li>Bankroll management</li>
-                            <li>Planes flexibles</li>
+                    @*<div id="basico" class="pricing-plan">
+        <h2 id="title_basico" class="pricing-plan-title">BASICO</h2>
+        <div id="price_basico" class="pricing-plan-price">$5<span>USD</span></div>
+        <ul id="features_basico" class="pricing-plan-features">
+            <li><strong>1</strong> Dias</li>
+            <li><strong>1</strong> Pronósticos analizado</li>
+            <li><strong>3</strong> Pronósticos diarios</li>
+            <li>Info Whatsapp o Correo</li>
+            <li>Atencion personalizada</li>
+            <li>Bankroll management</li>
+            <li>Planes flexibles</li>
 
-                        </ul>
-                        <a id="btnbasico" class="btn">Seleccionar</a>
-                    </div>
-                    <!-- End Pricing Plan -->
-                    <div id="oro" class="pricing-plan">
-                        <h2 id="title_oro" class="pricing-plan-title">ORO</h2>
-                        <div id="price_oro" class="pricing-plan-price">$35<span>USD</span></div>
-                        <ul id="features_oro" class="pricing-plan-features">
-                            <li><strong>15</strong> Dias</li>
-                            <li><strong>1</strong> Pronósticos analizado</li>
-                            <li><strong>3</strong> Pronósticos diarios</li>
-                            <li>Info Whatsapp o Correo</li>
-                            <li>Atencion personalizada</li>
-                            <li>Bankroll management</li>
-                            <li>Planes flexibles</li>
+        </ul>
+        <a id="btnbasico" class="btn">Seleccionar</a>
+    </div>
+    <!-- End Pricing Plan -->
+    <div id="oro" class="pricing-plan">
+        <h2 id="title_oro" class="pricing-plan-title">ORO</h2>
+        <div id="price_oro" class="pricing-plan-price">$35<span>USD</span></div>
+        <ul id="features_oro" class="pricing-plan-features">
+            <li><strong>15</strong> Dias</li>
+            <li><strong>1</strong> Pronósticos analizado</li>
+            <li><strong>3</strong> Pronósticos diarios</li>
+            <li>Info Whatsapp o Correo</li>
+            <li>Atencion personalizada</li>
+            <li>Bankroll management</li>
+            <li>Planes flexibles</li>
 
-                        </ul>
-                        <a id="btnoro" class="btn">Seleccionar</a>
-                    </div>
-                    <!-- Promoted Pricing Plan (White Background) -->
-                    <div id="platinum" class="pricing-plan pricing-plan-promote">
-                        <h2 id="title_platinum" class="pricing-plan-promote-title">PLATIUM</h2>
-                        <div id="price_platinum" class="pricing-plan-promote-price">$54.99<span>USD</span></div>
-                        <ul id="features_platinum" class="pricing-plan-promote-features">
-                            <li><strong>30</strong> Dias</li>
-                            <li><strong>1</strong> Pronósticos analizado</li>
-                            <li><strong>3</strong> Pronósticos diarios</li>
-                            <li>Info Whatsapp o Correo</li>
-                            <li>Atencion personalizada</li>
-                            <li>Bankroll management</li>
-                            <li>Planes flexibles</li>
-                        </ul>
-                        <a id="btnplatinum" class="btn btn-green">Seleccionar</a>
-                    </div>
+        </ul>
+        <a id="btnoro" class="btn">Seleccionar</a>
+    </div>
+    <!-- Promoted Pricing Plan (White Background) -->
+    <div id="platinum" class="pricing-plan pricing-plan-promote">
+        <h2 id="title_platinum" class="pricing-plan-promote-title">PLATIUM</h2>
+        <div id="price_platinum" class="pricing-plan-promote-price">$54.99<span>USD</span></div>
+        <ul id="features_platinum" class="pricing-plan-promote-features">
+            <li><strong>30</strong> Dias</li>
+            <li><strong>1</strong> Pronósticos analizado</li>
+            <li><strong>3</strong> Pronósticos diarios</li>
+            <li>Info Whatsapp o Correo</li>
+            <li>Atencion personalizada</li>
+            <li>Bankroll management</li>
+            <li>Planes flexibles</li>
+        </ul>
+        <a id="btnplatinum" class="btn btn-green">Seleccionar</a>
+    </div>
                     <div id="diamante" class="pricing-plan">
                         <!-- Pricing Plan Ribbon -->
                         <div class="ribbon-wrapper">
@@ -99,12 +99,12 @@
                             <li><strong>1</strong> Pronósticos analizado</li>
                             <li><strong>3</strong> Pronósticos diarios</li>
                             <li>Info Whatsapp o Correo</li>
-                            <li>Atencion personalizada</li>
+                            <li >Atencion personalizada</li>
                             <li>Bankroll management</li>
                             <li>Planes flexibles</li>
                         </ul>
                         <a id="btndiamante" class="btn">Seleccionar</a>
-                    </div>
+                    </div>*@
                 </div>
                 <!-- End Pricing Plans Wrapper -->
             </div>
@@ -120,80 +120,74 @@
 <script type="text/javascript">
 
     //Nombre del id que posee el activo
-    var init = "platinum";
-
-    
-
+    var init = "";
     $(document).ready(function () {
 
-        function removeClasses(init) {
-            $("#" + init).removeClass("pricing-plan-promote");
-            $('#title_' + init).removeClass('pricing-plan-promote-title').addClass('pricing-plan-title');
-            $('#price_' + init).removeClass('pricing-plan-promote-price').addClass('pricing-plan-price');
-            $('#features_' + init).removeClass('pricing-plan-promote-features').addClass('pricing-plan-features');
-            $('#btn' + init).removeClass('btn-green');
-        }
+        CargarData();
+    });
 
-        $('#btnbasico').click(function () {
+    function removeClasses(val) {
+        $("#" + val).removeClass("pricing-plan-promote");
+        $('#title_' + val).removeClass('pricing-plan-promote-title').addClass('pricing-plan-title');
+        $('#price_' + val).removeClass('pricing-plan-promote-price').addClass('pricing-plan-price');
+        $('#features_' + val).removeClass('pricing-plan-promote-features').addClass('pricing-plan-features');
+        $('#btn' + val).removeClass('btn-green');
+    }
 
-            removeClasses(init);
+    function Seleccionar(val) {
+        removeClasses(init);
+        $('#' + val).addClass('pricing-plan-promote');
+        $('#title_' + val).removeClass('pricing-plan-title').addClass('pricing-plan-promote-title');
+        $('#price_' + val).removeClass('pricing-plan-price').addClass('pricing-plan-promote-price');
+        $('#features_' + val).removeClass('pricing-plan-features').addClass('pricing-plan-promote-features');
+        $('#btn' + val).addClass('btn-green');
+        init = val;
+    }
+    function CargarData()
+    {
+        AjaxCall('@Url.Action("GetMembresias", "Membresia")', undefined, '', CargarMembresias, false);
+    }
+
+    function CargarMembresias(response)
+    {
+        for (var i = 0; i < response.length; i++)
+        {
             
-            $('#basico').addClass('pricing-plan-promote');
-            $('#title_basico').removeClass('pricing-plan-title').addClass('pricing-plan-promote-title');
-            $('#price_basico').removeClass('pricing-plan-price').addClass('pricing-plan-promote-price');
-            $('#features_basico').removeClass('pricing-plan-features').addClass('pricing-plan-promote-features');
-            $('#btnbasico').addClass('btn-green');
-
-
-            init = "basico";
-
-        });
-
-        $('#btnoro').click(function () {
-
-            removeClasses(init);
-
-            $('#oro').addClass('pricing-plan-promote');
-            $('#title_oro').removeClass('pricing-plan-title').addClass('pricing-plan-promote-title');
-            $('#price_oro').removeClass('pricing-plan-price').addClass('pricing-plan-promote-price');
-            $('#features_oro').removeClass('pricing-plan-features').addClass('pricing-plan-promote-features');
-            $('#btnoro').addClass('btn-green');
-
-            init = "oro";
-
-        });
-
-        $('#btnplatinum').click(function () {
-
-            removeClasses(init);
-
-            $('#platinum').addClass('pricing-plan-promote');
-            $('#title_platinum').removeClass('pricing-plan-title').addClass('pricing-plan-promote-title');
-            $('#price_platinum').removeClass('pricing-plan-price').addClass('pricing-plan-promote-price');
-            $('#features_platinum').removeClass('pricing-plan-features').addClass('pricing-plan-promote-features');
-            $('#btnplatinum').addClass('btn-green');
-
-            init = "platinum";
-
-        });
-
-        $('#btndiamante').click(function () {
-
-            removeClasses(init);
-
-            $('#diamante').addClass('pricing-plan-promote');
-            $('#title_diamante').removeClass('pricing-plan-title').addClass('pricing-plan-promote-title');
-            $('#price_diamante').removeClass('pricing-plan-price').addClass('pricing-plan-promote-price');
-            $('#features_diamante').removeClass('pricing-plan-features').addClass('pricing-plan-promote-features');
-            $('#btndiamante').addClass('btn-green');
-
-
-            init = "diamante";
-
-        });
-
-    })
-
-
+            var mem = response[i];
+            var html = '<div id="' + mem.IdMembresia + '" class="pricing-plan">' +
+                    '<!-- Pricing Plan Ribbon -->';
+            if ((mem.Promocion != null && mem.Promocion > 0)|| (mem.Descuento != null && mem.Descuento > 0)) {
+                html +=
+                    '<div class="ribbon-wrapper">' +
+                        '<div class="price-ribbon ribbon-green">OFERTA</div>' +
+                    '</div>';
+                    
+            }
+            html += '<h2 id="title_' + mem.IdMembresia + '" class="pricing-plan-title">' + mem.Nombre + '</h2>';
+            //Si tiene descuento aplicado
+            if (mem.Descuento != null && mem.Descuento > 0) {
+                html +=  '<div id="price_'+mem.IdMembresia+'" class="pricing-plan-price" style="text-decoration:line-through">$'+mem.Precio+'<span>USD</span></div>'+
+                  '<ul id="features_'+mem.IdMembresia+'" class="pricing-plan-features">'+
+                  '<li ><strong>Ahora por tan solo </strong> $' + (mem.Precio - mem.Descuento) + ' USD</li>' +
+                  '<li class="ribbon-wrapper2 ribbon-green">' + parseInt((mem.Descuento / mem.Precio) * 100) + '% DE DESCUENTO!</li>';
+                    
+            }else {
+                html +=  '<div id="price_'+mem.IdMembresia+'" class="pricing-plan-price">$'+mem.Precio+'<span>USD</span></div>'+
+                  '<ul id="features_'+mem.IdMembresia+'" class="pricing-plan-features">';
+            }
+            if (mem.Promocion != null && mem.Promocion > 0) {
+                html +=  '<li style="color:red">Aprovecha la oferta de '+mem.Promocion+' días más!</li>'+
+                    '<li style="text-decoration:line-through">Antes <strong>'+mem.Duracion+'</strong> días</li>'+
+                    '<li>AHORA <strong>' + (mem.Duracion + mem.Promocion) + '</strong> días</li>';
+            }else {
+                html += '<li >Pronósticos por <strong>'+mem.Duracion+'</strong> días</li>';
+            }
+            html+= '</ul>'+
+                    '<a id="btn'+mem.IdMembresia+'" class="btn" onclick="Seleccionar('+mem.IdMembresia+')">Seleccionar</a>'+
+                    '</div>';
+            console.log(html);
+            $('#divMembresias').append(html);
+        }
+    }
 </script>
 }
