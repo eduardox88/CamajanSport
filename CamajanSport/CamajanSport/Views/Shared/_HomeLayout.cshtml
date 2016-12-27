@@ -1,4 +1,8 @@
-﻿<!DOCTYPE html>
+﻿@using Utilidades;
+@using System.Web.Script.Serialization;
+@using CamajanSport.BOL;
+
+<!DOCTYPE html>
 
 <html class="no-js">
 <head>
@@ -7,12 +11,18 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width" />
     @*<title>@ViewBag.Title</title>*@
-
+    <link href='http://fonts.googleapis.com/css?family=Ubuntu:300,400,500,700,300italic,400italic,500italic,700italic' rel="stylesheet" type="text/css">
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel="stylesheet" type="text/css">
+    <link href="~/icons/font-awesome/css/font-awesome.min.css" rel="stylesheet">
     <link href="~/css/bootstrap.css" rel="stylesheet" />
     <link href="~/css/main.css" rel="stylesheet" />
     <link href="~/css/custom.css" rel="stylesheet" />
     <link href="~/css/icomoon-social.css" rel="stylesheet" />
     <link href="~/css/font-awesome.min.css" rel="stylesheet" />
+    <link href="~/css/style.css" rel="stylesheet">
+    <link href="~/css/plugins.css" rel="stylesheet">
+    <link href="~/css/demo.css" rel="stylesheet">
+    <link href="~/css/plugins/sweetalert/sweetalert.css" rel="stylesheet" />
 
     <script src="~/js/modernizr-2.6.2-respond-1.1.0.min.js"></script>
 
@@ -83,15 +93,14 @@
     </div>
 
     <!-- Javascripts -->
-    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-    <script>window.jQuery || document.write('<script src="js/jquery-1.9.1.min.js"><\/script>')</script>
-
-
+    <script src="~/js/jquery-1.9.1.min.js"></script>
     <script src="~/js/bootstrap.js"></script>
-
     <!-- Scrolling Nav JavaScript -->
     <script src="~/js/jquery.easing.min.js"></script>
     <script src="~/js/scrolling-nav.js"></script>
+    <script src="~/js/plugins/sweetalert/sweetalert.min.js"></script>
+    <script src="~/js/plugins/spin/spin.js"></script>
+    <script src="~/js/helpers/Utilities.js"></script>
     @RenderSection("HomeScripts", false);
 </body>
 </html>
