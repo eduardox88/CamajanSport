@@ -2,8 +2,7 @@
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
 
-<div class="page-content">
-
+<div class="page-content">    
     <!-- begin PAGE TITLE AREA -->
     <!-- Use this section for each page's title and breadcrumb layout. In this example a date range picker is included within the breadcrumb. -->
     <div class="row">
@@ -54,6 +53,7 @@
                                         <th>Descuento</th>
                                         <th>Fecha Ingreso</th>
                                         <th>Activa</th>
+                                        <th></th>
                                     </tr>
                                 </thead>
                                 <tbody id="tblMembresias"></tbody>
@@ -197,7 +197,7 @@
             '<td>' + ((membresia.Descuento == null) ? 'NA' : membresia.Descuento) + '</td>' +
             '<td>' + new FechaUtility(membresia.FechaIngreso).GetDate() + '</td>' +
             '<td>' + ((membresia.Activa == true) ? "SI" : "NO") + '</td>' +
-            '<td>' + '<input type="button" class="btn btn-danger" onclick="EditarMembresia(' + i + ')" value="Editar"/>' + '</td>' +
+            '<td align="center">' + '<input type="button" class="btn btn-danger" onclick="EditarMembresia(' + i + ')" value="Editar"/>' + '</td>' +
             '</tr>';
             $('#tblMembresias').append(html);
         } 

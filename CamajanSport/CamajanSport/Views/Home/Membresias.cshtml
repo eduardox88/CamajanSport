@@ -5,6 +5,7 @@
 
 <!-- Page Title -->
 <div class="section section-breadcrumbs">
+    <input type="hidden" id="hdfError" value="@ViewBag.Error"/>
     <div class="container">
         <div class="row">
             <div class="col-md-12 text-center">
@@ -31,7 +32,6 @@
         </div>
     </div>
 </div>
-
 <!--membresias-->
 
 <div class="section">
@@ -39,6 +39,7 @@
         <div class="row">
             <div class="col-lg-12">
                 <!-- Pricing Plans Wrapper -->
+                <input type="hidden" id="hdfMembresiaSel" />
                 <div id="divMembresias" class="pricing-wrapper">
                     <!-- End Pricing Plan -->
                     @*<div id="basico" class="pricing-plan">
@@ -111,19 +112,61 @@
         </div>
     </div>
 </div>
-
+<div id="modalLogin" style="width:auto">
+    <div class="modal fade" tabindex="-1" role="dialog" id="loginModal">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">Inicie Sesión</h4>
+                </div>
+                <div class="modal-body">
+                    <form id="FormAutenticacion">
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <label for="txtEmail">Correo Electrónico:</label>
+                                <input type="text" id="txtEmail" class="form-control" placeholder="Nombre de Usuario"  />
+                            </div>
+                            
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <label for="txtPassword">Contraseña:</label>
+                                <input type="password" id="txtPassword" class="form-control" placeholder="Contraseña" />
+                            </div>
+                        </div><br />
+                        <div class="row">
+                            <div class="col-xs-10">
+                                <label style="font-weight:bold">
+                                    ¿Aún no te has registrado?
+                                </label><input type="button" value="Registrate Ahora" class="btn btn-link"/>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-primary" onclick="Autenticar()">Iniciar Sesión</button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+</div>
 
 <hr>
 
 @section HomeScripts{
-
 <script type="text/javascript">
 
     //Nombre del id que posee el activo
     var init = "";
     $(document).ready(function () {
 
+        InicializarAuthForm();
         CargarData();
+        if ($('#hdfError').val() == true) {
+            MostrarAlerta('Error al realizar pago','error','Ha ocurrido un error al realizar el pago de la membresía. Si el problema persiste contacte al administrador.');
+        }
     });
 
     function removeClasses(val) {
@@ -131,7 +174,8 @@
         $('#title_' + val).removeClass('pricing-plan-promote-title').addClass('pricing-plan-title');
         $('#price_' + val).removeClass('pricing-plan-promote-price').addClass('pricing-plan-price');
         $('#features_' + val).removeClass('pricing-plan-promote-features').addClass('pricing-plan-features');
-        $('#btn' + val).removeClass('btn-green');
+        $('#btn' + val).removeClass('btn-green');        
+        $('#hdfMembresiaSel').val('');
     }
 
     function Seleccionar(val) {
@@ -141,53 +185,121 @@
         $('#price_' + val).removeClass('pricing-plan-price').addClass('pricing-plan-promote-price');
         $('#features_' + val).removeClass('pricing-plan-features').addClass('pricing-plan-promote-features');
         $('#btn' + val).addClass('btn-green');
+        $('#hdfMembresiaSel').val($('#hdf_' + val).val());
         init = val;
+        $('#loginModal').modal('show');
+        // MostrarCustomSwalForm('Inicie Sesión',$('#modalLogin').html());
+        //AjaxCall('@Url.Action("PruebaPaypal", "Membresia")', undefined, '', EsUsuarioAutenticado, false);
+
+    }
+
+    function Autenticar() {
+        var objeto = {
+            'correo': $('#txtEmail').val(),
+            'password': $('#txtPassword').val(),
+            'recordar': false
+        };
+        AjaxCall('@Url.Action("SignIn","LogIn")', objeto, "", AutenticarCallBack, true);
+        //AjaxCall('@Url.Action("PruebaPaypal", "Membresia")', undefined, '', AutenticarCallBack, false);
+    }
+
+    function AutenticarCallBack(data)
+    {
+        if (data==true) {
+            var id = $('#hdfMembresiaSel').val();
+            AjaxCall('@Url.Action("PagoConCuentaPayPal", "PayPal")', { 'IdMembresia': parseInt(id) }, "", PayPalRedirect, true);
+            //AjaxCall('@Url.Action("PagoConCuentaPayPal", "PayPal")', null, "", PayPalRedirect, true);
+        } else {
+            swal({
+                title: 'No pudimos iniciar sesión!!',
+                text: 'La combinación de Correo Electrónico/Contraseña es inválida. Verifique y vuelva a intentar.',
+                type: 'error',
+                confirmButtonText: "Cerrar"
+            });
+        }
+
+    }
+
+    function PayPalRedirect(data)
+    {
+        console.log(data);
+        if (data.result == "OK") {
+            window.location = data.url;
+        } else {
+            MostrarAlerta('Pago con Paypal','error','Ha ocurrido un error al intentar realizar el pago con Paypal. Vuelv a intentar más tarde. Si el problema persiste contacte el administrador.');
+        }
+        
     }
     function CargarData()
     {
-        AjaxCall('@Url.Action("GetMembresias", "Membresia")', undefined, '', CargarMembresias, false);
+        AjaxCall('@Url.Action("GetMembresiasWOAuth", "Membresia")', undefined, '', CargarMembresias, false);
     }
 
-    function CargarMembresias(response)
-    {
-        for (var i = 0; i < response.length; i++)
-        {
-            
+    function CargarMembresias(response) {
+        for (var i = 0; i < response.length; i++) {
+
             var mem = response[i];
             var html = '<div id="' + mem.IdMembresia + '" class="pricing-plan">' +
-                    '<!-- Pricing Plan Ribbon -->';
-            if ((mem.Promocion != null && mem.Promocion > 0)|| (mem.Descuento != null && mem.Descuento > 0)) {
+                '<input type="hidden" id="hdf_' + mem.IdMembresia + '" value="' + mem.IdMembresia + '">'
+            '<!-- Pricing Plan Ribbon -->';
+            if ((mem.Promocion != null && mem.Promocion > 0) || (mem.Descuento != null && mem.Descuento > 0)) {
                 html +=
                     '<div class="ribbon-wrapper">' +
                         '<div class="price-ribbon ribbon-green">OFERTA</div>' +
                     '</div>';
-                    
+
             }
             html += '<h2 id="title_' + mem.IdMembresia + '" class="pricing-plan-title">' + mem.Nombre + '</h2>';
             //Si tiene descuento aplicado
             if (mem.Descuento != null && mem.Descuento > 0) {
-                html +=  '<div id="price_'+mem.IdMembresia+'" class="pricing-plan-price" style="text-decoration:line-through">$'+mem.Precio+'<span>USD</span></div>'+
-                  '<ul id="features_'+mem.IdMembresia+'" class="pricing-plan-features">'+
+                html += '<div id="price_' + mem.IdMembresia + '" class="pricing-plan-price" style="text-decoration:line-through">$' + mem.Precio + '<span>USD</span></div>' +
+                  '<ul id="features_' + mem.IdMembresia + '" class="pricing-plan-features">' +
                   '<li ><strong>Ahora por tan solo </strong> $' + (mem.Precio - mem.Descuento) + ' USD</li>' +
                   '<li class="ribbon-wrapper2 ribbon-green">' + parseInt((mem.Descuento / mem.Precio) * 100) + '% DE DESCUENTO!</li>';
-                    
-            }else {
-                html +=  '<div id="price_'+mem.IdMembresia+'" class="pricing-plan-price">$'+mem.Precio+'<span>USD</span></div>'+
-                  '<ul id="features_'+mem.IdMembresia+'" class="pricing-plan-features">';
+
+            } else {
+                html += '<div id="price_' + mem.IdMembresia + '" class="pricing-plan-price">$' + mem.Precio + '<span>USD</span></div>' +
+                  '<ul id="features_' + mem.IdMembresia + '" class="pricing-plan-features">';
             }
             if (mem.Promocion != null && mem.Promocion > 0) {
-                html +=  '<li style="color:red">Aprovecha la oferta de '+mem.Promocion+' días más!</li>'+
-                    '<li style="text-decoration:line-through">Antes <strong>'+mem.Duracion+'</strong> días</li>'+
+                html += '<li style="color:red">Aprovecha la oferta de ' + mem.Promocion + ' días más!</li>' +
+                    '<li style="text-decoration:line-through">Antes <strong>' + mem.Duracion + '</strong> días</li>' +
                     '<li>AHORA <strong>' + (mem.Duracion + mem.Promocion) + '</strong> días</li>';
-            }else {
-                html += '<li >Pronósticos por <strong>'+mem.Duracion+'</strong> días</li>';
+            } else {
+                html += '<li >Pronósticos por <strong>' + mem.Duracion + '</strong> días</li>';
             }
-            html+= '</ul>'+
-                    '<a id="btn'+mem.IdMembresia+'" class="btn" onclick="Seleccionar('+mem.IdMembresia+')">Seleccionar</a>'+
+            html += '</ul>' +
+                    '<a id="btn' + mem.IdMembresia + '" class="btn" onclick="Seleccionar(' + mem.IdMembresia + ')">Seleccionar</a>' +
                     '</div>';
             console.log(html);
             $('#divMembresias').append(html);
         }
+    }
+
+    $(document).ajaxStart(function () {
+        spinner.spin(target);
+    });
+
+    $(document).ajaxStop(function () {
+        spinner.stop();
+    });
+
+    function InicializarAuthForm() {
+        $("#FormAutenticacion").validate({
+            errorClass: 'control-label text-danger',
+            rules: {
+                txtEmail: {
+                    required: true,
+                    minlength: 4,
+                    maxlength: 20
+                },
+                txtPassword: {
+                    required: true,
+                    minlength: 4,
+                    maxlength: 25
+                }
+            }
+        });
     }
 </script>
 }

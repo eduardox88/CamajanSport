@@ -1,0 +1,103 @@
+﻿@{
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="page-content">
+    <input type="hidden" id="paymentSuccessful" value="@(ViewBag.PaymentSuccessful)" />
+    <!-- begin PAGE TITLE AREA -->
+    <!-- Use this section for each page's title and breadcrumb layout. In this example a date range picker is included within the breadcrumb. -->
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="page-title">
+                <h1>
+                    Membresías
+                    @*<small>Deportes</small>*@
+                </h1>
+                <ol class="breadcrumb">
+                    <li class="active"><i class="fa fa-dashboard"></i>Mis membresías</li>
+                    @*<li class="pull-right">
+                            <div id="reportrange" class="btn btn-green btn-square date-picker">
+                                <i class="fa fa-calendar"></i>
+                                <span class="date-range"></span> <i class="fa fa-caret-down"></i>
+                            </div>
+                        </li>*@
+                </ol>
+            </div>
+        </div>
+        <!-- /.col-lg-12 -->
+    </div>
+    <!-- /.row -->
+    <!-- end PAGE TITLE AREA -->
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="portlet portlet-orange">
+                <div class="portlet-heading">
+                    <div class="portlet-title">
+                        <h4><i class="fa fa-exchange fa-fw"></i> Lista de sus Membresías</h4>
+                    </div>
+                    <div class="portlet-widgets">
+                        <a data-toggle="collapse" data-parent="#accordion" href="#transactionsPortlet"><i class="fa fa-chevron-down"></i></a>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <div id="transactionsPortlet" class="panel-collapse collapse in">
+                    <div class="portlet-body">
+                        <div class="table-responsive dashboard-demo-table">
+                            <table class="table table-bordered table-striped table-hover">
+                                <thead>
+                                    <tr>
+
+                                        <th>Nombre</th>
+                                        <th>Monto pagado</th>
+                                        <th>Id Transacción</th>
+                                        <th>Fecha Expiración</th>
+                                        <th>Fecha Ingreso</th>
+                                        <th>Activa</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tblMembresias"></tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <br>
+    <br>
+</div>
+    @section Scripts{
+        <script>
+
+    $(document).ready(function () {
+
+        @*if ($('#paymentSuccessful').val() != undefined && $('#paymentSuccessful').val() == true) {
+            MostrarAlerta("Membresía activada", "success", "Su pago se ha realizado exitosamente. Su ID de transacción de PayPal es " + '@(ViewBag.PaymentID)');
+        } else {
+            MostrarAlerta("Error al realizar su pago", "error", "No se pudo completar su pago. Intente nuevamente más tarde. Si el problema persiste contacte al administrador.");
+        }*@
+        AjaxCall('@Url.Action("GetMisMembresias", "Membresia")', undefined, '', CargarData, false);
+    });
+
+    function CargarData(response) {
+        objMembresias = response;
+        $('#tblMembresias').empty();
+        for (var i = 0; i < response.length; i++) {
+            var membresia = response[i];
+            var html = '<tr>' +
+            '<td>' + membresia.Nombre + '</td>' +
+            '<td>USD$' + membresia.MontoTransaccion + '</td>' +
+            '<td>' + membresia.IdTransaccionPago + '</td>' +
+            '<td>' + new FechaUtility(membresia.FechaExpiracion).GetDate() + '</td>' +
+            '<td>' + new FechaUtility(membresia.FechaIngreso).GetDate() + '</td>' +
+            '<td>' + ((membresia.Activa == true) ? "SI" : "NO") + '</td>' +
+            '</tr>';
+            $('#tblMembresias').append(html);
+        }
+    }
+
+        </script>
+    }
