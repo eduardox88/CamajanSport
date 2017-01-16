@@ -24,7 +24,13 @@ namespace CamajanSport.Controllers
 
         public ActionResult Membresias() {
 
+            if (Request.Params["error"] != null && Convert.ToBoolean(Request.Params["error"]))
+            {
+                ViewBag.Error = true;
+            }
+           
             return View();
         }
+
     }
 }

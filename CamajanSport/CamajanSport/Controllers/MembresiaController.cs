@@ -16,7 +16,7 @@ using System.Net;
 
 namespace CamajanSport.Controllers
 {
-    [Authorize]
+    
     public class MembresiaController : Controller
     {
         //
@@ -47,14 +47,37 @@ namespace CamajanSport.Controllers
         [Authorize]
         public ActionResult MantMembresias()
         {
+            return View();  
+        }
+
+        [Authorize]
+        public ActionResult ListarMisMembresias()
+        {
+            if (Request.Params["paymentId"] != null && Request.Params["paymentId"] != "")
+            {
+                ViewBag.paymentSuccessful = true;
+                ViewBag.PaymentID = Request.Params["paymentId"];
+            }
             return View();
         }
+        [Authorize]
+        public async Task<JsonResult> GetMisMembresias()
+        {
+            var membresias = await ApiHelper.GET_ListById<MembresiaUsuario>("MembresiaUsuarios/GetMembresiasUsuarioById", GetUserDecrypted.IdUsuario, GetAuthToken);
+            return Json(membresias, JsonRequestBehavior.AllowGet);
+        }
+
+        [Authorize]
         public async Task<JsonResult> GetMembresias() 
         {
             var membresias = await ApiHelper.GET_List<Membresia>("Membresia/GetMembresias", GetAuthToken);
             return Json(membresias, JsonRequestBehavior.AllowGet);
         }
-
+        public async Task<JsonResult> GetMembresiasWOAuth()
+        {
+            var membresias = await ApiHelper.GET_ListWOAuth<Membresia>("Membresia/GetMembresias");
+            return Json(membresias, JsonRequestBehavior.AllowGet);
+        }
         [Authorize]
         public async Task<JsonResult> GuardarMembresia(Membresia membresia)
         {
