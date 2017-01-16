@@ -129,6 +129,24 @@ namespace Utilidades
             return lista;
         }
 
+        public static async Task<List<T>> GET_ListWOAuth<T>(string nombreControladorAccion) where T : class
+        {
+            List<T> lista = null;
+
+            HttpClient client = new HttpClient();
+
+            HttpResponseMessage result = await client.GetAsync("http://localhost:14678/api/" + nombreControladorAccion);
+
+            if (result.IsSuccessStatusCode)
+            {
+
+                lista = new List<T>();
+                lista = await result.Content.ReadAsAsync<List<T>>();
+            }
+
+            return lista;
+        }
+
         public static async Task<List<T>> GET_List_ByFilter<T>(string nombreControladorAccion,string Filter, Token token) where T : class
         {
             List<T> lista = null;
@@ -151,7 +169,7 @@ namespace Utilidades
             return lista;
         }
 
-        public static async Task<List<T>> GET_ListById<T>(string nombreControladorAccion,int ID, Token token) where T : class
+        public static async Task<List<T>> GET_ListById<T>(string nombreControladorAccion, int ID, Token token) where T : class
         {
             List<T> lista = null;
 
