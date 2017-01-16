@@ -21,6 +21,8 @@ namespace ApiCamajan.Controllers
         // GET: api/Membresia
         public List<Membresia> GetMembresias()
         {
+            //Paypal paypal = new Paypal();
+            //string a = paypal.GetPaymentDetails();
             return db.membresias.ToList();
         }
 
