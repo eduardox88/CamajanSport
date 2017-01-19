@@ -3,7 +3,7 @@
 }
 
 <div class="page-content">
-    <input type="hidden" id="paymentSuccessful" value="@(ViewBag.PaymentSuccessful)" />
+    <input type="hidden" id="paymentSuccessful" value="@ViewBag.paymentSuccessful" />
     <!-- begin PAGE TITLE AREA -->
     <!-- Use this section for each page's title and breadcrumb layout. In this example a date range picker is included within the breadcrumb. -->
     <div class="row">
@@ -74,11 +74,11 @@
 
     $(document).ready(function () {
 
-        @*if ($('#paymentSuccessful').val() != undefined && $('#paymentSuccessful').val() == true) {
-            MostrarAlerta("Membresía activada", "success", "Su pago se ha realizado exitosamente. Su ID de transacción de PayPal es " + '@(ViewBag.PaymentID)');
+        if ('@ViewBag.paymentSuccessful' == 'True') {
+            MostrarAlerta("Membresía activada", "success", "Su pago se ha realizado exitosamente. Su ID de transacción de PayPal es " + '@ViewBag.PaymentID');
         } else {
             MostrarAlerta("Error al realizar su pago", "error", "No se pudo completar su pago. Intente nuevamente más tarde. Si el problema persiste contacte al administrador.");
-        }*@
+        }
         AjaxCall('@Url.Action("GetMisMembresias", "Membresia")', undefined, '', CargarData, false);
     });
 
@@ -99,5 +99,5 @@
         }
     }
 
-        </script>
+</script>
     }
