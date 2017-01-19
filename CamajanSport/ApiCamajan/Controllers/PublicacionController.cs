@@ -32,7 +32,7 @@ namespace ApiCamajan.Controllers
 
         [Authorize]
         // GET: api/Publicacion
-        public List<Publicacion> GetPublicacionesByFiltro(string FechaJuego,int IdDeporte,int IdEstadoResultado,string TipoPublicacion)
+        public List<Publicacion> GetPublicacionesByFiltro(string FechaJuego,int IdDeporte,int IdEstadoResultado,string TipoPublicacion,int IdUsuario)
         {
             var query = from s in db.Publicacions
                             select s;            
@@ -53,6 +53,11 @@ namespace ApiCamajan.Controllers
             if (IdEstadoResultado > 0)
             {
                 query = query.Where(f => f.IdEstadoResultado == IdEstadoResultado);
+            }
+            //Si es un Camajan
+            if (IdUsuario > 0)
+            {
+                query = query.Where(f => f.IdUsuario == IdUsuario);
             }
             return query.ToList();
             
