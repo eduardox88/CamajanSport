@@ -4,15 +4,16 @@
 @using Utilidades;
 @using System.Web.Script.Serialization;
 @using CamajanSport.BOL;
+@using CamajanSport.Controllers;
 
 @{
 
+    MenuInitializer menuInitializer = new MenuInitializer();
     var ticket = Utilidades.CookieHandler.GetDecryptTicket();
-
     Usuario modelo = new Usuario();
     JavaScriptSerializer js = new JavaScriptSerializer();
-
     modelo = js.Deserialize<Usuario>(ticket.UserData);
+    var menuHtml = menuInitializer.Initialize(modelo);
 }
 
 
@@ -101,54 +102,7 @@
                         </p>
                         <div class="clearfix"></div>
                     </li>
-                    <li>
-                        <a class="active" href="@Url.Action("Dashboard", "Admin")">
-                            <i class="fa fa-dashboard"></i> Dashboard
-                        </a>
-                    </li>
-
-                    <li class="panel">
-                        <a href="javascript:;" data-parent="#side" data-toggle="collapse" class="accordion-toggle" data-target="#forms">
-                            <i class="fa fa-edit"></i> Mantenimientos <i class="fa fa-caret-down"></i>
-                        </a>
-                        <ul class="collapse nav" id="forms">
-                            <li>
-                                <a href="@Url.Action("MantDeportes","Deporte")">
-                                    <i class="fa fa-angle-double-right"></i> Deporte
-                                </a>
-                            </li>
-                            <li>
-                                <a href="@Url.Action("MantEquipos","Equipo")">
-                                    <i class="fa fa-angle-double-right"></i> Equipos
-                                </a>
-                            </li>
-                            <li>
-                                <a href="@Url.Action("MantUsuarios", "Usuario")">
-                                    <i class="fa fa-angle-double-right"></i> Usuarios
-                                </a>
-                            </li>
-                            <li>
-                                <a href="@Url.Action("MantMembresias","Membresia")">
-                                    <i class="fa fa-angle-double-right"></i> Membresias
-                                </a>
-                            </li>
-                            <li>
-                                <a href="@Url.Action("MantPublicaciones","Publicacion")">
-                                    <i class="fa fa-angle-double-right"></i> Publicaciones
-                                </a>
-                            </li>
-                        </ul>
-                    </li>
-                    <li>
-                        <a href="@Url.Action("PerfilUsuario", "Usuario")">
-                            <i class="fa fa-wrench"></i> Perfil de usuario
-                        </a>
-                    </li>
-                    <li>
-                        <a href="@Url.Action("Index","LogIn")">
-                            <i class="fa fa-sign-out"></i> Terminar Sesión
-                        </a>
-                    </li>
+                    @Html.Raw(menuHtml.Text)
                 </ul>
             </div>
         </nav>

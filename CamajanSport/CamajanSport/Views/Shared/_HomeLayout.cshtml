@@ -53,6 +53,8 @@
     </header>
 
     <div>
+        <div id="spinner">
+        </div>
         @RenderBody()
     </div>
 
@@ -70,6 +72,9 @@
                         <b>Whatsapp:</b> +1 829-667-6372<br />
 
                     </p>
+                    <p>
+                        <a href="https://www.paypal.com/webapps/mpp/paypal-popup" title="How PayPal Works" onclick="javascript:window.open('https://www.paypal.com/webapps/mpp/paypal-popup','WIPaypal','toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=yes, resizable=yes, width=1060, height=700'); return false;"><img src="https://www.paypalobjects.com/digitalassets/c/website/marketing/na/us/logo-center/9_bdg_secured_by_pp_2line.png" border="0" alt="Secured by PayPal"></a>
+                    </p>
                 </div>
                 <div class="col-footer col-md-4 col-xs-6">
                     <h3>REDES SOCIALES</h3>
@@ -77,6 +82,9 @@
                         <img src="~/img/icons/facebook.png" width="32" alt="Facebook">
                         <img src="~/img/icons/twitter.png" width="32" alt="Twitter">
                     </div>
+                    <p>
+                        @*<!-- PayPal Logo --><table border="0" cellpadding="10" cellspacing="0" align="center"><tr><td align="center"></td></tr><tr><td align="center"><a href="https://www.paypal.com/webapps/mpp/paypal-popup" title="How PayPal Works" onclick="javascript:window.open('https://www.paypal.com/webapps/mpp/paypal-popup','WIPaypal','toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=yes, resizable=yes, width=1060, height=700'); return false;"><img src="https://www.paypalobjects.com/webstatic/mktg/logo/AM_SbyPP_mc_vs_dc_ae.jpg" border="0" alt="PayPal Acceptance Mark"></a></td></tr></table><!-- PayPal Logo -->*@
+                    </p>
                 </div>
                 <div class="col-footer col-md-4 col-xs-6">
                     <h3>QUIENES SOMOS</h3>
@@ -86,7 +94,7 @@
             </div>
             <div class="row">
                 <div class="col-md-12">
-                    <div class="footer-copyright">Copyright  &copy; 2016 CAMAJANDEPORTIVO.COM</div>
+                    <div class="footer-copyright">Copyright  &copy; 2017 CAMAJANDEPORTIVO.COM</div>
                 </div>
             </div>
         </div>
@@ -101,6 +109,20 @@
     <script src="~/js/plugins/sweetalert/sweetalert.min.js"></script>
     <script src="~/js/plugins/spin/spin.js"></script>
     <script src="~/js/helpers/Utilities.js"></script>
+    <script src="~/js/plugins/jquery.validate/jquery.validate.js"></script>
+    <script src="~/js/plugins/jquery.validate/messages_es.js"></script>
+    <script src="~/js/helpers/Utilities.js"></script>
+    <script src="~/js/plugins/spin/spin.js"></script>
+    <script type="text/javascript">
+        $(document).ajaxStart(function () {
+            spinner.spin(target);
+        });
+
+        $(document).ajaxStop(function () {
+            spinner.stop();
+        });
+
+    </script>
     @RenderSection("HomeScripts", false);
 </body>
 </html>
