@@ -9,6 +9,8 @@ using System.Threading.Tasks;
 using Newtonsoft.Json;
 using System.Net.Http.Formatting;
 using CamajanSport.BOL;
+using Utilidades;
+using System.Web.Security;
 
 namespace CamajanSport.Controllers
 {
@@ -17,9 +19,9 @@ namespace CamajanSport.Controllers
     {
         //
         // GET: /Admin/
-
         public ActionResult Dashboard()
         {
+            
             return View();
         }
 
