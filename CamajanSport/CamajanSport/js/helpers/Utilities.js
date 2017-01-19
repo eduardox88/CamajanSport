@@ -35,7 +35,6 @@ function MostrarAlerta(titulo, tipoAlerta, mensaje)
     });
 };
 
-
 function readURL(input, $elem) {
     if (input.files && input.files[0]) {
         var reader = new FileReader();
