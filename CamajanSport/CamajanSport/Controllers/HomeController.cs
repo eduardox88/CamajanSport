@@ -28,6 +28,14 @@ namespace CamajanSport.Controllers
             {
                 ViewBag.Error = true;
             }
+            if (Request.Params["token"] != null)
+            {
+                ViewBag.PayPalCancel = true;
+            }
+            else
+            {
+                ViewBag.PayPalCancel = false;
+            }
            
             return View();
         }

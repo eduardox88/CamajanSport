@@ -114,13 +114,19 @@ namespace CamajanSport.Controllers
         {
             try
             {
-                var publicaciones = await ApiHelper.GET_List_ByFilter<Publicacion>("Publicacion/GetPublicacionesByFiltro", "FechaJuego=" + ((FechaJuego.HasValue) ? FechaJuego.Value.ToShortDateString() : "") + "&IdDeporte=" + IdDeporte.ToString() + "&IdEstadoResultado=" + IdEstadoResultado.ToString() + "&TipoPublicacion=" + TipoPublicacion, GetAuthToken);
+                int IdUsuario = 0;
+                if (GetUserDecrypted.rol.IdRol == 2/*Administrador*/)
+                { 
+                    IdUsuario = GetUserDecrypted.IdUsuario;
+                }
+                var publicaciones = await ApiHelper.GET_List_ByFilter<Publicacion>("Publicacion/GetPublicacionesByFiltro", "FechaJuego=" + ((FechaJuego.HasValue) ? FechaJuego.Value.ToShortDateString() : "") + "&IdDeporte=" + IdDeporte.ToString() + "&IdEstadoResultado=" + IdEstadoResultado.ToString() + "&TipoPublicacion=" + TipoPublicacion+"&IdUsuario="+IdUsuario.ToString(), GetAuthToken);
+                
                 return Json(publicaciones, JsonRequestBehavior.AllowGet);
             }
             catch (Exception)
             {
-                Response.StatusCode = (int)HttpStatusCode.BadRequest;
-                return Json("Ha ocurrido un error al obtener las publicaciones. Si el problema persiste contacte su administrador.");
+                //Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                return Json(new{Result = "ERROR" ,Message = "Ha ocurrido un error al obtener las publicaciones. Si el problema persiste contacte su administrador."});
             }
         }
 

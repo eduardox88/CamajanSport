@@ -15,7 +15,7 @@ using Utilidades;
 
 namespace CamajanSport.Controllers
 {
- 
+
     public class UsuarioController : Controller
     {
         #region Propiedades

@@ -110,7 +110,72 @@ namespace CamajanSport.Controllers
                 }
                 else
                 {
-                    Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                    return Json("Usuario y/o Contraseña son inválidas");
+                }
+            }
+            catch (Exception ex)
+            {
+                return Json("Ha ocurrido un error");
+            }
+        }
+
+        public async Task<JsonResult> SignInCompra(string correo, string password, bool recordar)
+        {
+
+            try
+            {
+                HttpResponseMessage responseMessage = await ApiHelper.GetBearerToken("http://localhost:14678/", correo, password);
+
+                if (responseMessage.IsSuccessStatusCode)
+                {
+
+                    Token token = await responseMessage.Content.ReadAsAsync<Token>();
+                    int expire = (token.ExpiresIn / 60);
+
+                    HttpResponseMessage responseUser = await ApiHelper.POST<Usuario>("Usuario/GetUsuarioByEmail", new Usuario() { CorreoElec = correo }, token);
+
+                    if (responseUser.IsSuccessStatusCode)
+                    {
+
+                        Usuario user = new Usuario();
+                        user = await responseUser.Content.ReadAsAsync<Usuario>();
+                        user.Contrasena = password;
+                        if (user.IdEstado == 1)
+                        {
+                            ClearAllCookieSession();
+
+                            Response.Cookies.Add(CookieHandler.GetAuthenticationCookie(Settings.Default.TokenCookie, token, recordar, expire));
+                            Response.Cookies.Add(CookieHandler.GetAuthenticationCookie(user, recordar, expire));
+                            if (user.rol.IdRol != 1)
+                            {
+                                return Json(new { Result = "ERROR", Message = "Usted no está autorizado para comprar membresías. Contacte su administrador." });
+                            }
+                            else
+                            {
+                                return Json(new { Result = "OK" });
+                            }
+                           
+                        }
+                        else
+                        {
+                            if (user.IdEstado == 2)
+                            {
+                                return Json(new { Result = "ERROR", Message = "Debe confirmar su cuenta para poder realizar compras en Camajan Deportivo. Verifique su bandeja de entrada y siga los pasos del correo de confirmación." });
+                            }
+                            else
+                            {
+                                return Json(new { Result = "ERROR", Message = "Su usuario ha sido inhabilitado. Para más información contacte el administrador a camajandeportivo@gmail.com" });
+                            }
+                            
+                        }
+                    }
+                    else
+                    {
+                        throw new Exception();
+                    }
+                }
+                else
+                {
                     return Json("Usuario y/o Contraseña son inválidas");
                 }
             }
