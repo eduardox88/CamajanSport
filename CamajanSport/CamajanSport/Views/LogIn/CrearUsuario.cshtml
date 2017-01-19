@@ -32,6 +32,7 @@
 <body>
 
     <div class="container">
+        <div id="spinner"></div>
         <div class="col-md-6 col-md-offset-3">
             <div class="text-center" style="margin:20px 0;">
                 <a href="@Url.Action("Index","Home")"><img src="~/img/logo-text.png" alt="Basica"></a>
@@ -122,18 +123,23 @@
     <script src="~/js/plugins/jquery.validate/utilities/lettersonly.js"></script>
     <script src="~/js/plugins/jquery.validate/utilities/email.js"></script>
     <script src="~/js/helpers/Utilities.js"></script>
-
-
+    
     <!-- PAGE LEVEL PLUGIN SCRIPTS -->
     <!-- THEME SCRIPTS -->
     <script src="~/js/flex.js"></script>
-
+    <script src="~/js/plugins/spin/spin.js"></script>
 </body>
 
 </html>
 
 <script type="text/javascript">
+    $(document).ajaxStart(function () {
+        spinner.spin(target);
+    });
 
+    $(document).ajaxStop(function () {
+        spinner.stop();
+    });
     var esUsuarioValido = false;
     var esCorreoValido = false;
 
