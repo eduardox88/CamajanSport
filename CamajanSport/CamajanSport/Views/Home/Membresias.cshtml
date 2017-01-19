@@ -1,11 +1,8 @@
 ﻿@{
     Layout = "~/Views/Shared/_HomeLayout.cshtml";
 }
-
-
 <!-- Page Title -->
 <div class="section section-breadcrumbs">
-    <input type="hidden" id="hdfError" value="@ViewBag.Error"/>
     <div class="container">
         <div class="row">
             <div class="col-md-12 text-center">
@@ -139,14 +136,26 @@
                             <div class="col-xs-10">
                                 <label style="font-weight:bold">
                                     ¿Aún no te has registrado?
-                                </label><input type="button" value="Registrate Ahora" class="btn btn-link"/>
+                                </label><input type="button" value="Registrate Ahora" onclick="location.href='@Url.Action("CrearUsuario", "LogIn")'" class="btn btn-link" />
                             </div>
                         </div>
                     </form>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
-                    <button type="button" class="btn btn-primary" onclick="Autenticar()">Iniciar Sesión</button>
+                    <div class="row">
+                        <div class="col-lg-10">
+                            <a href="https://www.paypal.com/webapps/mpp/paypal-popup" title="How PayPal Works" onclick="javascript:window.open('https://www.paypal.com/webapps/mpp/paypal-popup','WIPaypal','toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=yes, resizable=yes, width=1060, height=700'); return false;"><img src="https://www.paypalobjects.com/webstatic/mktg/logo/AM_mc_vs_dc_ae.jpg" border="0" alt="PayPal Acceptance Mark"></a>
+                        </div>
+                        
+                    </div><br />
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                            <button type="button" class="btn btn-primary" onclick="Autenticar()">Iniciar Sesión</button>
+
+                        </div>
+                    </div>
+                    
                 </div>
             </div><!-- /.modal-content -->
         </div><!-- /.modal-dialog -->
@@ -162,11 +171,16 @@
     var init = "";
     $(document).ready(function () {
 
+        if ('@ViewBag.PayPalCancel' == 'True') {
+            MostrarAlerta('¡La transacción ha sido cancelada!','info','Su pago ha sido cancelado.');
+        }
+        if ('@ViewBag.Error' == 'True') {
+            MostrarAlerta('Error al realizar pago', 'error', 'Ha ocurrido un error al realizar el pago de la membresía. Si el problema persiste contacte al administrador.');
+        }
+
         InicializarAuthForm();
         CargarData();
-        if ($('#hdfError').val() == true) {
-            MostrarAlerta('Error al realizar pago','error','Ha ocurrido un error al realizar el pago de la membresía. Si el problema persiste contacte al administrador.');
-        }
+        
     });
 
     function removeClasses(val) {
@@ -174,7 +188,7 @@
         $('#title_' + val).removeClass('pricing-plan-promote-title').addClass('pricing-plan-title');
         $('#price_' + val).removeClass('pricing-plan-promote-price').addClass('pricing-plan-price');
         $('#features_' + val).removeClass('pricing-plan-promote-features').addClass('pricing-plan-features');
-        $('#btn' + val).removeClass('btn-green');        
+        $('#btn' + val).removeClass('btn-green');
         $('#hdfMembresiaSel').val('');
     }
 
@@ -199,20 +213,18 @@
             'password': $('#txtPassword').val(),
             'recordar': false
         };
-        AjaxCall('@Url.Action("SignIn","LogIn")', objeto, "", AutenticarCallBack, true);
-        //AjaxCall('@Url.Action("PruebaPaypal", "Membresia")', undefined, '', AutenticarCallBack, false);
+        AjaxCall('@Url.Action("SignInCompra","LogIn")', objeto, "", AutenticarCallBack, true);
     }
 
-    function AutenticarCallBack(data)
-    {
-        if (data==true) {
+    function AutenticarCallBack(data) {
+        if (data.Result == 'OK') {
             var id = $('#hdfMembresiaSel').val();
             AjaxCall('@Url.Action("PagoConCuentaPayPal", "PayPal")', { 'IdMembresia': parseInt(id) }, "", PayPalRedirect, true);
             //AjaxCall('@Url.Action("PagoConCuentaPayPal", "PayPal")', null, "", PayPalRedirect, true);
         } else {
             swal({
-                title: 'No pudimos iniciar sesión!!',
-                text: 'La combinación de Correo Electrónico/Contraseña es inválida. Verifique y vuelva a intentar.',
+                title: 'Inicio de Sesión!!',
+                text: data.Message,
                 type: 'error',
                 confirmButtonText: "Cerrar"
             });
@@ -220,18 +232,16 @@
 
     }
 
-    function PayPalRedirect(data)
-    {
+    function PayPalRedirect(data) {
         console.log(data);
         if (data.result == "OK") {
             window.location = data.url;
         } else {
-            MostrarAlerta('Pago con Paypal','error','Ha ocurrido un error al intentar realizar el pago con Paypal. Vuelv a intentar más tarde. Si el problema persiste contacte el administrador.');
+            MostrarAlerta('Pago con Paypal', 'error', 'Ha ocurrido un error al intentar realizar el pago con Paypal. Vuelv a intentar más tarde. Si el problema persiste contacte el administrador.');
         }
-        
+
     }
-    function CargarData()
-    {
+    function CargarData() {
         AjaxCall('@Url.Action("GetMembresiasWOAuth", "Membresia")', undefined, '', CargarMembresias, false);
     }
 
@@ -276,13 +286,6 @@
         }
     }
 
-    $(document).ajaxStart(function () {
-        spinner.spin(target);
-    });
-
-    $(document).ajaxStop(function () {
-        spinner.stop();
-    });
 
     function InicializarAuthForm() {
         $("#FormAutenticacion").validate({
@@ -291,15 +294,16 @@
                 txtEmail: {
                     required: true,
                     minlength: 4,
-                    maxlength: 20
+                    maxlength: 50
                 },
                 txtPassword: {
                     required: true,
                     minlength: 4,
-                    maxlength: 25
+                    maxlength: 50
                 }
             }
         });
     }
+
 </script>
 }
