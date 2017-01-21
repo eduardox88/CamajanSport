@@ -23,10 +23,15 @@ namespace ApiCamajan.Controllers
         {
             return db.MembresiaUsuarios;
         }
-
+        
         public List<MembresiaUsuario> GetMembresiasUsuarioById(int id)
         {
             return db.MembresiaUsuarios.Where(m => m.IdUsuario == id).ToList();
+        }
+        [ResponseType(typeof(MembresiaUsuario))]
+        public MembresiaUsuario ObtieneMembresiaActiva(int id)
+        {
+            return db.MembresiaUsuarios.Where(m => m.IdUsuario == id && m.FechaExpiracion >= DateTime.Now).FirstOrDefault();
         }
 
         // GET: api/MembresiaUsuarios/5
