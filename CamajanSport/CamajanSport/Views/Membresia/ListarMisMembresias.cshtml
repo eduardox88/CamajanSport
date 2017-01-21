@@ -52,7 +52,7 @@
                                         <th>Id Transacción</th>
                                         <th>Fecha Expiración</th>
                                         <th>Fecha Ingreso</th>
-                                        <th>Activa</th>
+                                        @*<th>Activa</th>*@
                                         <th></th>
                                     </tr>
                                 </thead>
@@ -93,7 +93,7 @@
             '<td>' + membresia.IdTransaccionPago + '</td>' +
             '<td>' + new FechaUtility(membresia.FechaExpiracion).GetDate() + '</td>' +
             '<td>' + new FechaUtility(membresia.FechaIngreso).GetDate() + '</td>' +
-            '<td>' + ((membresia.Activa == true) ? "SI" : "NO") + '</td>' +
+            //'<td>' + ((membresia.Activa == true) ? "SI" : "NO") + '</td>' +
             '</tr>';
             $('#tblMembresias').append(html);
         }
