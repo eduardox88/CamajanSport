@@ -115,7 +115,7 @@ namespace CamajanSport.Controllers
             try
             {
                 int IdUsuario = 0;
-                if (GetUserDecrypted.rol.IdRol == 2/*Administrador*/)
+                if (GetUserDecrypted.rol.IdRol == 2/*Camajan*/)
                 { 
                     IdUsuario = GetUserDecrypted.IdUsuario;
                 }

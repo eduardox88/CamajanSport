@@ -67,7 +67,7 @@ namespace CamajanSport.Controllers
                 else if (userLogged.rol.IdRol == 1/*Regular User*/)
                 {
                     menuHtml.Text += "<li>" +
-                                    "<a href='/Membresia/GetMisMembresias'>" +
+                                    "<a href='/Membresia/ListarMisMembresias'>" +
                                         "<i class='fa fa-angle-double-right'></i> Mis Membresías" +
                                     "</a>" +
                                 "</li>";

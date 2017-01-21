@@ -148,11 +148,23 @@ namespace CamajanSport.Controllers
                             Response.Cookies.Add(CookieHandler.GetAuthenticationCookie(user, recordar, expire));
                             if (user.rol.IdRol != 1)
                             {
-                                return Json(new { Result = "ERROR", Message = "Usted no está autorizado para comprar membresías. Contacte su administrador." });
+                                return Json(new { Result = "ERROR", Title = "Compra de Membresía", Type = "info", Message = "Usted no está autorizado para comprar membresías. Contacte su administrador." });
                             }
                             else
                             {
-                                return Json(new { Result = "OK" });
+                                //MembresiaController controller = new MembresiaController();
+                                //var membresia = await controller.ObtieneMembresiaActiva();
+                                List<MembresiaUsuario> ListaMembresias = await ApiHelper.GET_By_ID<List<MembresiaUsuario>>("MembresiaUsuarios/GetMembresiasUsuarioById", GetUserDecrypted.IdUsuario, GetAuthToken);
+                                var membresia = ListaMembresias.FirstOrDefault(m => m.FechaExpiracion >= DateTime.Now);
+                                if (membresia != null && membresia.IdMembresia > 0)
+                                {
+                                    return Json(new { Result = "ERROR",Title="Compra de Membresía",Type="info", Message = "Usted no puede comprar otra membresía ya que posee una membresía activa que expira el "+membresia.FechaExpiracion.ToShortDateString()+"." });
+                                }
+                                else
+                                {
+                                    return Json(new { Result = "OK" });
+                                }
+                                
                             }
                            
                         }
@@ -160,11 +172,11 @@ namespace CamajanSport.Controllers
                         {
                             if (user.IdEstado == 2)
                             {
-                                return Json(new { Result = "ERROR", Message = "Debe confirmar su cuenta para poder realizar compras en Camajan Deportivo. Verifique su bandeja de entrada y siga los pasos del correo de confirmación." });
+                                return Json(new { Result = "ERROR", Title = "Compra de Membresía", Type = "info", Message = "Debe confirmar su cuenta para poder realizar compras en Camajan Deportivo. Verifique su bandeja de entrada y siga los pasos del correo de confirmación." });
                             }
                             else
                             {
-                                return Json(new { Result = "ERROR", Message = "Su usuario ha sido inhabilitado. Para más información contacte el administrador a camajandeportivo@gmail.com" });
+                                return Json(new { Result = "ERROR", Title = "Compra de Membresía", Type = "info", Message = "Su usuario ha sido inhabilitado. Para más información contacte el administrador a camajandeportivo@gmail.com" });
                             }
                             
                         }
@@ -176,12 +188,13 @@ namespace CamajanSport.Controllers
                 }
                 else
                 {
-                    return Json("Usuario y/o Contraseña son inválidas");
+                    return Json(new { Result = "ERROR", Title = "Inicio de Sesión", Type = "error", Message = "Usuario y/o Contraseña son inválidas" });
+                    //return Json("Usuario y/o Contraseña son inválidas");
                 }
             }
-            catch (Exception ex)
+            catch (Exception )
             {
-                return Json("Ha ocurrido un error");
+                return Json(new { Result = "ERROR", Title = "Inicio de Sesión", Type = "error", Message = "Ha ocurrido un error al iniciar sesión. Intente nuevamente más tarde. Si el problema persiste contacte el administrador" });
             }
         }
 

@@ -70,8 +70,6 @@ namespace CamajanSport.Controllers
                 Session.Add(guid, pago.id);
                 Session.Add(guid + "memId", IdMembresia);
                 return Json(new { result="OK",url = paypalRedirectUrl });
-
-                //return Redirect(paypalRedirectUrl);
             }
             catch (Exception)
             {
@@ -157,7 +155,7 @@ namespace CamajanSport.Controllers
             }
             if (!ocurrioError)
             {
-                return Redirect("Membresia/ListarMisMembresias?paymentId=" + Request.Params["paymentId"]);
+                return Redirect("../Membresia/ListarMisMembresias?paymentId=" + Request.Params["paymentId"]);
             }
             else
             {

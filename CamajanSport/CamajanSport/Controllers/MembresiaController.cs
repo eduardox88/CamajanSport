@@ -78,7 +78,7 @@ namespace CamajanSport.Controllers
             var membresias = await ApiHelper.GET_ListWOAuth<Membresia>("Membresia/GetMembresias");
             return Json(membresias, JsonRequestBehavior.AllowGet);
         }
-        [Authorize]
+        
         public async Task<JsonResult> GuardarMembresia(Membresia membresia)
         {
             try
@@ -105,6 +105,10 @@ namespace CamajanSport.Controllers
             }
 
         }
-
+        public async Task<MembresiaUsuario> ObtieneMembresiaActiva()
+        {
+            var membresia = await ApiHelper.GET_By_ID<MembresiaUsuario>("MembresiaUsuarios/ObtieneMembresiaActiva", GetUserDecrypted.IdUsuario, GetAuthToken);
+            return membresia;
+        }
     }
 }
