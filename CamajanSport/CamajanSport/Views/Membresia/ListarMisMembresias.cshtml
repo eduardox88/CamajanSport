@@ -51,8 +51,8 @@
                                         <th>Monto pagado</th>
                                         <th>Id Transacción</th>
                                         <th>Fecha Expiración</th>
-                                        <th>Fecha Ingreso</th>
-                                        @*<th>Activa</th>*@
+                                        <th>Fecha Compra</th>
+                                        <th>Estado</th>
                                         <th></th>
                                     </tr>
                                 </thead>
@@ -87,16 +87,18 @@
         $('#tblMembresias').empty();
         for (var i = 0; i < response.length; i++) {
             var membresia = response[i];
+            var estado = (new FechaUtility(response[i].FechaExpiracion).getTime() >= new Date().getTime()) ? 'VIGENTE' : 'EXPIRADA';
             var html = '<tr>' +
             '<td>' + membresia.Nombre + '</td>' +
             '<td>USD$' + membresia.MontoTransaccion + '</td>' +
             '<td>' + membresia.IdTransaccionPago + '</td>' +
             '<td>' + new FechaUtility(membresia.FechaExpiracion).GetDate() + '</td>' +
             '<td>' + new FechaUtility(membresia.FechaIngreso).GetDate() + '</td>' +
-            //'<td>' + ((membresia.Activa == true) ? "SI" : "NO") + '</td>' +
+            '<td>' + estado + '</td>' +
             '</tr>';
             $('#tblMembresias').append(html);
         }
+        alert(new FechaUtility(response[0].FechaExpiracion).getTime()+" y la de hoy:"+new Date().getTime());
     }
 
 </script>

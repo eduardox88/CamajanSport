@@ -107,14 +107,14 @@
     function SuccessOrError(data){
         
         console.log(data);
-        if (data == true) {
-            window.location.href = "@Url.Action("Dashboard", "Admin")";
+        if (data.Result == "OK") {
+            window.location.href = data.RedirectUrl;
         }
         else {
             swal({
-                title: 'Lo sentimos!!',
-                text: 'Debe de activar su cuenta mediante el correo de confirmación que le hemos enviado. Recuerde revisar en su buzón de entrada como en los correos no deseados.',
-                type: 'error',
+                title: data.Title,
+                text: data.Message,
+                type: data.Type,
                 confirmButtonText: "Cerrar"
             });
         }
