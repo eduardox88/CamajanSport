@@ -253,7 +253,7 @@
         });
         AjaxCall('@Url.Action("GetEstadosResultado_Select", "Publicacion")', '', 'drpEstadoFiltro', CargarDropDown, false,"TODO");
         AjaxCall('@Url.Action("GetDeportes_Select", "Deporte")', '', 'drpDeportesFiltro', CargarDropDown, false,"TODO");
-        AjaxCall('@Url.Action("GetDeportes_Select", "Deporte")', '', 'drpDeportes', CargarDropDown);
+        AjaxCall('@Url.Action("GetDeportes_Select", "Deporte")', '', 'drpDeportes', CargarDropDown,false);
 
         $('#drpDeportes').on("change", function () {
             AjaxCall('@Url.Action("GetEquiposByDeporte_Select", "Equipo")', { 'idDeporte': +$(this).val() }, 'drpEquipo1', CargarDropDown);
@@ -453,7 +453,7 @@
                 '</div>' +
                 '<div class="portlet-widgets">' +
                 '<div class="btn-group">' +
-                '<a class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">' +
+                '<a class="dropdown-toggle" data-toggle="dropdown" data-toggle="tooltip" data-placement="auto" title="Cambiar estado" aria-haspopup="true" aria-expanded="false">' +
                 /*((publicacion.Resultado == null) ? 'Pendiente' : (publicacion.Resultado == true) ? 'Ganó' : 'Perdió') + '<span class="caret"></span>' +*/
                 '<i class="fa fa-tasks pointer"></i>' +
                 '</a>' +
@@ -464,7 +464,7 @@
 
                 '</ul>' +
                 '</div><span class="divider"></span>' +
-                '<a onclick="EditarPublicacion(' + i + ')" title="Editar"><i class="fa fa-edit pointer"></i></a>';
+                '<a onclick="EditarPublicacion(' + i + ')" data-toggle="tooltip" data-placement="auto" title="Editar"><i class="fa fa-edit pointer"></i></a>';
                 //if (publicacion.Resultado == null) {
 
                 //            html += '<span class="divider"></span>' +
@@ -472,7 +472,7 @@
                 //        }
 
                 html += '<span class="divider"></span>' +
-                    '<a data-toggle="collapse" data-parent="#accordion" href="#' + publicacion.IdPublicacion + '"><i class="fa fa-chevron-down"></i></a>' +
+                    '<a data-toggle="collapse" data-parent="#accordion" data-toggle="tooltip" data-placement="auto" title="Ver Análisis" href="#' + publicacion.IdPublicacion + '"><i class="fa fa-chevron-down"></i></a>' +
                     '</div>' +
                     '<div class="clearfix"></div>' +
                     '</div>' +

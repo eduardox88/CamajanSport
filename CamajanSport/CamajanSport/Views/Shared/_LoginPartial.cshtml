@@ -6,7 +6,7 @@
         <li>
             @*@Html.ActionLink("Hello " + User.Identity.GetUserName() + "!", "Manage", "Account", routeValues: null, htmlAttributes: new { title = "Manage" })*@
 
-            <a href="#">Bienvenido @User.Identity.GetUserName()</a>
+            <a href="@Url.Action("RedirectUserToHomePage","Usuario")">Bienvenido @User.Identity.GetUserName()</a>
         </li>
         <li><a href="@Url.Action("LogOff", "LogIn")">Log off</a></li>
     </ul>

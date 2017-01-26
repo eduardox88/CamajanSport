@@ -109,59 +109,60 @@
         </div>
     </div>
 </div>
-<div id="modalLogin" style="width:auto">
-    <div class="modal fade" tabindex="-1" role="dialog" id="loginModal">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title">Inicie Sesión</h4>
-                </div>
-                <div class="modal-body">
+    <div id="modalLogin" style="width:auto">
+        <div class="modal fade" tabindex="-1" role="dialog" id="loginModal">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title">Inicie Sesión</h4>
+                    </div>
                     <form id="FormAutenticacion">
-                        <div class="row">
-                            <div class="col-xs-12">
-                                <label for="txtEmail">Correo Electrónico:</label>
-                                <input type="text" id="txtEmail" class="form-control" placeholder="Nombre de Usuario"  />
+                        <div class="modal-body">
+
+                            <div class="row">
+                                <div class="col-xs-12">
+                                    <label for="txtEmail">Correo Electrónico:</label>
+                                    <input type="text" id="txtEmail" name="txtEmail" class="form-control" placeholder="Nombre de Usuario" />
+                                </div>
+
                             </div>
-                            
+                            <div class="row">
+                                <div class="col-xs-12">
+                                    <label for="txtPassword">Contraseña:</label>
+                                    <input type="password" id="txtPassword" name="txtPassword" placeholder="Contraseña" class="form-control" />
+                                </div>
+                            </div><br />
+                            <div class="row">
+                                <div class="col-xs-10">
+                                    <label style="font-weight:bold">
+                                        ¿Aún no te has registrado?
+                                    </label><input type="button" value="Registrate Ahora" onclick="location.href='@Url.Action("CrearUsuario", "LogIn")'" class="btn btn-link" />
+                                </div>
+                            </div>
+
                         </div>
-                        <div class="row">
-                            <div class="col-xs-12">
-                                <label for="txtPassword">Contraseña:</label>
-                                <input type="password" id="txtPassword" class="form-control" placeholder="Contraseña" />
+                        <div class="modal-footer">
+                            <div class="row">
+                                <div class="col-lg-10">
+                                    <a href="https://www.paypal.com/webapps/mpp/paypal-popup" title="How PayPal Works" onclick="javascript:window.open('https://www.paypal.com/webapps/mpp/paypal-popup','WIPaypal','toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=yes, resizable=yes, width=1060, height=700'); return false;"><img src="https://www.paypalobjects.com/webstatic/mktg/logo/AM_mc_vs_dc_ae.jpg" border="0" alt="PayPal Acceptance Mark"></a>
+                                </div>
+
+                            </div><br />
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                                    <button type="button" class="btn btn-primary" onclick="Autenticar()">Iniciar Sesión</button>
+
+                                </div>
                             </div>
-                        </div><br />
-                        <div class="row">
-                            <div class="col-xs-10">
-                                <label style="font-weight:bold">
-                                    ¿Aún no te has registrado?
-                                </label><input type="button" value="Registrate Ahora" onclick="location.href='@Url.Action("CrearUsuario", "LogIn")'" class="btn btn-link" />
-                            </div>
+
                         </div>
                     </form>
-                </div>
-                <div class="modal-footer">
-                    <div class="row">
-                        <div class="col-lg-10">
-                            <a href="https://www.paypal.com/webapps/mpp/paypal-popup" title="How PayPal Works" onclick="javascript:window.open('https://www.paypal.com/webapps/mpp/paypal-popup','WIPaypal','toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=yes, resizable=yes, width=1060, height=700'); return false;"><img src="https://www.paypalobjects.com/webstatic/mktg/logo/AM_mc_vs_dc_ae.jpg" border="0" alt="PayPal Acceptance Mark"></a>
-                        </div>
-                        
-                    </div><br />
-                    <div class="row">
-                        <div class="col-lg-12">
-                            <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
-                            <button type="button" class="btn btn-primary" onclick="Autenticar()">Iniciar Sesión</button>
-
-                        </div>
-                    </div>
-                    
-                </div>
-            </div><!-- /.modal-content -->
-        </div><!-- /.modal-dialog -->
-    </div><!-- /.modal -->
-</div>
-
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal-dialog -->
+        </div><!-- /.modal -->
+    </div>
 <hr>
 
 @section HomeScripts{
@@ -177,10 +178,8 @@
         if ('@ViewBag.Error' == 'True') {
             MostrarAlerta('Error al realizar pago', 'error', 'Ha ocurrido un error al realizar el pago de la membresía. Si el problema persiste contacte al administrador.');
         }
-
-        InicializarAuthForm();
         CargarData();
-        
+        InicializarAuthForm();
     });
 
     function removeClasses(val) {
@@ -202,30 +201,30 @@
         $('#hdfMembresiaSel').val($('#hdf_' + val).val());
         init = val;
         $('#loginModal').modal('show');
-        // MostrarCustomSwalForm('Inicie Sesión',$('#modalLogin').html());
-        //AjaxCall('@Url.Action("PruebaPaypal", "Membresia")', undefined, '', EsUsuarioAutenticado, false);
 
     }
 
     function Autenticar() {
-        var objeto = {
-            'correo': $('#txtEmail').val(),
-            'password': $('#txtPassword').val(),
-            'recordar': false
-        };
-        AjaxCall('@Url.Action("SignInCompra","LogIn")', objeto, "", AutenticarCallBack, true);
+        if ($("#FormAutenticacion").validate()) {
+            var objeto = {
+                'correo': $('#txtEmail').val(),
+                'password': $('#txtPassword').val(),
+                'recordar': false
+            };
+            AjaxCall('@Url.Action("SignInCompra","LogIn")', objeto, "", AutenticarCallBack, true);
+        }
+        
     }
 
     function AutenticarCallBack(data) {
         if (data.Result == 'OK') {
             var id = $('#hdfMembresiaSel').val();
             AjaxCall('@Url.Action("PagoConCuentaPayPal", "PayPal")', { 'IdMembresia': parseInt(id) }, "", PayPalRedirect, true);
-            //AjaxCall('@Url.Action("PagoConCuentaPayPal", "PayPal")', null, "", PayPalRedirect, true);
         } else {
             swal({
-                title: 'Inicio de Sesión!!',
+                title: data.Title,
                 text: data.Message,
-                type: 'error',
+                type: data.Type,
                 confirmButtonText: "Cerrar"
             });
         }
@@ -237,7 +236,7 @@
         if (data.result == "OK") {
             window.location = data.url;
         } else {
-            MostrarAlerta('Pago con Paypal', 'error', 'Ha ocurrido un error al intentar realizar el pago con Paypal. Vuelv a intentar más tarde. Si el problema persiste contacte el administrador.');
+            MostrarAlerta('Pago con Paypal', 'error', 'Ha ocurrido un error al intentar realizar el pago con Paypal. Vuelva a intentar más tarde. Si el problema persiste contacte el administrador.');
         }
 
     }

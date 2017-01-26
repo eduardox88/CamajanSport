@@ -62,17 +62,16 @@
                 <button type="button" class="navbar-toggle pull-right" data-toggle="collapse" data-target=".sidebar-collapse">
                     <i class="fa fa-bars"></i> Menu
                 </button>
-                <div class="navbar-brand">
-
+                    <a class="navbar-brand" style="position:absolute;top:-10px" href="@Url.Action("RedirectUserToHomePage", "Usuario")"><img width="200" src="~/img/logo-text.png" alt="Basica"></a>
                     @*<img src="~/img/flex-admin-logo.png" data-1x="~/img/flex-admin-logo@1x.png" data-2x="~/img/flex-admin-logo@2x.png" class="hisrc img-responsive" alt="">*@
-                    <p style="color:white;">CAMAJANSPORT</p>
-                </div>
+                    @*<p style="color:white;">CAMAJANSPORT</p>*@
+             
             </div>
 
             <div class="nav-top">
-                <ul class="nav navbar-left">
+                <ul class="nav navbar-right">
                     <li class="tooltip-sidebar-toggle">
-                        <a href="#" id="sidebar-toggle" data-toggle="tooltip" data-placement="right" title="Sidebar Toggle">
+                        <a href="#" id="sidebar-toggle" data-toggle="tooltip" data-placement="auto" title="Sidebar Toggle">
                             <i class="fa fa-bars"></i>
                         </a>
                     </li>
