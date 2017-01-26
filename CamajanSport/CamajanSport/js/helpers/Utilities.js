@@ -122,8 +122,6 @@ function AjaxCall(url, data,idContenedor ,callBackFunction, IsAsync,optionalPara
             MostrarAlerta("Error", 'error', 'Ha ocurrido un error al realizar el llamado.' + url);
         }
     });
-    
-
 };
 //Reinicia el dropdown de direcciones por el id.
 function restartDropDown(id,value,text) {
@@ -289,6 +287,9 @@ function FechaUtility(milisecs)
         }
         result += ' '+am;
         return result;
+    };
+    this.getTime = function () {
+        return this.date.getTime();
     };
 
     this.GetMonthName = function()
