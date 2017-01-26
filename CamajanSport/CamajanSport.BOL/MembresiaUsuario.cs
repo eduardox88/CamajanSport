@@ -26,6 +26,7 @@ namespace CamajanSport.BOL
         public bool Activa { get; set; }
         public decimal? Descuento { get; set; }
         public DateTime FechaExpiracion { get; set; }
+        public bool Renovada { get; set; }
         //[ForeignKey("IdUsuario")]
         //public virtual Usuario Usuario { get; set; }
         //[ForeignKey("IdMembresia")]
