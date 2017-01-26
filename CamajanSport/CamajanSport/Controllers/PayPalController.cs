@@ -102,6 +102,7 @@ namespace CamajanSport.Controllers
                     memUsuario.Activa = true;
                     memUsuario.FechaExpiracion = DateTime.Now.AddDays(memActual.Duracion + (memActual.Promocion == null ? 0 : Convert.ToInt32(memActual.Promocion)));
                     memUsuario.IdTransaccionPago = Request.Params["paymentId"].ToString();
+                    memUsuario.Renovada = false;
                     HttpResponseMessage result = await ApiHelper.POST<MembresiaUsuario>("MembresiaUsuarios/PostMembresiaUsuario", memUsuario, GetAuthToken);
                     membresia = result.Content.ReadAsAsync<MembresiaUsuario>();
                     if (result.IsSuccessStatusCode)

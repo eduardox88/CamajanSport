@@ -78,10 +78,15 @@ namespace CamajanSport.Controllers
                             "</a>" +
                         "</li>" +
                         "<li>" +
-                            "<a href='/LogIn/Index'>" +
+                            "<a href='/Home/Index'>" +
+                                "<i class='fa fa-sign-out'></i>Página Principal" +
+                            "</a>" +
+                        "</li>"+
+                        "<li>" +
+                            "<a href='/LogIn/LogOff'>" +
                                 "<i class='fa fa-sign-out'></i> Terminar Sesión" +
                             "</a>" +
-                        "</li>";
+                        "</li>";                        
             }
             return menuHtml;//ViewBag.Menu = menuHtml.Text;
         }

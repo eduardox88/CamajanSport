@@ -108,7 +108,7 @@ namespace CamajanSport.Controllers
             }
         }
         
-       
+       [Authorize]
         [HttpPost]
         public async Task<JsonResult> GetPublicacionesByFiltro(DateTime? FechaJuego, int IdDeporte, int IdEstadoResultado, string TipoPublicacion) 
         {
@@ -121,7 +121,9 @@ namespace CamajanSport.Controllers
                 }
                 var publicaciones = await ApiHelper.GET_List_ByFilter<Publicacion>("Publicacion/GetPublicacionesByFiltro", "FechaJuego=" + ((FechaJuego.HasValue) ? FechaJuego.Value.ToShortDateString() : "") + "&IdDeporte=" + IdDeporte.ToString() + "&IdEstadoResultado=" + IdEstadoResultado.ToString() + "&TipoPublicacion=" + TipoPublicacion+"&IdUsuario="+IdUsuario.ToString(), GetAuthToken);
                 
-                return Json(publicaciones, JsonRequestBehavior.AllowGet);
+                var json = Json(publicaciones, JsonRequestBehavior.AllowGet);
+                json.MaxJsonLength = int.MaxValue;
+                return json;
             }
             catch (Exception)
             {

@@ -78,6 +78,23 @@ namespace CamajanSport.Controllers
 
             return RedirectToAction("PerfilUsuario");
         }
+        [System.Web.Mvc.Authorize]
+        public ActionResult RedirectUserToHomePage()
+        {
+            Usuario user = GetUserDecrypted;
+            if (user.IdRol == 3/*Administrador*/)
+            {
+                return Redirect("../Admin/Dashboard");
+            }
+            else if (user.IdRol == 2/*Camajan*/)
+            {
+                return Redirect("../Publicacion/MantPublicaciones");
+            }
+            else //if (user.IdUsuario == 1/*Regular*/)
+            {
+                return Redirect("../Membresia/ListarMisMembresias");
+            }
+        }
 
         [System.Web.Mvc.Authorize]
         public async Task<JsonResult> ActualizarImagenPerfil()

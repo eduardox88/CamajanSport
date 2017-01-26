@@ -97,11 +97,30 @@ namespace CamajanSport.Controllers
 
                             Response.Cookies.Add(CookieHandler.GetAuthenticationCookie(Settings.Default.TokenCookie,token, recordar, expire));
                             Response.Cookies.Add(CookieHandler.GetAuthenticationCookie(user, recordar, expire));
-                           
-                            return Json(true, JsonRequestBehavior.AllowGet);
+
+                            if (user.IdRol == 3/*Administrador*/)
+                            {
+                                return Json(new { Result = "OK", RedirectUrl = "../Admin/Dashboard" });
+                            }
+                            else if (user.IdRol == 2/*Camajan*/)
+                            {
+                                return Json(new { Result = "OK", RedirectUrl = "../Publicacion/MantPublicaciones" });
+                            }
+                            else //if (user.IdUsuario == 1/*Regular*/)
+                            {
+                                return Json(new { Result = "OK", RedirectUrl = "../Membresia/ListarMisMembresias" });
+                            }
+                            
                         }
                         else {
-                            return Json(false);
+                            if (user.IdEstado == 2)
+                            {
+                                return Json(new { Result = "ERROR", Title = "Inicio de Sesión", Type = "info", Message = "Debe confirmar su cuenta para poder realizar compras en Camajan Deportivo. Verifique tanto en su bandeja de entrada como en correo no deseado y siga los pasos del correo de confirmación." });
+                            }
+                            else
+                            {
+                                return Json(new { Result = "ERROR", Title = "Inicio de Sesión", Type = "warning", Message = "Su usuario ha sido inhabilitado. Para más información contacte el administrador a camajandeportivo@gmail.com" });
+                            }
                         }
                     }
                     else {
@@ -110,12 +129,12 @@ namespace CamajanSport.Controllers
                 }
                 else
                 {
-                    return Json("Usuario y/o Contraseña son inválidas");
+                    return Json(new { Result = "ERROR", Title = "Inicio de Sesión", Type = "error", Message = "Usuario y/o Contraseña son inválidas" });
                 }
             }
             catch (Exception ex)
             {
-                return Json("Ha ocurrido un error");
+                return Json(new { Result = "ERROR", Title = "Inicio de Sesión", Type = "error", Message = "Ha ocurrido un error al iniciar sesión. Intente nuevamente más tarde. Si el problema persiste contacte el administrador" });
             }
         }
 
@@ -172,18 +191,18 @@ namespace CamajanSport.Controllers
                         {
                             if (user.IdEstado == 2)
                             {
-                                return Json(new { Result = "ERROR", Title = "Compra de Membresía", Type = "info", Message = "Debe confirmar su cuenta para poder realizar compras en Camajan Deportivo. Verifique su bandeja de entrada y siga los pasos del correo de confirmación." });
+                                return Json(new { Result = "ERROR", Title = "Inicio de Sesión", Type = "info", Message = "Debe confirmar su cuenta para poder realizar compras en Camajan Deportivo. Verifique tanto en su bandeja de entrada como en correo no deseado y siga los pasos del correo de confirmación." });
                             }
                             else
                             {
-                                return Json(new { Result = "ERROR", Title = "Compra de Membresía", Type = "info", Message = "Su usuario ha sido inhabilitado. Para más información contacte el administrador a camajandeportivo@gmail.com" });
+                                return Json(new { Result = "ERROR", Title = "Compra de Membresía", Type = "warning", Message = "Su usuario ha sido inhabilitado. Para más información contacte el administrador a camajandeportivo@gmail.com" });
                             }
                             
                         }
                     }
                     else
                     {
-                        throw new Exception();
+                        return Json(new { Result = "ERROR", Title = "Inicio de Sesión", Type = "error", Message = "Ha ocurrido un error al iniciar sesión. Intente nuevamente más tarde. Si el problema persiste contacte su administrador." });
                     }
                 }
                 else

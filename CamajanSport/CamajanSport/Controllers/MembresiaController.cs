@@ -50,6 +50,10 @@ namespace CamajanSport.Controllers
             return View();  
         }
 
+        /// <summary>
+        /// Muestra el view ListarMisMembresias que presenta las membresias del usuario con Rol Regular
+        /// </summary>
+        /// <returns></returns>
         [Authorize]
         public ActionResult ListarMisMembresias()
         {
@@ -57,22 +61,38 @@ namespace CamajanSport.Controllers
             {
                 ViewBag.paymentSuccessful = true;
                 ViewBag.PaymentID = Request.Params["paymentId"];
+                ViewBag.PaymentMade = true;
+            }
+            else 
+            {
+                ViewBag.PaymentMade = false;
             }
             return View();
         }
+        /// <summary>
+        /// Obtiene las membresias del usuario con rol Regular
+        /// </summary>
+        /// <returns></returns>
         [Authorize]
         public async Task<JsonResult> GetMisMembresias()
         {
             var membresias = await ApiHelper.GET_ListById<MembresiaUsuario>("MembresiaUsuarios/GetMembresiasUsuarioById", GetUserDecrypted.IdUsuario, GetAuthToken);
             return Json(membresias, JsonRequestBehavior.AllowGet);
         }
-
+        /// <summary>
+        /// Obtiene las membresias disponibles pero necesita AUTENTICACION
+        /// </summary>
+        /// <returns></returns>
         [Authorize]
         public async Task<JsonResult> GetMembresias() 
         {
             var membresias = await ApiHelper.GET_List<Membresia>("Membresia/GetMembresias", GetAuthToken);
             return Json(membresias, JsonRequestBehavior.AllowGet);
         }
+        /// <summary>
+        /// Obtiene las membresias disponibles SIN NECESIDAD DE AUTENTICARSE
+        /// </summary>
+        /// <returns></returns>
         public async Task<JsonResult> GetMembresiasWOAuth()
         {
             var membresias = await ApiHelper.GET_ListWOAuth<Membresia>("Membresia/GetMembresias");
@@ -83,7 +103,7 @@ namespace CamajanSport.Controllers
         {
             try
             {
-                //SE DEBE OBTENER EL ID DE USUARIO DE LA SESION
+                //SE OBTIENE EL ID DE USUARIO DE LA SESION
                 membresia.IdUsuario = GetUserDecrypted.IdUsuario;
                 if (membresia.IdMembresia > 0)
                 {
@@ -92,7 +112,7 @@ namespace CamajanSport.Controllers
                 }
                 else
                 {
-                    membresia.FechaIngreso = DateTime.Now;
+                    membresia.FechaIngreso = DateTime.Now;                    
                     await ApiHelper.POST<Membresia>("Membresia/PostMembresia", membresia, GetAuthToken);
                     return Json("La membresia se ha guardado exitosamente.");
                 }
