@@ -50,6 +50,7 @@
                                         <th>Debe cambiar contraseña</th>
                                         <th>FechaIngreso</th>
                                         <th></th>
+                                        <th></th>
                                     </tr>
                                 </thead>
                                 <tbody id="tbUsuarios"></tbody>
@@ -172,220 +173,295 @@
         <!-- /.modal-dialog -->
     </div>
     <!-- /.modal -->
-</div>
+    <div class="modal modal-flex fade" id="membresiasModal" role="dialog" aria-labelledby="flexModalLabel" aria-hidden="true">
+        <div class="modal-dialog" style="width:50%">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="flexModalLabel">Membresías del Usuario</h4>
+                </div>
+                <div class="table-responsive dashboard-demo-table">
+                    <table class="table table-bordered table-striped table-hover">
+                        <thead>
+                            <tr>
 
+                                <th width='20%'>Nombre</th>
+                                <th class="visible-md visible-lg">Monto pagado</th>
+                                <th width="40%" class="visible-md visible-lg">Id Transacción</th>
+                                <th>Fecha Expiración</th>
+                                <th class="visible-md visible-lg">Fecha Compra</th>
+                                <th>Estado</th>
+                                <th class="visible-md visible-lg">Renovada</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody id="tblMembresias">
+                            <tr><td colspan="6">No posee membresías para mostrar</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 @section Scripts{
 
     <script type="text/javascript">
 
-    var resultado;
-    var objUsuario;
+            var resultado;
+            var objUsuario;
 
 
-    function InicializarDropDowns() {
+            function InicializarDropDowns() {
 
-        AjaxCall('@Url.Action("GetPaises_Select", "Pais")', undefined, 'IdPais', CargarDropDown, true)
-        AjaxCall('@Url.Action("GetRol_Select", "Rol")', undefined, 'IdRol', CargarDropDown, true)
-        AjaxCall('@Url.Action("GetEstado_Select", "Estado")', undefined, 'IdEstado', CargarDropDown, true)
+                AjaxCall('@Url.Action("GetPaises_Select", "Pais")', undefined, 'IdPais', CargarDropDown, true)
+                AjaxCall('@Url.Action("GetRol_Select", "Rol")', undefined, 'IdRol', CargarDropDown, true)
+                AjaxCall('@Url.Action("GetEstado_Select", "Estado")', undefined, 'IdEstado', CargarDropDown, true)
 
-            Init_SingleSelect2($('#IdPais'));
-            Init_SingleSelect2($('#IdRol'));
-            Init_SingleSelect2($('#IdEstado'));
-    }
+                Init_SingleSelect2($('#IdPais'));
+                Init_SingleSelect2($('#IdRol'));
+                Init_SingleSelect2($('#IdEstado'));
+            }
 
-        function InicializarValidaciones() {
+            function InicializarValidaciones() {
 
-            $("#Validaciones").validate({
-                errorClass: 'control-label text-danger',
-                rules: {
-                    NombreUsuario: {
-                        required: true,
-                        minlength: 5,
-                        maxlength: 20
-                    },
-                    NombreCompleto: {
-                        required: true,
-                        minlength: 5,
-                        maxlength: 50
-                    },
-                    CorreoElec: {
-                        required: true
-                    },
-                    Telefono: {
-                        required: true
-                    },
-                    IdPais: {
-                        required: true
-                    },
-                    IdEstado: {
-                        required: true
-                    },
-                    IdRol: {
-                        required: true
-                    },
-                    Contrasena: {
-                        required: true,
-                        minlength: 6,
-                        maxlength: 20
+                $("#Validaciones").validate({
+                    errorClass: 'control-label text-danger',
+                    rules: {
+                        NombreUsuario: {
+                            required: true,
+                            minlength: 5,
+                            maxlength: 20
+                        },
+                        NombreCompleto: {
+                            required: true,
+                            minlength: 5,
+                            maxlength: 50
+                        },
+                        CorreoElec: {
+                            required: true
+                        },
+                        Telefono: {
+                            required: true
+                        },
+                        IdPais: {
+                            required: true
+                        },
+                        IdEstado: {
+                            required: true
+                        },
+                        IdRol: {
+                            required: true
+                        },
+                        Contrasena: {
+                            required: true,
+                            minlength: 6,
+                            maxlength: 20
+                        }
+
+                    }
+                });
+            }
+
+            function SuccessCargarData(response) {
+                objUsuario = response;
+                var html = '';
+                var usuario;
+                var tbody = $('#tbUsuarios');
+
+                $('#tablaUsuarios').DataTable().fnDestroy();
+                tbody.empty();
+
+                if (objUsuario.length > 0) {
+
+
+                    for (var i = 0; i < objUsuario.length; i++) {
+
+                        usuario = objUsuario[i];
+                        html = '<tr>' +
+                        '<td>' + usuario.NombreUsuario + '</td>' +
+                        '<td>' + usuario.NombreCompleto + '</td>' +
+                        '<td>' + usuario.CorreoElec + '</td>' +
+                        '<td>' + ((usuario.Telefono == null) ? "N/A" : usuario.Telefono) + '</td>' +
+                        //'<td>' + ((usuario.Biografia == null) ? "N/A" : usuario.Biografia) + '</td>' +
+                        '<td><input id="btn_' + i + '" type="button" class="btn btn-success" onclick="MostrarBio(\'' + ((usuario.Biografia == null) ? "N/A" : usuario.Biografia) + '\')" value="Ver Biografia" /></td>' +
+                        '<td>' + ((usuario.IdPais == null) ? "N/A" : usuario.pais.Nombre) + '</td>' +
+                        '<td>' + ((usuario.IdEstado == null) ? "N/A" : usuario.estado.Nombre) + '</td>' +
+                        '<td>' + ((usuario.IdRol == null) ? "N/A" : usuario.rol.Nombre) + '</td>' +
+                        '<td>' + ((usuario.CambiarContrasena == true) ? "SI" : "NO") + '</td>' +
+                        '<td>' + formatFecha(usuario.FechaIngreso) + '</td>';
+                        html+= '<td align="center">';
+                        if (usuario.IdRol == 1) {
+                            html += '<button id="btnModal" class="btn btn-default btn-md" onclick="ObtenerMembresias('+usuario.IdUsuario+')">Membresías</button>';
+                        }else {
+                            html += '---';
+                        }
+                        html+= '</td>';
+                        html += '<td>' + '<input type="button" class="btn btn-danger" onclick="EditarUsuario(' + i + ')" value="Editar"/>' + '</td>'+
+                        '</tr>';
+
+                        tbody.append(html);
                     }
 
+                    $('#tablaUsuarios').DataTable();
+
                 }
+                else {
+                    MostrarAlerta("Error", 'info', 'No existen usuarios para mostrar');
+                }
+            }
+
+            function CargarData() {
+                AjaxCall('@Url.Action("GetUsuarios", "Usuario")', undefined, "", SuccessCargarData, true);
+            }
+
+            function ObtenerMembresias(IdUsuario)
+            {
+                AjaxCall('@Url.Action("GetMembresiasUsuario", "Membresia")', { 'IdUsuario': parseInt(IdUsuario) }, '', CargarMembresias, false);
+
+            }
+
+            function CargarMembresias(response)
+            {
+                if (response.Result == "OK") {
+                    objMembresias = response;
+                    if (response.Data.length > 0) {
+                        $('#tblMembresias').empty();
+                        for (var i = 0; i < response.Data.length; i++) {
+
+                            var membresia = response.Data[i];
+                            var estado = (new FechaUtility(response.Data[i].FechaExpiracion).getTime() >= new Date().getTime()) ? 'VIGENTE' : 'EXPIRADA';
+                            var html = '<tr>' +
+                            '<td>' + membresia.Nombre + '</td>' +
+                            '<td class="visible-md visible-lg">USD$' + membresia.MontoTransaccion + '</td>' +
+                            '<td class="visible-md visible-lg">' + membresia.IdTransaccionPago + '</td>' +
+                            '<td>' + new FechaUtility(membresia.FechaExpiracion).GetDate() + '</td>' +
+                            '<td class="visible-md visible-lg">' + new FechaUtility(membresia.FechaIngreso).GetDate() + '</td>' +
+                            '<td>' + estado + '</td>' +
+                            '<td class="visible-md visible-lg">' + ((membresia.Renovada == true) ? 'SI' : 'NO') + '</td>' +
+                            '<td>'+ '<input type="button" class="btn btn-primary" value="Renovar" onclick="javascript(\"alert(\"Prueba\")\")"/>' +'</td>'+
+                            '</tr>';
+                            $('#tblMembresias').append(html);
+                        }
+                        $('#membresiasModal').modal('show');
+                    } else {
+                        MostrarAlerta('Membresías', 'info', 'El usuario no ha adquirido una membresía.');
+                    }
+                } else {
+                    MostrarAlerta('Membresías', response.Result, response.Message);
+                }
+
+            }
+
+            function GuardarDatos() {
+
+                var validator = $("#Validaciones").validate();
+
+
+                if (validator.form()) {
+
+
+                    var formData = new FormData();
+                    var fileUpload = document.getElementById('fileUploader');
+                    formData.append("idUsuario", ($('#hdfId').val() != "") ? $('#hdfId').val() : 0);
+                    formData.append("Nombre", $('#NombreUsuario').val());
+                    formData.append("NombrePersona", $('#NombreCompleto').val());
+                    formData.append("Correo", $('#CorreoElec').val());
+                    formData.append("Telefono", $('#Telefono').val());
+                    formData.append("Pais", $('#IdPais :selected').val());
+                    formData.append("Estado", $('#IdEstado :selected').val());
+                    formData.append("Rol", $('#IdRol :selected').val());
+                    formData.append("pass", $('#Contrasena').val());
+                    formData.append("Biografia", $('#Biografia').val());
+
+                    if (fileUpload.files[0] == null) {
+                        formData.append("newFile", false);
+                        var array = new Array($('#hdfOldImg').val().split(','));
+                        formData.append("afile", array);
+                    } else {
+                        formData.append("newFile", true);
+                        formData.append("afile", fileUpload.files[0]);
+                    }
+
+                    var xhr = new XMLHttpRequest();
+                    xhr.open("POST", "/Usuario/SaveUploadedFile");
+                    xhr.onreadystatechange = function (aEvt) {
+                        if (xhr.readyState == 4) {
+                            if (xhr.status == 200) {
+                                MostrarAlerta("¡Enhorabuena!", 'success', xhr.responseText.replace('"', ""));
+                                CargarData();
+                                //limpiarTodosCampos("flexModal");
+                                $('#flexModal').modal('hide');
+                            }
+                            else {
+                                MostrarAlerta("Error", 'error', xhr.responseText.replace('"', ""));
+                            }
+                        }
+                    }
+                    xhr.send(formData);
+                }
+            }
+
+            function MostrarBio(mensaje) {
+
+                MostrarDialogo('ajaxSuccessModal', "Mensaje informativo", mensaje);
+            }
+
+
+            function SuccessOrFail(data) {
+                if (data != undefined) {
+                    MostrarAlerta("¡Enhorabuena!", 'success', data);
+                    limpiarTodosCampos('formUsuario')
+                    $('#flexModal').modal('hide');
+                    CargarData();
+                }
+            }
+
+            function EditarUsuario(indice) {
+
+                $('#rowPass').addClass('hidden')
+
+                var obj = objUsuario[indice];
+
+                LlenarFormulario(obj);
+
+                $('#oldImg').empty();
+                $('#hdfId').val(obj.IdUsuario);
+                $('#hdfOldImg').val(obj.Imagen);
+
+                if (obj.Imagen != null) {
+                    $('#oldImg').append('<img width="100" heigth="50" src="data:image/png;base64,' + _arrayBufferToBase64(obj.Imagen).toString() + '"/>');
+                }
+
+                $('#flexModal').modal('show');
+            }
+
+
+            $(document).ready(function () {
+
+                InicializarDropDowns();
+                CargarData();
+
+                $('#btnModal').click(function () {
+                    InicializarValidaciones();
+                    $('#rowPass').removeClass('hidden')
+                    limpiarTodosCampos('formUsuario')
+                    return;
+                })
+
+                $("#fileUploader").change(function () {
+                    readURL(this, $('#imgPreview'));
+                });
+
+            })
+
+            $(document).ajaxStart(function () {
+                spinner.spin(target);
             });
-        }
 
-        function SuccessCargarData(response) {
-            objUsuario = response;
-            var html = '';
-            var usuario;
-            var tbody = $('#tbUsuarios');
-
-            $('#tablaUsuarios').DataTable().fnDestroy();
-            tbody.empty();
-
-            if (objUsuario.length > 0) {
-
-                
-                for (var i = 0; i < objUsuario.length; i++) {
-
-                    usuario = objUsuario[i];
-                    html = '<tr>' +
-                    '<td>' + usuario.NombreUsuario + '</td>' +
-                    '<td>' + usuario.NombreCompleto + '</td>' +
-                    '<td>' + usuario.CorreoElec + '</td>' +
-                    '<td>' + ((usuario.Telefono == null) ? "N/A" : usuario.Telefono) + '</td>' +
-                    //'<td>' + ((usuario.Biografia == null) ? "N/A" : usuario.Biografia) + '</td>' +
-                    '<td><input id="btn_' + i + '" type="button" class="btn btn-success" onclick="MostrarBio(\'' + ((usuario.Biografia == null) ? "N/A" : usuario.Biografia) + '\')" value="Ver Biografia" /></td>' +
-                    '<td>' + ((usuario.IdPais == null) ? "N/A" : usuario.pais.Nombre) + '</td>' +
-                    '<td>' + ((usuario.IdEstado == null) ? "N/A" : usuario.estado.Nombre) + '</td>' +
-                    '<td>' + ((usuario.IdRol == null) ? "N/A" : usuario.rol.Nombre) + '</td>' +
-                    '<td>' + ((usuario.CambiarContrasena == true) ? "SI" : "NO") + '</td>' +
-                    '<td>' + formatFecha(usuario.FechaIngreso) + '</td>' +
-                    '<td>' + '<input type="button" class="btn btn-danger" onclick="EditarUsuario(' + i + ')" value="Editar"/>' + '</td>' +
-                    '</tr>';
-                    tbody.append(html);
-                }
-
-                $('#tablaUsuarios').DataTable();
-                
-            }
-            else {
-                MostrarAlerta("Error", 'info', 'No existen usuarios para mostrar');
-            }
-        }
-
-        function CargarData() {
-            AjaxCall('@Url.Action("GetUsuarios", "Usuario")', undefined, "", SuccessCargarData, true);
-         }
-
-    function GuardarDatos() {
-
-        var validator = $("#Validaciones").validate();
-
-
-        if (validator.form()) {
-
-
-            var formData = new FormData();
-            var fileUpload = document.getElementById('fileUploader');
-            formData.append("idUsuario", ($('#hdfId').val() != "") ? $('#hdfId').val() : 0);
-            formData.append("Nombre", $('#NombreUsuario').val());
-            formData.append("NombrePersona", $('#NombreCompleto').val());
-            formData.append("Correo", $('#CorreoElec').val());
-            formData.append("Telefono", $('#Telefono').val());
-            formData.append("Pais", $('#IdPais :selected').val());
-            formData.append("Estado", $('#IdEstado :selected').val());
-            formData.append("Rol", $('#IdRol :selected').val());
-            formData.append("pass", $('#Contrasena').val());
-            formData.append("Biografia", $('#Biografia').val());
-
-            if (fileUpload.files[0] == null) {
-                formData.append("newFile", false);
-                var array = new Array($('#hdfOldImg').val().split(','));
-                formData.append("afile", array);
-            } else {
-                formData.append("newFile", true);
-                formData.append("afile", fileUpload.files[0]);
-            }
-
-            var xhr = new XMLHttpRequest();
-            xhr.open("POST", "/Usuario/SaveUploadedFile");
-            xhr.onreadystatechange = function (aEvt) {
-                if (xhr.readyState == 4) {
-                    if (xhr.status == 200) {
-                        MostrarAlerta("¡Enhorabuena!", 'success', xhr.responseText.replace('"', ""));
-                        CargarData();
-                        //limpiarTodosCampos("flexModal");
-                        $('#flexModal').modal('hide');
-                    }
-                    else {
-                        MostrarAlerta("Error", 'error', xhr.responseText.replace('"', ""));
-                    }
-                }
-            }
-            xhr.send(formData);
-        }
-    }
-
-    function MostrarBio(mensaje) {
-
-        MostrarDialogo('ajaxSuccessModal', "Mensaje informativo", mensaje);
-    }
-
-
-    function SuccessOrFail(data) {
-        if (data != undefined) {
-            MostrarAlerta("¡Enhorabuena!", 'success', data);
-            limpiarTodosCampos('formUsuario')
-            $('#flexModal').modal('hide');
-            CargarData();
-        }
-    }
-
-    function EditarUsuario(indice) {
-
-        $('#rowPass').addClass('hidden')
-
-        var obj = objUsuario[indice];
-        
-        LlenarFormulario(obj);
-
-        $('#oldImg').empty();
-        $('#hdfId').val(obj.IdUsuario);
-        $('#hdfOldImg').val(obj.Imagen);
-
-        if (obj.Imagen != null) {
-            $('#oldImg').append('<img width="100" heigth="50" src="data:image/png;base64,' + _arrayBufferToBase64(obj.Imagen).toString() + '"/>');
-        }
-
-        $('#flexModal').modal('show');
-    }
-
-
-    $(document).ready(function () {
-        
-        InicializarDropDowns();
-        CargarData();
-
-        $('#btnModal').click(function () {
-            InicializarValidaciones();
-            $('#rowPass').removeClass('hidden')
-            limpiarTodosCampos('formUsuario')
-            return;
-        })
-
-        $("#fileUploader").change(function () {
-            readURL(this, $('#imgPreview'));
-        });
-
-    })
-
-    $(document).ajaxStart(function () {
-        spinner.spin(target);
-    });
-
-    $(document).ajaxStop(function () {
-        spinner.stop();
-    });
+            $(document).ajaxStop(function () {
+                spinner.stop();
+            });
 
     </script>
 }
