@@ -79,6 +79,25 @@ namespace CamajanSport.Controllers
             var membresias = await ApiHelper.GET_ListById<MembresiaUsuario>("MembresiaUsuarios/GetMembresiasUsuarioById", GetUserDecrypted.IdUsuario, GetAuthToken);
             return Json(membresias, JsonRequestBehavior.AllowGet);
         }
+
+        /// <summary>
+        /// Obtiene las membresias del usuario con rol Regular
+        /// </summary>
+        /// <returns></returns>
+        [Authorize]
+        public async Task<JsonResult> GetMembresiasUsuario(int IdUsuario)
+        {
+            try
+            {
+                var membresias = await ApiHelper.GET_ListById<MembresiaUsuario>("MembresiaUsuarios/GetMembresiasUsuarioById", IdUsuario, GetAuthToken);
+                return Json(new { Result ="OK",Data=membresias});
+            }
+            catch (Exception)
+            {
+                return Json(new {Result="ERROR",Message="Ha ocurrido un error al obtener las membresías del usuario." });
+            }
+            
+        }
         /// <summary>
         /// Obtiene las membresias disponibles pero necesita AUTENTICACION
         /// </summary>
