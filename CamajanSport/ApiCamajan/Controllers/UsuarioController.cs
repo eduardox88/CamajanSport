@@ -25,6 +25,11 @@ namespace ApiCamajan.Controllers
             return db.usuarios.ToList();
         }
 
+        public List<Usuario> GetusuariosCamajanes()
+        {
+            return db.usuarios.Where(m=>m.IdRol == 2).ToList();
+        }
+
         // GET api/Usuario/5
         [ResponseType(typeof(Usuario))]
         public async Task<IHttpActionResult> GetUsuario(int id)
