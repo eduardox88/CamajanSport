@@ -2,82 +2,73 @@
     Layout = "~/Views/Shared/_HomeLayout.cshtml";
 }
 
+@using CamajanSport.BOL
 
-<div class="section section-breadcrumbs">
-    <div class="container">
-        <div class="row">
-            <div class="col-md-12 text-center">
-                <h1>Nuestros Expertos</h1>
-            </div>
-        </div>
-    </div>
-</div>
+@model List<Usuario>
+
+@Html.Partial("~/Views/Shared/_PartialOferta.cshtml")
+
+@{
+    int iterador = 0;
+}
 
 <!--camajanes-->
 
-<div class="section">
-    <div class="container">
-        <div class="row">
-            <div class="col-sm-4">
+<div class="container">
 
-
-                <img src="~/img/desconocido.png" class="img-circle img-camajanes" alt="Generic placeholder image" width="150" height="150">
-
-            </div>
-            <div class="col-sm-6">
-                <h2>Abraham "The Z"</h2>
-                <h3>NBA +863 RECORD: 28-7-1</h3>
-                <p class="text-justify">
-                    Un veterano trader deportivo ha cubierto la NFL durante décadas
-                    y ha informado de oche Super Bowls. prefiriendo evaluar cada
-                    juego desde el punto de vista del perdedor.
-                </p>
-            </div>
+    <!-- Introduction Row -->
+    <div class="row">
+        <div class="col-lg-12 col-sm-12">
+            <h1 class="page-header">
+                Conoce nuestros expertos.
+            </h1>
+            <p>
+                Nuestros expertos tienen para tí las mejores selecciones. Somos los mejores pronosticadores (tipster) de apuestas deportivas en español. Elegir un buen tipster requiere estudiar tus necesidades y los deportes y mercados en los que vas a apostar.
+            </p>
         </div>
     </div>
-</div>
-<hr>
 
-<div class="section">
-    <div class="container">
-        <div class="row">
-            <div class="col-sm-4">
-
-                <img class="img-circle img-camajanes" src="~/img/desconocido.png" alt="Generic placeholder image" width="150" height="150">
-
-            </div>
-            <div class="col-sm-6">
-                <h2>Abraham "The Z"</h2>
-                <h3>NBA +863 RECORD: 28-7-1</h3>
-                <p class="text-justify">
-                    Un veterano trader deportivo ha cubierto la NFL durante décadas
-                    y ha informado de oche Super Bowls. prefiriendo evaluar cada
-                    juego desde el punto de vista del perdedor.
-                </p>
-            </div>
+    <!-- Team Members Row -->
+    <div class="row">
+        <div class="col-lg-12">
+            <h1 class="page-header text-center"><strong>Camajanes</strong></h1>
         </div>
+        @{
+            foreach (Usuario user in Model)
+            {
+                if (iterador % 3 == 0)
+                {
+                    @Html.Raw("<div class='row'>")
+                }
+                <div class="col-lg-4 col-sm-6 text-center">
+                    <img class="img-circle img-center" src="@user.Imagen" width="200" height="200" alt="">
+                    <h3>
+                        @user.NombreCompleto
+
+                    </h3>
+                    <p>@user.Biografia</p>
+                </div>
+
+                iterador++;
+                if ((iterador % 3) == 0)
+                {
+                    @Html.Raw("</div>")
+                }
+            }
+        }
     </div>
-</div>
-<hr>
 
+    <hr>
 
-<div class="section">
-    <div class="container">
+    <!-- Footer -->
+    <footer>
         <div class="row">
-            <div class="col-sm-4">
-
-                <img class="img-circle img-camajanes" src="~/img/desconocido.png" alt="Generic placeholder image" width="150" height="150">
-
+            <div class="col-lg-12">
+                <p>Copyright &copy; Your Website 2014</p>
             </div>
-            <div class="col-sm-6">
-                <h2>Abraham "The Z"</h2>
-                <h3>NBA +863 RECORD: 28-7-1</h3>
-                <p class="text-justify">
-                    Un veterano trader deportivo ha cubierto la NFL durante décadas
-                    y ha informado de oche Super Bowls. prefiriendo evaluar cada
-                    juego desde el punto de vista del perdedor.
-                </p>
-            </div>
+            <!-- /.col-lg-12 -->
         </div>
-    </div>
+        <!-- /.row -->
+    </footer>
+
 </div>
