@@ -21,7 +21,6 @@ namespace ApiCamajan.Controllers
         private CamajanSportContext db = new CamajanSportContext();
 
         // GET: api/Deportes
-        [Authorize]
         public List<Deporte> Getdeportes()
         {
             return db.deportes.ToList();
