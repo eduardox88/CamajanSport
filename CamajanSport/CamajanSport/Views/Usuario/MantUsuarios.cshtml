@@ -203,161 +203,218 @@
             </div>
         </div>
     </div>
+    <div class="modal modal-flex fade" id="renovacionMembresiasModal" role="dialog" aria-labelledby="flexModalLabel" aria-hidden="true">
+        <input id="hdfCodMembresiaUsuario" type="hidden" />
+        <div class="modal-dialog" style="width:300px">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="flexModalLabel">Renovar Membresía</h4>
+                </div>
+                <br />
+                <div class="row">
+                    <div class="col-xs-7"><label>Días de renovación:</label></div>
+                    <div class="col-xs-3">
+                        <input value="" id="txtDiasRenovacion" class="form-control"/>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <div class="row">
+                        <div class="col-md-2 col-md-offset-2 col-xs-4 col-sm-3">
+                            <input class="btn btn-danger" type="button" value="Cancelar" data-dismiss="modal" aria-hidden="true" />
+                        </div>
+                        <div class="col-md-2 col-md-offset-2 col-xs-4 col-sm-3">
+                            <input class="btn btn-primary" type="button" value="Renovar" onclick="RenovarMembresia('','guardar')" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+    </div>
+
 </div>
 @section Scripts{
 
     <script type="text/javascript">
 
-            var resultado;
-            var objUsuario;
+    var resultado;
+    var objUsuario;
 
 
-            function InicializarDropDowns() {
+    function InicializarDropDowns() {
 
-                AjaxCall('@Url.Action("GetPaises_Select", "Pais")', undefined, 'IdPais', CargarDropDown, true)
-                AjaxCall('@Url.Action("GetRol_Select", "Rol")', undefined, 'IdRol', CargarDropDown, true)
-                AjaxCall('@Url.Action("GetEstado_Select", "Estado")', undefined, 'IdEstado', CargarDropDown, true)
+        AjaxCall('@Url.Action("GetPaises_Select", "Pais")', undefined, 'IdPais', CargarDropDown, true)
+        AjaxCall('@Url.Action("GetRol_Select", "Rol")', undefined, 'IdRol', CargarDropDown, true)
+        AjaxCall('@Url.Action("GetEstado_Select", "Estado")', undefined, 'IdEstado', CargarDropDown, true)
 
-                Init_SingleSelect2($('#IdPais'));
-                Init_SingleSelect2($('#IdRol'));
-                Init_SingleSelect2($('#IdEstado'));
-            }
+        Init_SingleSelect2($('#IdPais'));
+        Init_SingleSelect2($('#IdRol'));
+        Init_SingleSelect2($('#IdEstado'));
+    }
 
-            function InicializarValidaciones() {
+    function InicializarValidaciones() {
 
-                $("#Validaciones").validate({
-                    errorClass: 'control-label text-danger',
-                    rules: {
-                        NombreUsuario: {
-                            required: true,
-                            minlength: 5,
-                            maxlength: 20
-                        },
-                        NombreCompleto: {
-                            required: true,
-                            minlength: 5,
-                            maxlength: 50
-                        },
-                        CorreoElec: {
-                            required: true
-                        },
-                        Telefono: {
-                            required: true
-                        },
-                        IdPais: {
-                            required: true
-                        },
-                        IdEstado: {
-                            required: true
-                        },
-                        IdRol: {
-                            required: true
-                        },
-                        Contrasena: {
-                            required: true,
-                            minlength: 6,
-                            maxlength: 20
-                        }
-
-                    }
-                });
-            }
-
-            function SuccessCargarData(response) {
-                objUsuario = response;
-                var html = '';
-                var usuario;
-                var tbody = $('#tbUsuarios');
-
-                $('#tablaUsuarios').DataTable().fnDestroy();
-                tbody.empty();
-
-                if (objUsuario.length > 0) {
-
-
-                    for (var i = 0; i < objUsuario.length; i++) {
-
-                        usuario = objUsuario[i];
-                        html = '<tr>' +
-                        '<td>' + usuario.NombreUsuario + '</td>' +
-                        '<td>' + usuario.NombreCompleto + '</td>' +
-                        '<td>' + usuario.CorreoElec + '</td>' +
-                        '<td>' + ((usuario.Telefono == null) ? "N/A" : usuario.Telefono) + '</td>' +
-                        //'<td>' + ((usuario.Biografia == null) ? "N/A" : usuario.Biografia) + '</td>' +
-                        '<td><input id="btn_' + i + '" type="button" class="btn btn-success" onclick="MostrarBio(\'' + ((usuario.Biografia == null) ? "N/A" : usuario.Biografia) + '\')" value="Ver Biografia" /></td>' +
-                        '<td>' + ((usuario.IdPais == null) ? "N/A" : usuario.pais.Nombre) + '</td>' +
-                        '<td>' + ((usuario.IdEstado == null) ? "N/A" : usuario.estado.Nombre) + '</td>' +
-                        '<td>' + ((usuario.IdRol == null) ? "N/A" : usuario.rol.Nombre) + '</td>' +
-                        '<td>' + ((usuario.CambiarContrasena == true) ? "SI" : "NO") + '</td>' +
-                        '<td>' + formatFecha(usuario.FechaIngreso) + '</td>';
-                        html+= '<td align="center">';
-                        if (usuario.IdRol == 1) {
-                            html += '<button id="btnModal" class="btn btn-default btn-md" onclick="ObtenerMembresias('+usuario.IdUsuario+')">Membresías</button>';
-                        }else {
-                            html += '---';
-                        }
-                        html+= '</td>';
-                        html += '<td>' + '<input type="button" class="btn btn-danger" onclick="EditarUsuario(' + i + ')" value="Editar"/>' + '</td>'+
-                        '</tr>';
-
-                        tbody.append(html);
-                    }
-
-                    $('#tablaUsuarios').DataTable();
-
+        $("#Validaciones").validate({
+            errorClass: 'control-label text-danger',
+            rules: {
+                NombreUsuario: {
+                    required: true,
+                    minlength: 5,
+                    maxlength: 20
+                },
+                NombreCompleto: {
+                    required: true,
+                    minlength: 5,
+                    maxlength: 50
+                },
+                CorreoElec: {
+                    required: true
+                },
+                Telefono: {
+                    required: true
+                },
+                IdPais: {
+                    required: true
+                },
+                IdEstado: {
+                    required: true
+                },
+                IdRol: {
+                    required: true
+                },
+                Contrasena: {
+                    required: true,
+                    minlength: 6,
+                    maxlength: 20
                 }
-                else {
-                    MostrarAlerta("Error", 'info', 'No existen usuarios para mostrar');
-                }
-            }
-
-            function CargarData() {
-                AjaxCall('@Url.Action("GetUsuarios", "Usuario")', undefined, "", SuccessCargarData, true);
-            }
-
-            function ObtenerMembresias(IdUsuario)
-            {
-                AjaxCall('@Url.Action("GetMembresiasUsuario", "Membresia")', { 'IdUsuario': parseInt(IdUsuario) }, '', CargarMembresias, false);
 
             }
+        });
+    }
 
-            function CargarMembresias(response)
-            {
-                if (response.Result == "OK") {
-                    objMembresias = response;
-                    if (response.Data.length > 0) {
-                        $('#tblMembresias').empty();
-                        for (var i = 0; i < response.Data.length; i++) {
+    function SuccessCargarData(response) {
+        objUsuario = response;
+        var html = '';
+        var usuario;
+        var tbody = $('#tbUsuarios');
 
-                            var membresia = response.Data[i];
-                            var estado = (new FechaUtility(response.Data[i].FechaExpiracion).getTime() >= new Date().getTime()) ? 'VIGENTE' : 'EXPIRADA';
-                            var html = '<tr>' +
-                            '<td>' + membresia.Nombre + '</td>' +
-                            '<td class="visible-md visible-lg">USD$' + membresia.MontoTransaccion + '</td>' +
-                            '<td class="visible-md visible-lg">' + membresia.IdTransaccionPago + '</td>' +
-                            '<td>' + new FechaUtility(membresia.FechaExpiracion).GetDate() + '</td>' +
-                            '<td class="visible-md visible-lg">' + new FechaUtility(membresia.FechaIngreso).GetDate() + '</td>' +
-                            '<td>' + estado + '</td>' +
-                            '<td class="visible-md visible-lg">' + ((membresia.Renovada == true) ? 'SI' : 'NO') + '</td>' +
-                            '<td>'+ '<input type="button" class="btn btn-primary" value="Renovar" onclick="javascript(\"alert(\"Prueba\")\")"/>' +'</td>'+
-                            '</tr>';
-                            $('#tblMembresias').append(html);
-                        }
-                        $('#membresiasModal').modal('show');
-                    } else {
-                        MostrarAlerta('Membresías', 'info', 'El usuario no ha adquirido una membresía.');
-                    }
+        $('#tablaUsuarios').DataTable().fnDestroy();
+        tbody.empty();
+
+        if (objUsuario.length > 0) {
+
+
+            for (var i = 0; i < objUsuario.length; i++) {
+
+                usuario = objUsuario[i];
+                html = '<tr>' +
+                '<td>' + usuario.NombreUsuario + '</td>' +
+                '<td>' + usuario.NombreCompleto + '</td>' +
+                '<td>' + usuario.CorreoElec + '</td>' +
+                '<td>' + ((usuario.Telefono == null) ? "N/A" : usuario.Telefono) + '</td>' +
+                //'<td>' + ((usuario.Biografia == null) ? "N/A" : usuario.Biografia) + '</td>' +
+                '<td><input id="btn_' + i + '" type="button" class="btn btn-success" onclick="MostrarBio(\'' + ((usuario.Biografia == null) ? "N/A" : usuario.Biografia) + '\')" value="Ver Biografia" /></td>' +
+                '<td>' + ((usuario.IdPais == null) ? "N/A" : usuario.pais.Nombre) + '</td>' +
+                '<td>' + ((usuario.IdEstado == null) ? "N/A" : usuario.estado.Nombre) + '</td>' +
+                '<td>' + ((usuario.IdRol == null) ? "N/A" : usuario.rol.Nombre) + '</td>' +
+                '<td>' + ((usuario.CambiarContrasena == true) ? "SI" : "NO") + '</td>' +
+                '<td>' + formatFecha(usuario.FechaIngreso) + '</td>';
+                html += '<td align="center">';
+                if (usuario.IdRol == 1) {
+                    html += '<button id="btnModal" class="btn btn-default btn-md" onclick="ObtenerMembresias(' + usuario.IdUsuario + ')">Membresías</button>';
                 } else {
-                    MostrarAlerta('Membresías', response.Result, response.Message);
+                    html += '---';
                 }
+                html += '</td>';
+                html += '<td>' + '<input type="button" class="btn btn-danger" onclick="EditarUsuario(' + i + ')" value="Editar"/>' + '</td>' +
+                '</tr>';
 
+                tbody.append(html);
             }
+
+            $('#tablaUsuarios').DataTable();
+
+        }
+        else {
+            MostrarAlerta("Error", 'info', 'No existen usuarios para mostrar');
+        }
+    }
+
+    function CargarData() {
+        AjaxCall('@Url.Action("GetUsuarios", "Usuario")', undefined, "", SuccessCargarData, true);
+    }
+
+    function ObtenerMembresias(IdUsuario) {
+        AjaxCall('@Url.Action("GetMembresiasUsuario", "Membresia")', { 'IdUsuario': parseInt(IdUsuario) }, '', CargarMembresias, false);
+
+    }
+    function CargarMembresias(response) {
+        if (response.Result == "OK") {
+            objMembresias = response;
+            if (response.Data.length > 0) {
+                $('#tblMembresias').empty();
+                for (var i = 0; i < response.Data.length; i++) {
+
+                    var membresia = response.Data[i];
+                    var estado = (new FechaUtility(response.Data[i].FechaExpiracion).getTime() >= new Date().getTime()) ? 'VIGENTE' : 'EXPIRADA';
+                    var html = '<tr>' +
+                    '<td>' + membresia.Nombre + '</td>' +
+                    '<td class="visible-md visible-lg">USD$' + membresia.MontoTransaccion + '</td>' +
+                    '<td class="visible-md visible-lg">' + membresia.IdTransaccionPago + '</td>' +
+                    '<td>' + new FechaUtility(membresia.FechaExpiracion).GetDate() + '</td>' +
+                    '<td class="visible-md visible-lg">' + new FechaUtility(membresia.FechaIngreso).GetDate() + '</td>' +
+                    '<td>' + estado + '</td>' +
+                    '<td class="visible-md visible-lg">' + ((membresia.Renovada == true) ? 'SI' : 'NO') + '</td>';
+
+                    if (estado == 'EXPIRADA') {
+                        html += '<td>' + '<input type="button" class="btn btn-primary" value="Renovar" onclick="RenovarMembresia(' + membresia.IdMembresiaUsuario + ',\'abrir\')"/>' + '</td>';
+                    }
+                    html += '</tr>';
+                    $('#tblMembresias').append(html);
+                }
+                $('#membresiasModal').modal('show');
+            } else {
+                MostrarAlerta('Membresías', 'info', 'El usuario no ha adquirido una membresía.');
+            }
+        } else {
+            MostrarAlerta('Membresías', response.Result, response.Message);
+        }
+
+    }
+    function RenovarMembresia(IdMembresiaUsuario, Accion) {
+        if (Accion == 'abrir') {
+            $('#hdfCodMembresiaUsuario').val('');
+            $('#hdfCodMembresiaUsuario').val(IdMembresiaUsuario);
+            $('#renovacionMembresiasModal').modal('show');
+        } else if (Accion == 'guardar') {
+            if ($('#txtDiasRenovacion').val() != '' && parseInt($('#txtDiasRenovacion').val()) > 0) {
+                AjaxCall('@Url.Action("RenovarMembresiaUsuario", "Membresia")', { 'IdMembresiaUsuario': parseInt($('#hdfCodMembresiaUsuario').val()), 'CantDiasRenovacion': parseInt($('#txtDiasRenovacion').val()) }, '', GuardarRenovacion, true);
+            } else {
+                MostrarAlerta('Renovación membresía', 'info', 'Debe digitar la cantidad de días que desea renovar');
+            }
+        }
+    }
+
+        function GuardarRenovacion(data)
+        {
+            if (data.Result == 'OK') {
+                
+                $('#renovacionMembresiasModal').modal('toggle');
+                $('#membresiasModal').modal('toggle');
+                $('#hdfCodMembresiaUsuario').val('');
+                MostrarAlerta("Renovar Membresía", 'success', data.Message);
+                AjaxCall('@Url.Action("GetUsuarios", "Usuario")', undefined, "", SuccessCargarData, true);
+                
+            } else {
+                MostrarAlerta("Renovar Membresía",data.Type,data.Message);
+            }
+        }
+
 
             function GuardarDatos() {
 
                 var validator = $("#Validaciones").validate();
-
-
                 if (validator.form()) {
 
 
