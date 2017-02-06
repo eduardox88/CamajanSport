@@ -1,49 +1,50 @@
 ﻿@{
     Layout = "~/Views/Shared/_HomeLayout.cshtml";
 }
-<!-- Page Title -->
-<div class="section section-breadcrumbs">
-    <div class="container">
-        <div class="row">
-            <div class="col-md-12 text-center">
-                <h1>Membresias</h1>
-            </div>
-        </div>
-    </div>
-</div>
-
-
-
-<div class="section">
-    <div class="container">
-        <div class="row">
-            <div class="col-sm-12 text-center">
-                <h3>Hola, bienvenidos a CD (Camajan Deportivo) donde "Reinventamos la forma de hacerte un Ganador"</h3>
-                <p style="font-size:18px;">
-                    ¡Únete al mayor sistema de afiliados en pronósticos deportivos del mundo y empieza a ganar dinero hoy!
-                </p>
-                <p style="font-size:18px;">
-                    Tenemos planes que se ajustan a sus posibilidades.
-                </p>
-            </div>
-        </div>
-    </div>
-</div>
-<!--membresias-->
-
-<div class="section">
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-12">
-                <!-- Pricing Plans Wrapper -->
-                <input type="hidden" id="hdfMembresiaSel" />
-                <div id="divMembresias" class="row pricing-circle">
+<div style="background-color:#ecf0f1">
+    <!-- Page Title -->
+    <div class="section section-breadcrumbs">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12 text-center">
+                    <h1>Membresias</h1>
                 </div>
-                <!-- End Pricing Plans Wrapper -->
             </div>
         </div>
     </div>
-</div>
+
+
+
+    <div class="section">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-12 text-center">
+                    <h3>Hola, bienvenidos a CD (Camajan Deportivo) donde "Reinventamos la forma de hacerte un Ganador"</h3>
+                    <p style="font-size:18px;">
+                        ¡Únete al mayor sistema de afiliados en pronósticos deportivos del mundo y empieza a ganar dinero hoy!
+                    </p>
+                    <p style="font-size:18px;">
+                        Tenemos planes que se ajustan a sus posibilidades.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--membresias-->
+
+    <div class="section">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <!-- Pricing Plans Wrapper -->
+                    <input type="hidden" id="hdfMembresiaSel" />
+                    <div id="divMembresias" class="row pricing-circle">
+                    </div>
+                    <!-- End Pricing Plans Wrapper -->
+                </div>
+            </div>
+        </div>
+    </div>
     <div id="modalLogin" style="width:auto">
         <div class="modal fade" tabindex="-1" role="dialog" id="loginModal">
             <div class="modal-dialog" role="document">
@@ -98,6 +99,7 @@
             </div><!-- /.modal-dialog -->
         </div><!-- /.modal -->
     </div>
+</div>
 <hr>
 
 @section HomeScripts{
@@ -118,20 +120,12 @@
     });
 
     function removeClasses(val) {
-        //$("#" + val).removeClass("pricing-plan-promote");
-        //$('#title_' + val).removeClass('pricing-plan-promote-title').addClass('pricing-plan-title');
-        //$('#price_' + val).removeClass('pricing-plan-promote-price').addClass('pricing-plan-price');
-        //$('#features_' + val).removeClass('pricing-plan-promote-features').addClass('pricing-plan-features');
         $('#btn' + val).removeClass('btn-blue');
         $('#hdfMembresiaSel').val('');
     }
 
     function Seleccionar(val) {
         removeClasses(init);
-        //$('#' + val).addClass('pricing-plan-promote');
-        //$('#title_' + val).removeClass('pricing-plan-title').addClass('pricing-plan-promote-title');
-        //$('#price_' + val).removeClass('pricing-plan-price').addClass('pricing-plan-promote-price');
-        //$('#features_' + val).removeClass('pricing-plan-features').addClass('pricing-plan-promote-features');
         $('#btn' + val).addClass('btn-blue');
         $('#hdfMembresiaSel').val($('#hdf_' + val).val());
         init = val;
@@ -193,7 +187,7 @@
                     '</div>';
 
             }
-            html += '<ul class="plan plan1">';
+            html += '<ul class="plan plan1 featured">';
             html += '<li class="plan-name"><h4 id="title_' + mem.IdMembresia + '">' + mem.Nombre + '</h4></li>';
             //Si tiene descuento aplicado
             if (mem.Descuento != null && mem.Descuento > 0) {
@@ -205,7 +199,7 @@
                 html += '<li class="plan-price"><div id="price_' + mem.IdMembresia + '"><span class="price"><sup>$</sup>' + mem.Precio + '</span></div></li>';
             }
             if (mem.Promocion != null && mem.Promocion > 0) {
-                html += '<li style="color:red">Aprovecha la oferta de ' + mem.Promocion + ' días más!</li>' +
+                html += '<li style="color:#730606">Aprovecha la oferta de ' + mem.Promocion + ' días más!</li>' +
                     '<li style="text-decoration:line-through">Antes <strong>' + mem.Duracion + '</strong> días</li>' +
                     '<li>AHORA <strong>' + (mem.Duracion + mem.Promocion) + '</strong> días</li>';
             } else {
