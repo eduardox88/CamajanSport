@@ -31,6 +31,7 @@
 
     <!-- THEME DEMO STYLES -->
     <link href="~/css/demo.css" rel="stylesheet">
+    <link href="~/css/loading.css" rel="stylesheet">
 
     <!--[if lt IE 9]>
     <script src="js/html5shiv.js"></script>
@@ -40,7 +41,7 @@
 </head>
 
 <body class="login">
-
+    <div id="centralizado" class="cssload-loader hidden">cargando</div>
     <div class="container">
         <div id="spinner"></div>
         <div class="row">
@@ -105,8 +106,7 @@
 
 
     function SuccessOrError(data){
-        
-        console.log(data);
+       
         if (data.Result == "OK") {
             window.location.href = data.RedirectUrl;
         }
@@ -122,12 +122,14 @@
 
     $(document).ready(function () {
         $('#btnSignIn').click(function () {
+            $('#centralizado').removeClass('hidden')
             var objeto = {
                 'correo': $('#txtEmail').val(),
                 'password': $('#txtPassword').val(),
                 'recordar': $('#chkRecuerdame').is(':checked')
             };
             AjaxCall('@Url.Action("SignIn","LogIn")', objeto, "", SuccessOrError, true);
+            
         });
 
         $('#CrearUsuario').click(function () {
@@ -135,13 +137,13 @@
         })
     });
 
-    $(document).ajaxStart(function () {
-        spinner.spin(target);
-    });
+    //$(document).ajaxStart(function () {
+    //    spinner.spin(target);
+    //});
 
-    $(document).ajaxStop(function () {
-        spinner.stop();
-    });
+    //$(document).ajaxStop(function () {
+    //    spinner.stop();
+    //});
 
 
 </script>
