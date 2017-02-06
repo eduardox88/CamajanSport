@@ -65,7 +65,7 @@ a:focus {
 
 @media(min-width:768px) {
     body {
-        background: #34495e;
+        /*background: #34495e;*/
     }
 }
 
