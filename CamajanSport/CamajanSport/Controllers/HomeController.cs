@@ -1,13 +1,43 @@
-﻿using System;
+﻿using CamajanSport.BOL;
+using CamajanSport.Properties;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Security;
+using Utilidades;
+using System.Net;
+using System.Net.Http;
 
 namespace CamajanSport.Controllers
 {
     public class HomeController : Controller
     {
+        #region Propiedades
+        private Token GetAuthToken
+        {
+
+            get
+            {
+                Token token = CookieHandler.GetCookieDecrypted<Token>(Settings.Default.TokenCookie);
+
+                return token;
+            }
+        }
+
+        private Usuario GetUserDecrypted
+        {
+
+            get
+            {
+                Usuario token = CookieHandler.GetCookieDecrypted<Usuario>(FormsAuthentication.FormsCookieName);
+
+                return token;
+            }
+        }
+        #endregion
         //
         // GET: /Home/
 
@@ -17,9 +47,35 @@ namespace CamajanSport.Controllers
             return View();
         }
 
-        public ActionResult Expertos() {
+        public async Task<ActionResult> Picks()
+        {
+            var cantPremiums = await ApiHelper.GET("Publicacion/GetCantPremiumPendiente", GetAuthToken);
+
+            ViewBag.MenuDinamico = await ApiHelper.GET_List<Deporte>("Deporte/Getdeportes", GetAuthToken);
+
+            ViewBag.Expertos = await ApiHelper.GET_List<Usuario>("Usuario/GetusuariosCamajanes", GetAuthToken);
+
+            if (cantPremiums.IsSuccessStatusCode)
+            {
+                ViewBag.CantPremium = await cantPremiums.Content.ReadAsAsync<int>();
+            }
 
             return View();
+        }
+
+        [HttpGet]
+        public async Task<ActionResult> PartialPublicaciones(int CodDeporte, int idUsuario = 0) {
+
+            var publicaciones = await ApiHelper.GET_List_ByFilter<Publicacion>("Publicacion/GetPublicacionesByFiltro", "FechaJuego= " + "&IdDeporte=" + CodDeporte + "&IdEstadoResultado=0" + "&TipoPublicacion= &IdUsuario=" + idUsuario.ToString(), GetAuthToken);
+
+            return PartialView("~/Views/Shared/_PartialPublicaciones.cshtml", publicaciones);
+        }
+
+        public async Task<ActionResult> Expertos() {
+
+            List<Usuario> expertos = await ApiHelper.GET_List<Usuario>("Usuario/GetusuariosCamajanes", GetAuthToken);
+
+            return View(expertos);
         }
 
         public ActionResult Membresias() {
