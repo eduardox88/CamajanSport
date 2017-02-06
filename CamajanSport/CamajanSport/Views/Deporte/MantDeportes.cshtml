@@ -142,16 +142,8 @@
         var objDeporte;
 
         $(document).ready(function () {
-            
+            $('#centralizado').removeClass('hidden')
             CargarData();
-        });
-
-        $(document).ajaxStart(function () {
-            spinner.spin(target);
-        });
-
-        $(document).ajaxStop(function () {
-            spinner.stop();
         });
 
         function CargarData()
