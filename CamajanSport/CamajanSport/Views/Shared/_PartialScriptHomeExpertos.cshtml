@@ -1,0 +1,17 @@
+﻿
+<script type="text/javascript">
+
+    $(document).ready(function () {
+
+        $('div.expertos a.experto').on('click', function () {
+            $('#centralizado').removeClass('hidden')
+            var self = $(this);
+            var id = self.data('codusuario');
+
+            var CodDeporte = $('div.menuPrincipal').find('a.activelink').data('coddeporte')
+
+            $("#RenderPartial").load('@Url.Action("PartialPublicaciones", "Home")' + '?CodDeporte=' + CodDeporte + '&idUsuario=' + id);
+        });
+
+    });
+</script>
