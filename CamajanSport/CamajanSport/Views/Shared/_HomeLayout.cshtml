@@ -4,6 +4,8 @@
 
 <!DOCTYPE html>
 
+@using Microsoft.AspNet.Identity
+
 <html class="no-js">
 <head>
     <title>Pronósticos Deportivos | Sports Betting</title>
@@ -11,50 +13,46 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width" />
     @*<title>@ViewBag.Title</title>*@
-    <link href='http://fonts.googleapis.com/css?family=Ubuntu:300,400,500,700,300italic,400italic,500italic,700italic' rel="stylesheet" type="text/css">
-    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel="stylesheet" type="text/css">
-    <link href="~/icons/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+
     <link href="~/css/bootstrap.css" rel="stylesheet" />
     <link href="~/css/main.css" rel="stylesheet" />
     <link href="~/css/custom.css" rel="stylesheet" />
     <link href="~/css/icomoon-social.css" rel="stylesheet" />
     <link href="~/css/font-awesome.min.css" rel="stylesheet" />
-    <link href="~/css/style.css" rel="stylesheet">
-    <link href="~/css/plugins.css" rel="stylesheet">
-    <link href="~/css/demo.css" rel="stylesheet">
+    <link href="~/css/home.css" rel="stylesheet" />
     <link href="~/css/plugins/sweetalert/sweetalert.css" rel="stylesheet" />
+    <link href="~/css/loading.css" rel="stylesheet">
+    @RenderSection("Styles", false)
 
     <script src="~/js/modernizr-2.6.2-respond-1.1.0.min.js"></script>
 
 </head>
 <body>
-    <header class="navbar navbar-inverse navbar-fixed-top" role="banner">
-        <div class="container">
+
+    <nav class="navbar navbar-inverse">
+        <div class="container-fluid">
             <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                    <span class="sr-only">Toggle navigation</span>
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="@Url.Action("Index","Home")"><img src="~/img/logo-text.png" alt="Basica"></a>
+                <a href="@Url.Action("Index","Home")"><img style="width:250px;" src="~/img/logo-text.png"></a>
             </div>
-            <div class="collapse navbar-collapse">
-                <ul class="nav navbar-nav navbar-left">
+            <div class="collapse navbar-collapse" id="myNavbar">
+                <ul class="nav navbar-nav">
                     <li class="active"><a href="@Url.Action("Index","Home")">Inicio</a></li>
-                    <li><a href="@Url.Action("Expertos","Home")">Expertos</a></li>
-                    <li><a href="@Url.Action("Membresias","Home")">Membresias</a></li>
+                    <li><a href="@Url.Action("Membresias","Home")">Membresia</a></li>
+                    <li><a href="@Url.Action("Picks","Home")">Picks Gratis</a></li>
+                    <li><a href="@Url.Action("Expertos","Home")">Quienes Somos</a></li>
+                    <li><a href="#">Contactos</a></li>
                 </ul>
 
                 @Html.Partial("_LoginPartial")
-
             </div>
         </div>
-    </header>
-
+    </nav>
     <div>
-        <div id="spinner">
-        </div>
         @RenderBody()
     </div>
 
@@ -64,7 +62,7 @@
 
             <div class="row">
 
-                <div class="col-footer col-md-4 col-xs-6">
+                <div class="col-footer col-md-6 col-xs-6">
                     <h3>CONTACTOS</h3>
                     <p class="contact-us-details">
                         <b>Correo:</b> <a href="mailto:camajandeportivo@gmail.com">camajandeportivo@gmail.com</a>
@@ -76,7 +74,7 @@
                         <a href="https://www.paypal.com/webapps/mpp/paypal-popup" title="How PayPal Works" onclick="javascript:window.open('https://www.paypal.com/webapps/mpp/paypal-popup','WIPaypal','toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=yes, resizable=yes, width=1060, height=700'); return false;"><img src="https://www.paypalobjects.com/digitalassets/c/website/marketing/na/us/logo-center/9_bdg_secured_by_pp_2line.png" border="0" alt="Secured by PayPal"></a>
                     </p>
                 </div>
-                <div class="col-footer col-md-4 col-xs-6">
+                <div class="col-footer col-md-6 col-xs-6">
                     <h3>REDES SOCIALES</h3>
                     <div>
                         <img src="~/img/icons/facebook.png" width="32" alt="Facebook">
@@ -86,12 +84,7 @@
                         @*<!-- PayPal Logo --><table border="0" cellpadding="10" cellspacing="0" align="center"><tr><td align="center"></td></tr><tr><td align="center"><a href="https://www.paypal.com/webapps/mpp/paypal-popup" title="How PayPal Works" onclick="javascript:window.open('https://www.paypal.com/webapps/mpp/paypal-popup','WIPaypal','toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=yes, resizable=yes, width=1060, height=700'); return false;"><img src="https://www.paypalobjects.com/webstatic/mktg/logo/AM_SbyPP_mc_vs_dc_ae.jpg" border="0" alt="PayPal Acceptance Mark"></a></td></tr></table><!-- PayPal Logo -->*@
                     </p>
                 </div>
-                <div class="col-footer col-md-4 col-xs-6">
-                    <h3>QUIENES SOMOS</h3>
-                    <p>El sitio no está asociado con nadie, ni tampoco está avalada por un profesional o colegial, asociación o equipo. CamajanDeportivo no se dirige a un público menor de 18 años. Por favor, visite paginas encargadas para las instrucciones sobre el juego responsable.</p>
                 </div>
-
-            </div>
             <div class="row">
                 <div class="col-md-12">
                     <div class="footer-copyright">Copyright  &copy; 2017 CAMAJANDEPORTIVO.COM</div>
@@ -101,29 +94,50 @@
     </div>
 
     <!-- Javascripts -->
-    <script src="~/js/jquery-1.9.1.min.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <script>window.jQuery || document.write('<script src="js/jquery-1.9.1.min.js"><\/script>')</script>
+
+
     <script src="~/js/bootstrap.js"></script>
-    <!-- Scrolling Nav JavaScript -->
-    <script src="~/js/jquery.easing.min.js"></script>
-    <script src="~/js/scrolling-nav.js"></script>
+    <script src="~/js/helpers/Utilities.js"></script>
     <script src="~/js/plugins/sweetalert/sweetalert.min.js"></script>
-    <script src="~/js/plugins/spin/spin.js"></script>
-    <script src="~/js/helpers/Utilities.js"></script>
-    <script src="~/js/plugins/jquery.validate/jquery.validate.js"></script>
-    <script src="~/js/plugins/jquery.validate/messages_es.js"></script>
-    <script src="~/js/helpers/Utilities.js"></script>
-    <script src="~/js/plugins/spin/spin.js"></script>
-    <script type="text/javascript">
-        $(document).ajaxStart(function () {
-            spinner.spin(target);
-        });
 
-        $(document).ajaxStop(function () {
-            spinner.stop();
-        });
-
-    </script>
     @RenderSection("HomeScripts", false);
 </body>
 </html>
 
+
+<script type="text/javascript">
+
+
+    function SuccessOrError(data){
+
+        if (data == true) {
+            window.location.href = "@Url.Action("Index", "Home")";
+        }
+        else {
+            swal({
+                title: 'Lo sentimos!!',
+                text: 'Debe de activar su cuenta mediante el correo de confirmación que le hemos enviado. Recuerde revisar en su buzón de entrada como en los correos no deseados.',
+                type: 'error',
+                confirmButtonText: "Cerrar"
+            });
+        }
+    }
+
+    $(document).ready(function () {
+        $('#LogIn').click(function () {
+            var objeto = {
+                'correo': $('#txtEmail').val(),
+                'password': $('#txtPassword').val()
+            };
+            AjaxCall('@Url.Action("SignIn","LogIn")', objeto, "", SuccessOrError, true);
+
+        });
+
+        @*$('#CrearUsuario').click(function () {
+            window.location.href = "@Url.Action("CrearUsuario","LogIn")";
+        })*@
+    });
+
+</script>
