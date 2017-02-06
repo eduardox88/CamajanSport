@@ -1,15 +1,6 @@
 ﻿@using Microsoft.AspNet.Identity
 @if (Request.IsAuthenticated)
 {
-    @*<div class="menuDerecha">
-            <a href="#">Bienvenido @User.Identity.GetUserName()</a>
-            <a href="@Url.Action("LogOff", "LogIn")">
-   
-                <div id="RegBtn">
-                    <div class="text">Terminar Sesión</div>
-                </div>
-            </a>
-        </div>*@
     <ul class="nav navbar-nav navbar-right">
         <li><a href="@Url.Action("RedirectUserToHomePage","Usuario")"><span class="glyphicon glyphicon-user"></span> Bienvenido @User.Identity.GetUserName() !!</a></li>
         <li><a href="@Url.Action("LogOff", "LogIn")"><span class="glyphicon glyphicon-log-in"></span> Cerrar Sesión</a></li>
@@ -29,15 +20,5 @@ else
             <a style="color:white;" href="#"> <u>¿No puedes acceder a tu cuenta?</u></a>
         </div>
     </div>
-    @*<div class="menuDerecha">
-            <a href="@Url.Action("Index", "LogIn")">
-                Iniciar sesión
-            </a>
-            <a href="@Url.Action("CrearUsuario", "LogIn")">
-                <div id="RegBtn">
-                    <div class="text">Registrate</div>
-                </div>
-            </a>
-        </div>*@
 }
 
