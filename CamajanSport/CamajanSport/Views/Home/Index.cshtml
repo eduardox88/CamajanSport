@@ -1,198 +1,82 @@
 ﻿@{
-     Layout="~/Views/Shared/_HomeLayout.cshtml";
+    Layout = "~/Views/Shared/_HomeLayout.cshtml";
 }
 
-<div class="section section-breadcrumbs">
-    <div class="container">
-        <div class="row">
-            <div class="col-md-12">
-                <h1>Bienvenidos a Camajan Deportivo</h1>
-                <p style="color:#fff;">Bienvenido a nuestro web site de PARLEY GRATIS. Camajan Deportivo y su equipo de vasta experiencia en los pronósticos deportivos proporcionan selecciones GRATIS en todas las universidad y los deportes profesionales y otros eventos importantes de apuestas todos los días del año. Cada día, trabajamos duro para llevar sus selecciones de calidad... de forma GRATUITA. Le damos las gracias por su visita y le deseamos, siempre la mejor de las suertes! Ganare, ganare y gallina cenare...</p>
-            </div>
+@section Styles{
+
+    <link href="~/css/slider.css" rel="stylesheet" />
+}
+
+<div id="jssor_1" style="position:relative;margin:0 auto;top:0px;left:0px;width:1300px;height:500px;overflow:hidden;visibility:hidden;">
+    <!-- Loading Screen -->
+    <div data-u="loading" style="position:absolute;top:0px;left:0px;background-color:rgba(0,0,0,0.7);">
+        <div style="filter: alpha(opacity=70); opacity: 0.7; position: absolute; display: block; top: 0px; left: 0px; width: 100%; height: 100%;"></div>
+        <div style="position:absolute;display:block;background:url('img/loading.gif') no-repeat center center;top:0px;left:0px;width:100%;height:100%;"></div>
+    </div>
+    <div data-u="slides" style="cursor:default;position:relative;top:0px;left:0px;width:1300px;height:500px;overflow:hidden;">
+        <div>
+            <img data-u="image" src="img/banner1.jpg" />
+        </div>
+        <div>
+            <img data-u="image" src="img/banner2.jpg" />
+        </div>
+        <div>
+            <img data-u="image" src="img/banner3.jpg" />
         </div>
     </div>
+    <!-- Bullet Navigator -->
+    <div data-u="navigator" class="jssorb05" style="bottom:16px;right:16px;" data-autocenter="1">
+        <!-- bullet navigator item prototype -->
+        <div data-u="prototype" style="width:16px;height:16px;"></div>
+    </div>
+    <!-- Arrow Navigator -->
+    <span data-u="arrowleft" class="jssora22l" style="top:0px;left:8px;width:40px;height:58px;" data-autocenter="2"></span>
+    <span data-u="arrowright" class="jssora22r" style="top:0px;right:8px;width:40px;height:58px;" data-autocenter="2"></span>
 </div>
 
 
-<div class="section">
-    <div class="container">
-        <div class="row">
-            <!-- Blog Post Excerpt -->
-            <div class="col-sm-6">
-                <div class="blog-post blog-single-post">
-                    <div class="single-post-title">
-                        <h2>Exerci Tation Ullamcorper</h2>
-                    </div>
+<!-- #endregion Jssor Slider End -->
+@section HomeScripts{
 
-                    <div class="single-post-image">
-                        <img src="img/blog/2.jpg" alt="Post Title">
-                    </div>
-
-                    <div class="single-post-info">
-                        <i class="glyphicon glyphicon-time"></i>15 OCT, 2014 <a href="#" title="Show Comments"><i class="glyphicon glyphicon-comment"></i>11</a>
-                    </div>
-
-                    <div class="single-post-content">
-                        <p>
-                            Vivamus euismod elit ac libero facilisis tristique. Duis mollis non ligula vel tincidunt. Nulla consectetur libero id nunc ornare, vel vulputate tellus mollis. Sed quis nulla magna. Integer rhoncus sem quis ultrices lobortis. Maecenas tempus nulla quis dolor vulputate egestas. Phasellus cursus tortor quis massa faucibus fermentum vel sit amet tortor. Phasellus vehicula lorem et tortor luctus, a dignissim lacus tempor. Aliquam volutpat molestie metus sit amet aliquam. Duis vestibulum quam tortor, sed ultrices orci sagittis nec.
-                        </p>
-                        <a href="blog-post.html" class="btn">Read more</a>
-                    </div>
-                </div>
-            </div>
-            <!-- End Blog Post Excerpt -->
-            <!-- Blog Post Excerpt -->
-            <div class="col-sm-6">
-                <div class="blog-post blog-single-post">
-                    <div class="single-post-title">
-                        <h2>Exerci Tation Ullamcorper</h2>
-                    </div>
-
-                    <div class="single-post-image">
-                        <img src="img/blog/1.jpg" alt="Post Title">
-                    </div>
-
-                    <div class="single-post-info">
-                        <i class="glyphicon glyphicon-time"></i>15 OCT, 2014 <a href="#" title="Show Comments"><i class="glyphicon glyphicon-comment"></i>11</a>
-                    </div>
-
-                    <div class="single-post-content">
-                        <p>
-                            Vivamus euismod elit ac libero facilisis tristique. Duis mollis non ligula vel tincidunt. Nulla consectetur libero id nunc ornare, vel vulputate tellus mollis. Sed quis nulla magna. Integer rhoncus sem quis ultrices lobortis. Maecenas tempus nulla quis dolor vulputate egestas. Phasellus cursus tortor quis massa faucibus fermentum vel sit amet tortor. Phasellus vehicula lorem et tortor luctus, a dignissim lacus tempor. Aliquam volutpat molestie metus sit amet aliquam. Duis vestibulum quam tortor, sed ultrices orci sagittis nec.
-                        </p>
-                        <a href="blog-post.html" class="btn">Read more</a>
-                    </div>
-                </div>
-            </div>
-            <!-- End Blog Post Excerpt -->
-            <!-- Blog Post Excerpt -->
-            <div class="col-sm-6">
-                <div class="blog-post blog-single-post">
-                    <div class="single-post-title">
-                        <h2>Exerci Tation Ullamcorper</h2>
-                    </div>
-
-                    <div class="single-post-image">
-                        <img src="img/blog/3.jpg" alt="Post Title">
-                    </div>
-
-                    <div class="single-post-info">
-                        <i class="glyphicon glyphicon-time"></i>15 OCT, 2014 <a href="#" title="Show Comments"><i class="glyphicon glyphicon-comment"></i>11</a>
-                    </div>
-
-                    <div class="single-post-content">
-                        <p>
-                            Vivamus euismod elit ac libero facilisis tristique. Duis mollis non ligula vel tincidunt. Nulla consectetur libero id nunc ornare, vel vulputate tellus mollis. Sed quis nulla magna. Integer rhoncus sem quis ultrices lobortis. Maecenas tempus nulla quis dolor vulputate egestas. Phasellus cursus tortor quis massa faucibus fermentum vel sit amet tortor. Phasellus vehicula lorem et tortor luctus, a dignissim lacus tempor. Aliquam volutpat molestie metus sit amet aliquam. Duis vestibulum quam tortor, sed ultrices orci sagittis nec.
-                        </p>
-                        <a href="blog-post.html" class="btn">Read more</a>
-                    </div>
-                </div>
-            </div>
-            <!-- End Blog Post Excerpt -->
-            <!-- Blog Post Excerpt -->
-            <div class="col-sm-6">
-                <div class="blog-post blog-single-post">
-                    <div class="single-post-title">
-                        <h2>Exerci Tation Ullamcorper</h2>
-                    </div>
-
-                    <div class="single-post-image">
-                        <img src="img/blog/4.jpg" alt="Post Title">
-                    </div>
-
-                    <div class="single-post-info">
-                        <i class="glyphicon glyphicon-time"></i>15 OCT, 2014 <a href="#" title="Show Comments"><i class="glyphicon glyphicon-comment"></i>11</a>
-                    </div>
-
-                    <div class="single-post-content">
-                        <p>
-                            Vivamus euismod elit ac libero facilisis tristique. Duis mollis non ligula vel tincidunt. Nulla consectetur libero id nunc ornare, vel vulputate tellus mollis. Sed quis nulla magna. Integer rhoncus sem quis ultrices lobortis. Maecenas tempus nulla quis dolor vulputate egestas. Phasellus cursus tortor quis massa faucibus fermentum vel sit amet tortor. Phasellus vehicula lorem et tortor luctus, a dignissim lacus tempor. Aliquam volutpat molestie metus sit amet aliquam. Duis vestibulum quam tortor, sed ultrices orci sagittis nec.
-                        </p>
-                        <a href="blog-post.html" class="btn">Read more</a>
-                    </div>
-                </div>
-            </div>
-            <!-- End Blog Post Excerpt -->
-            <!-- Pagination -->
-            <div class="pagination-wrapper ">
-                <ul class="pagination pagination-sm">
-                    <li class="disabled"><a href="#">Previous</a></li>
-                    <li class="active"><a href="#">1</a></li>
-                    <li><a href="#">2</a></li>
-                    <li><a href="#">3</a></li>
-                    <li><a href="#">4</a></li>
-                    <li><a href="#">5</a></li>
-                    <li><a href="#">Next</a></li>
-                </ul>
-            </div>
-
-        </div>
-    </div>
-</div>
+    <script src="~/js/jssor.slider-22.1.9.min.js"></script>
 
 
+    <script type="text/javascript">
+        jQuery(document).ready(function ($) {
 
+            $('body').css('background-color', 'gray')
 
+            var jssor_1_options = {
+                $AutoPlay: true,
+                $SlideDuration: 800,
+                $SlideEasing: $Jease$.$OutQuint,
+                $ArrowNavigatorOptions: {
+                    $Class: $JssorArrowNavigator$
+                },
+                $BulletNavigatorOptions: {
+                    $Class: $JssorBulletNavigator$
+                }
+            };
 
+            var jssor_1_slider = new $JssorSlider$("jssor_1", jssor_1_options);
 
-<div class="section">
-    <div class="container">
-        <div class="row">
-            <!-- Featured News -->
-            <div class="col-sm-6 featured-news">
-                <h2>Latest Blog Posts</h2>
-                <div class="row">
-                    <div class="col-xs-4"><a href="blog-post.html"><img src="img/blog/1.jpg" alt="Post Title"></a></div>
-                    <div class="col-xs-8">
-                        <div class="caption"><a href="blog-post.html">Lorem ipsum dolor sit amet</a></div>
-                        <div class="date">14 August 2014 </div>
-                        <div class="intro">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et. <a href="blog-post.html">Read more...</a></div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-xs-4"><a href="blog-post.html"><img src="img/blog/2.jpg" alt="Post Title"></a></div>
-                    <div class="col-xs-8">
-                        <div class="caption"><a href="blog-post.html">Sed ut perspiciatis unde omnis</a></div>
-                        <div class="date">23 June 2014 </div>
-                        <div class="intro">Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. <a href="blog-post.html">Read more...</a></div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-xs-4"><a href="blog-post.html"><img src="img/blog/3.jpg" alt="Post Title"></a></div>
-                    <div class="col-xs-8">
-                        <div class="caption"><a href="blog-post.html"> Neque porro quisquam est</a></div>
-                        <div class="date">21 April 2014 </div>
-                        <div class="intro">Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. <a href="blog-post.html">Read more...</a></div>
-                    </div>
-                </div>
-            </div>
-            <!-- End Featured News -->
-            <!-- Latest News -->
-            <div class="col-sm-6 latest-news">
-                <h2>Latest News</h2>
-                <div class="row">
-                    <div class="col-sm-12">
-                        <div class="caption"><a href="full-width.html">Donec elementum mi vitae enim fermentum lobortis.</a></div>
-                        <div class="date">16 May 2013 </div>
-                        <div class="intro">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et. <a href="full-width.html">Read more...</a></div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-sm-12">
-                        <div class="caption"><a href="full-width.html">In hac habitasse platea dictumst.</a></div>
-                        <div class="date">14 May 2013 </div>
-                        <div class="intro">Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. <a href="full-width.html">Read more...</a></div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-sm-12">
-                        <div class="caption"><a href="full-width.html"> Nam condimentum laoreet sagittis.</a></div>
-                        <div class="date">14 May 2013 </div>
-                        <div class="intro">Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. <a href="full-width.html">Read more...</a></div>
-                    </div>
-                </div>
-            </div>
-            <!-- End Featured News -->
-        </div>
-    </div>
-</div>
+            /*responsive code begin*/
+            /*you can remove responsive code if you don't want the slider scales while window resizing*/
+            function ScaleSlider() {
+                var refSize = jssor_1_slider.$Elmt.parentNode.clientWidth;
+                if (refSize) {
+                    refSize = Math.min(refSize, 1920);
+                    jssor_1_slider.$ScaleWidth(refSize);
+                }
+                else {
+                    window.setTimeout(ScaleSlider, 300);
+                }
+            }
+            ScaleSlider();
+            $(window).bind("load", ScaleSlider);
+            $(window).bind("resize", ScaleSlider);
+            $(window).bind("orientationchange", ScaleSlider);
+            /*responsive code end*/
+        });
+    </script>
+}
