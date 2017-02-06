@@ -3,7 +3,6 @@
 }
 
 <div class="page-content">
-    <input type="hidden" id="paymentSuccessful" value="@ViewBag.paymentSuccessful" />
     <!-- begin PAGE TITLE AREA -->
     <!-- Use this section for each page's title and breadcrumb layout. In this example a date range picker is included within the breadcrumb. -->
     <div class="row">
@@ -53,10 +52,11 @@
                                         <th>Fecha Expiración</th>
                                         <th>Fecha Compra</th>
                                         <th>Estado</th>
-                                        <th></th>
                                     </tr>
                                 </thead>
-                                <tbody id="tblMembresias"></tbody>
+                                <tbody id="tblMembresias">
+                                    <tr><td colspan="6">No posee membresías para mostrar</td></tr>
+                                </tbody>
                             </table>
                         </div>
                     </div>
@@ -74,31 +74,36 @@
 
     $(document).ready(function () {
 
-        if ('@ViewBag.paymentSuccessful' == 'True') {
-            MostrarAlerta("Membresía activada", "success", "Su pago se ha realizado exitosamente. Su ID de transacción de PayPal es " + '@ViewBag.PaymentID');
-        } else {
-            MostrarAlerta("Error al realizar su pago", "error", "No se pudo completar su pago. Intente nuevamente más tarde. Si el problema persiste contacte al administrador.");
+        if ('@ViewBag.PaymentMade' == 'True') {
+            if ('@ViewBag.paymentSuccessful' == 'True') {
+                MostrarAlerta("Membresía activada", "success", "Su pago se ha realizado exitosamente. Su ID de transacción de PayPal es " + '@ViewBag.PaymentID');
+            } else {
+                MostrarAlerta("Error al realizar su pago", "error", "No se pudo completar su pago. Intente nuevamente más tarde. Si el problema persiste contacte al administrador.");
+            }
         }
         AjaxCall('@Url.Action("GetMisMembresias", "Membresia")', undefined, '', CargarData, false);
     });
 
     function CargarData(response) {
-        objMembresias = response;
-        $('#tblMembresias').empty();
-        for (var i = 0; i < response.length; i++) {
-            var membresia = response[i];
-            var estado = (new FechaUtility(response[i].FechaExpiracion).getTime() >= new Date().getTime()) ? 'VIGENTE' : 'EXPIRADA';
-            var html = '<tr>' +
-            '<td>' + membresia.Nombre + '</td>' +
-            '<td>USD$' + membresia.MontoTransaccion + '</td>' +
-            '<td>' + membresia.IdTransaccionPago + '</td>' +
-            '<td>' + new FechaUtility(membresia.FechaExpiracion).GetDate() + '</td>' +
-            '<td>' + new FechaUtility(membresia.FechaIngreso).GetDate() + '</td>' +
-            '<td>' + estado + '</td>' +
-            '</tr>';
-            $('#tblMembresias').append(html);
+        objMembresias = response;        
+        if (response.length > 0) {
+            $('#tblMembresias').empty();
+            for (var i = 0; i < response.length; i++) {
+
+                var membresia = response[i];
+                var estado = (new FechaUtility(response[i].FechaExpiracion).getTime() >= new Date().getTime()) ? 'VIGENTE' : 'EXPIRADA';
+                var html = '<tr>' +
+                '<td>' + membresia.Nombre + '</td>' +
+                '<td>USD$' + membresia.MontoTransaccion + '</td>' +
+                '<td>' + membresia.IdTransaccionPago + '</td>' +
+                '<td>' + new FechaUtility(membresia.FechaExpiracion).GetDate() + '</td>' +
+                '<td>' + new FechaUtility(membresia.FechaIngreso).GetDate() + '</td>' +
+                '<td>' + estado + '</td>' +
+                '</tr>';
+                $('#tblMembresias').append(html);
+            }
         }
-        alert(new FechaUtility(response[0].FechaExpiracion).getTime()+" y la de hoy:"+new Date().getTime());
+        
     }
 
 </script>
