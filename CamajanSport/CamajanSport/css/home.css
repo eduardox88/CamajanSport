@@ -1,0 +1,602 @@
+﻿@media screen and (max-width: 599px){
+    #MainNavDesktop {
+        display: none;
+    }
+}
+
+@media screen and (min-width:600px) {
+
+    #mobileMenu {
+        display:none;
+    }
+
+}
+
+#MainNavDesktop {
+height: 50px;
+width: 100%;
+min-width: 890px;
+color: #fff;
+position: fixed;
+z-index: 22;
+left: 0;
+top: 0;
+}
+
+#MainNavDesktop .logo-wrapper:after {
+    display: block;
+    background: -webkit-linear-gradient(135deg,#007017 0,#21A941 100%);
+    background: linear-gradient(-45deg,#007017 0,#21A941 100%);
+    position: relative;
+    left: -15px;
+    height: 50px;
+}
+
+#MainNavDesktop .logo-wrapper {
+    background: 0 0;
+    overflow: hidden;
+    float: left;
+    position: relative;
+}
+
+    #MainNavDesktop .logo-wrapper .badge-wrapper {
+        position: relative;
+        z-index: 1;
+        height: 30px;
+        float: left;
+        margin: 10px 10px 10px 30px;
+    }
+
+    #MainNavDesktop .logo-wrapper div.text {
+        display: block;
+        position: relative;
+        z-index: 1;
+        float: left;
+        margin: 0px 25px 12.5px 0;
+    }
+
+#MainNavDesktop, #MainNavDesktop .logo-background, #MainNavMobile .green-bar, #MainNavMobile .green-bar #LoginMobile #RegBtn, #MainNavMobile .green-bar #LoginMobile #SignIn, #MainNavMobile .logo-background {
+    background-color: #007017;
+    background-image: -webkit-linear-gradient(135deg,#007017 0,#21A941 100%);
+    background-image: linear-gradient(-45deg,#007017 0,#21A941 100%);
+}
+
+    #MainNavDesktop nav {
+        position: relative;
+        left: -15px;
+        float: left;
+    }
+
+        #MainNavDesktop nav a {
+            position: relative;
+            display: block;
+            height: 50px;
+            float: left;
+            text-decoration: none;
+            color: #fff;
+            font-size: 16px;
+            font-weight: 400;
+            font-style: normal;
+            letter-spacing: 1px;
+            text-align: center;
+            padding: 0 43px;
+            white-space: nowrap;
+        }
+
+        #MainNavDesktop #Avatar .name-wrapper #AccountDropdown .account-menu-item, #MainNavDesktop #Avatar .name-wrapper #Name, #MainNavDesktop nav a {
+            font-family: proxima-nova,sans-serif;
+            line-height: 50px;
+        }
+
+            #MainNavDesktop nav a:after {
+                position: absolute;
+                height: 50px;
+                top: 0;
+                left: 0;
+                background-color: transparent;
+                -webkit-transition: background-color .3s,border-color .3s;
+                transition: background-color .3s,border-color .3s;
+                border-left-width: 1px;
+                border-left-style: solid;
+                border-right-width: 1px;
+                border-right-style: solid;
+                border-right-color: #0C7825;
+                border-left-color: transparent;
+            }
+
+            #MainNavDesktop nav a:not(.active):hover:after {
+                border-left-color: #0C7825;
+                background-color: #0b7023;
+            }
+
+            #LoginBtn:hover {
+                border-left-color: #0C7825;
+                background-color: #0b7023;
+            }
+
+            #MainNavDesktop nav a span {
+                position: relative;
+                z-index: 1;
+            }
+
+            #MainNavDesktop .logo-wrapper:after, #MainNavDesktop nav a:after {
+                content: " ";
+                width: 100%;
+                -webkit-transform: skew(-25deg);
+                -ms-transform: skew(-25deg);
+                transform: skew(-25deg);
+            }
+
+    #MainNavDesktop #Avatar {
+        float: right;
+        height: 50px;
+    }
+
+       
+
+            #MainNavDesktop #Avatar div.signin a:first-of-type {
+                text-decoration: none;
+                font-weight: 400;
+                line-height: 50px;
+                height: 50px;
+            }
+
+            #MainNavDesktop #Avatar div.signin a:first-of-type {
+                color: #fff;
+                font-size: 12px;
+                font-style: normal;
+                font-family: proxima-nova,sans-serif;
+                letter-spacing: 1px;
+            }
+
+            #MainNavDesktop #Avatar div.signin a {
+                display: block;
+                float: left;
+                margin: 0 30px;
+                -webkit-transition: color .3s;
+                transition: color .3s;
+            }
+
+                #MainNavDesktop #Avatar div.signin a.become-member-link #RegBtn {
+                    display: -webkit-box;
+                    display: -webkit-flex;
+                    display: -ms-flexbox;
+                    display: flex;
+                    -webkit-box-align: center;
+                    -webkit-align-items: center;
+                    -ms-flex-align: center;
+                    align-items: center;
+                }
+
+            
+
+
+
+
+
+
+
+
+@media screen and (min-width: 1200px){
+    div.main-content {
+        max-width: 1200px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+}
+
+@media screen and (max-width: 1200px) and (min-width:600px){
+    div.main-content {
+        max-width: 100%;
+        margin-left: auto;
+        margin-right: auto;
+    }
+}
+
+
+@media (min-width: 600px){
+section.insider-pick-feed {
+    box-shadow: 0 0 2px 0 rgba(0,0,0,.22);
+    margin-bottom: 60px;
+    border-radius: 2px;
+    padding-bottom: 20px;
+    background-color: #fff;
+}
+}
+
+
+section.insider-pick-feed h2 {
+    margin-top: 0;
+    margin-left: 20px;
+    margin-bottom: 0;
+    font-family: proxima-nova,sans-serif;
+    font-size: 24px;
+    font-weight: 300;
+    font-style: normal;
+    line-height: 69px;
+    border-bottom-width: 1px;
+    border-bottom-style: solid;
+    border-bottom-color: #E6E7E9;
+}
+
+section.insider-pick-feed article.insiderPickPreview, section.insiders .insider-picks article.insiderPickPreview {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -webkit-flex-direction: column;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    -webkit-box-pack: center;
+    -webkit-justify-content: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    -webkit-box-align: center;
+    -webkit-align-items: center;
+    -ms-flex-align: center;
+    align-items: center;
+    padding-bottom: 20px;
+    padding-right: 0;
+}
+
+section.insider-pick-feed article, section.insiders .insider-picks article {
+    padding: 20px 30px 0 0;
+}
+
+section.insider-pick-feed article.insiderPickPreview .header, section.insiders .insider-picks article.insiderPickPreview .header {
+    font-family: proxima-nova,sans-serif;
+    font-size: 22px;
+    font-weight: 700;
+    font-style: normal;
+    line-height: 27px;
+    color: #0090FF;
+    margin-top: 12px;
+}
+
+section.insider-pick-feed article.insiderPickPreview .main, section.insiders .insider-picks article.insiderPickPreview .main {
+    margin: 2px 0 0;
+    letter-spacing: 1px;
+    font-family: proxima-nova,sans-serif;
+    font-size: 14px;
+    font-weight: 400;
+    font-style: normal;
+    line-height: 17px;
+    color: #282828;
+}
+
+
+
+
+section.insider-pick-feed article:not(.insiderPickPreview):not(.forecast-view):not(.insiderPickNoPicks), section.insiders .insider-picks article:not(.insiderPickPreview):not(.forecast-view):not(.insiderPickNoPicks) {
+    -webkit-transition: background-color .2s;
+    transition: background-color .2s;
+}
+
+section.insider-pick-feed article:not(:first-of-type), section.insiders .insider-picks article:not(:first-of-type) {
+    border-top-width: 1px;
+    border-top-style: solid;
+    border-top-color: #E6E7E9;
+}
+section.insider-pick-feed article.has-divider-bar, section.insiders .insider-picks article.has-divider-bar {
+    position: relative;
+    padding-top: 47px;
+}
+
+
+section.insider-pick-feed article .author-container, section.insiders .insider-picks article .author-container {
+    height: 50px;
+    padding-left: 15px;
+    margin-bottom: 19px;
+}
+
+section.insider-pick-feed article .flex-container, section.insiders .insider-picks article .flex-container {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+}
+
+
+section.insider-pick-feed article .author-container {
+    height: 50px;
+    padding-left: 15px;
+    margin-bottom: 19px;
+}
+
+
+section.insider-pick-feed article .author-container .author-name, section.insider-pick-feed article .author-container img, section.insiders .insider-picks article .author-container .author-name, section.insiders .insider-picks article .author-container img {
+    float: left;
+    cursor: pointer;
+}
+
+section.insider-pick-feed article .author-container div, section.insider-pick-feed article .author-container img, section.insiders .insider-picks article .author-container div, section.insiders .insider-picks article .author-container img {
+    display: inline-block;
+}
+section.insider-pick-feed article .author-container img, section.insiders .insider-picks article .author-container img {
+    background-color: #E6E7E9;
+    height: 50px;
+    width: 50px;
+    border-radius: 50%;
+}
+img, legend {
+    border: 0;
+}
+
+
+section.insider-pick-feed article .author-container .author-name, section.insiders .insider-picks article .author-container .author-name {
+    margin-left: 20px;
+    margin-top: 5px;
+    height: inherit;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -webkit-flex-direction: column;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    -webkit-box-pack: center;
+    -webkit-justify-content: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+}
+
+section.insider-pick-feed article .author-container .author-name div:first-of-type, section.insiders .insider-picks article .author-container .author-name div:first-of-type {
+    font-family: proxima-nova,sans-serif;
+    font-size: 18px;
+    font-weight: 400;
+    font-style: normal;
+    line-height: normal;
+    color: #282828;
+    -webkit-transition: color .2s;
+    transition: color .2s;
+}
+
+section.insider-pick-feed article .author-container .author-name div:last-of-type, section.insiders .insider-picks article .author-container .author-name div:last-of-type {
+    font-family: proxima-nova,sans-serif;
+    font-size: 12px;
+    font-weight: 400;
+    font-style: normal;
+    line-height: normal;
+    color: #282828;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+
+
+
+
+
+@media screen and (max-width: 599px){
+section.insider-pick-feed article .author-container .pick-date, section.insiders .insider-picks article .author-container .pick-date {
+    line-height: 1.7;
+    margin-top: 6px;
+}
+}
+section.insider-pick-feed article .author-container div, section.insider-pick-feed article .author-container img, section.insiders .insider-picks article .author-container div, section.insiders .insider-picks article .author-container img {
+    display: inline-block;
+}
+section.insider-pick-feed article .pick-date, section.insiders .insider-picks article .pick-date {
+    float: right;
+    clear: right;
+    text-transform: uppercase;
+    font-family: proxima-nova,sans-serif;
+    font-size: 12px;
+    font-weight: 400;
+    font-style: normal;
+    line-height: normal;
+    color: #69737A;
+    letter-spacing: 1px;
+}
+
+
+section.insider-pick-feed article .flex-container, section.insiders .insider-picks article .flex-container {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+}
+
+
+section.insider-pick-feed article .flex-container .left, section.insiders .insider-picks article .flex-container .left {
+    padding-top: 3px;
+    padding-left: 25px;
+    width: 85px;
+    -webkit-box-flex: 0;
+    -webkit-flex: 0 0 auto;
+    -ms-flex: 0 0 auto;
+    flex: 0 0 auto;
+}
+
+
+section.insider-pick-feed article .flex-container .right, section.insiders .insider-picks article .flex-container .right {
+    -webkit-box-flex: 1;
+    -webkit-flex: 1 1 auto;
+    -ms-flex: 1 1 auto;
+    flex: 1 1 auto;
+}
+
+section.insider-pick-feed article .pick-game-info, section.insiders .insider-picks article .pick-game-info {
+    text-transform: uppercase;
+}
+
+section.insider-pick-feed article .pick-game-info .info, section.insiders .insider-picks article .pick-game-info .info {
+    float: left;
+}
+
+@media (min-width: 600px){
+section.insider-pick-feed article .pick-game-info .result-date, section.insiders .insider-picks article .pick-game-info .result-date {
+    margin-top: -3px;
+}}
+section.insider-pick-feed article .pick-game-info .result-date, section.insiders .insider-picks article .pick-game-info .result-date {
+    float: right;
+}
+
+section.insider-pick-feed article .pick-game-info .result.won, section.insiders .insider-picks article .pick-game-info .result.won {
+    background-color: #21a941;
+}
+section.insider-pick-feed article .pick-game-info .result, section.insiders .insider-picks article .pick-game-info .result {
+    text-align: center;
+    padding: 0 10px;
+    border-radius: 500px;
+    width: 95px;
+    float: right;
+    font-family: proxima-nova,sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    font-style: normal;
+    line-height: 24px;
+    color: #fff;
+    letter-spacing: 1px;
+}
+
+.gano {
+    background-color: #21a941;
+    text-align: center;
+    padding: 0 10px;
+    border-radius: 500px;
+    width: 95px;
+    float: right;
+    font-family: proxima-nova,sans-serif;
+    font-weight: 600;
+    font-style: normal;
+    line-height: 24px;
+    color: #fff;
+    letter-spacing: 1px;
+
+}
+
+.perdio {
+    background-color: #E82F2F;
+    text-align: center;
+    padding: 0 10px;
+    border-radius: 500px;
+    width: 95px;
+    float: right;
+    font-family: proxima-nova,sans-serif;
+    font-weight: 600;
+    font-style: normal;
+    line-height: 24px;
+    color: #fff;
+    letter-spacing: 1px;
+
+}
+
+.pendiente {
+    background-color: rgba(184, 185, 199, 1);
+    text-align: center;
+    padding: 0 10px;
+    border-radius: 500px;
+    width: 95px;
+    float: right;
+    font-family: proxima-nova,sans-serif;
+    font-weight: 600;
+    font-style: normal;
+    line-height: 24px;
+    color: #fff;
+    letter-spacing: 1px;
+
+}
+
+section.insider-pick-feed article .pick-game-info span, section.insiders .insider-picks article .pick-game-info span {
+    font-family: proxima-nova,sans-serif;
+    font-size: 12px;
+    font-weight: 400;
+    font-style: normal;
+    line-height: normal;
+    letter-spacing: 1px;
+}
+
+section.insider-pick-feed article .pick-game-info:after, section.insiders .insider-picks article .pick-game-info:after {
+    content: " ";
+    display: table;
+    clear: both;
+}
+
+@media (min-width: 600px) {
+    section.insider-pick-feed article .note, section.insiders .insider-picks article .note {
+        cursor: default;
+        margin-top: 12px;
+    }
+}
+section.insider-pick-feed article .note, section.insiders .insider-picks article .note {
+    max-height: none;
+    overflow: hidden;
+    padding-right: 20px;
+    font-family: proxima-nova,sans-serif;
+    font-size: 16px;
+    font-weight: 400;
+    font-style: normal;
+    line-height: 24px;
+    color: #555;
+}
+
+
+section.insider-pick-feed article .pick-game-info .info, section.insiders .insider-picks article .pick-game-info .info {
+    float: left;
+}
+
+section.insider-pick-feed article .pick-game-info h3 span, section.insiders .insider-picks article .pick-game-info h3 span {
+    display: inline-block;
+    font-family: proxima-nova,sans-serif;
+    font-size: 20px;
+    font-weight: 800;
+    font-style: normal;
+    line-height: normal;
+}
+section.insider-pick-feed article .pick-game-info span, section.insiders .insider-picks article .pick-game-info span {
+    font-family: proxima-nova,sans-serif;
+    font-size: 11px;
+    font-weight: 400;
+    font-style: normal;
+    line-height: normal;
+    letter-spacing: 1px;
+}
+@media (min-width: 600px) {
+    .desktop {
+        display: block;
+    }
+}
+
+@media (min-width: 600px) {
+    section.insider-pick-feed article .pick-game-info span.mweb, section.insiders .insider-picks article .pick-game-info span.mweb {
+        display: none;
+    }
+}
+
+@media screen and (max-width: 599px) {
+    section.insider-pick-feed article .pick-game-info span.desktop, section.insiders .insider-picks article .pick-game-info span.desktop {
+        display: none;
+    }
+}
+@media screen and (max-width: 599px) {
+    section.insider-pick-feed article .pick-game-info h3 span, section.insiders .insider-picks article .pick-game-info h3 span {
+        font-size: 16px;
+    }
+}
+
+.menuDerecha {
+    color: white;
+    font-size: 12px;
+    font-style: normal;
+    font-family: proxima-nova,sans-serif;
+    letter-spacing: 0.5px;
+}
+
+
+.menuDerecha a {
+    color:white;
+    padding:0 20px;
+    line-height:50px;
+    float:left;
+    display:block;
+}
+
+.menuDerecha a:hover {
+    background-color:#21a941;
+    border-radius:3px;
+    font-size: 14px;
+}
