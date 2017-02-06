@@ -24,13 +24,18 @@ namespace ApiCamajan.Controllers
             return db.Publicacions.ToList();
         }
 
+        public int GetCantPremiumPendiente()
+        {
+            return db.Publicacions.Where(m => m.IdEstadoResultado == 1 && m.EsPremium == true).Count();
+        }
+
         [Authorize]
         public List<SelectAttributes> GetEstadosResultado_Select()
         {
             return db.estadosResultado.Select(m => new SelectAttributes { Value = m.IdEstadoResultado, DisplayText = m.Descripcion}).ToList();
         }
 
-        [Authorize]
+        
         // GET: api/Publicacion
         public List<Publicacion> GetPublicacionesByFiltro(string FechaJuego,int IdDeporte,int IdEstadoResultado,string TipoPublicacion,int IdUsuario)
         {
