@@ -1,0 +1,68 @@
+﻿@using CamajanSport.BOL
+
+@model List<Publicacion>
+
+
+@foreach (var pub in Model)
+{
+    <article id="ember1406" class="ember-view has-divider-bar homepage-unsub">
+        <div class="author-container">
+            <a id="ember1407" href="/experts/13773/larry-hartstein/" class="ember-view">
+                <div data-ember-action="1424">
+                    <img src="@pub.Usuario.Imagen">
+                    <div class="author-name">
+                        <div>@pub.Usuario.NombreCompleto</div>
+                        <div>Analista Camajan</div>
+                    </div>
+                </div>
+            </a>	<div class="pick-date">
+                <span class="pick-date-normal-screen">Publicado: @pub.FechaIngreso.ToString("dd/MM/yyyy")</span>
+            </div>
+        </div>
+        <div class="flex-container">
+            <div class="left">
+                <div style="position:absolute; left:19px;">
+                    <img src="~/img/basketball-icon-86027.png" style="height:40px; width:40px;" />
+                </div>
+
+            </div>
+            <div class="right">
+                <div class="pick-game-info">
+                    <div class="info">
+
+                        <h3 style="margin:0 !important;">
+                            <span class="desktop"> @pub.Pronostico</span><span class="mweb">@pub.Pronostico</span>
+                        </h3>
+                        <span class="desktop" style="font-style:italic">@pub.Equipo1.Nombre  @@  @pub.Equipo2.Nombre <br>
+                            Juego: @pub.FechaJuego
+                        </span>
+                        <span class="mweb">@pub.Equipo1.Nombre  @@  @pub.Equipo2.Nombre <br>
+                            Juego: @pub.FechaJuego
+                        </span>
+                    </div>
+                    @if (pub.IdEstadoResultado == 1)
+                    {
+                        <div class="result-date">
+                            <div class="pendiente"><span>@pub.EstadoResultado.Descripcion</span></div>
+                        </div>
+                    }
+                    else if (pub.IdEstadoResultado == 2) { 
+                        <div class="result-date">
+                            <div class="gano"><span>@pub.EstadoResultado.Descripcion</span></div>
+                        </div>
+                    }
+                    else { 
+                        <div class="result-date">
+                            <div class="perdio"><span>@pub.EstadoResultado.Descripcion</span></div>
+                        </div>
+                    }
+
+            </div>
+            <p class="note">@pub.Analisis</p>
+        </div>
+    </div>
+</article>
+
+    <br />
+
+}
