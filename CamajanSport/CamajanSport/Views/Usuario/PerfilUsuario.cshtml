@@ -254,6 +254,8 @@
 
         $(document).ready(function () {
 
+            $('#centralizado').removeClass('hidden')
+
             AjaxCall('@Url.Action("GetPaises_Select", "Pais")', undefined, 'IdPais', CargarDropDown, false)
             Init_SingleSelect2($('#IdPais'));
 
