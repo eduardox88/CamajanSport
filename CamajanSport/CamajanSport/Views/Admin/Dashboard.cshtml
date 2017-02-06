@@ -134,9 +134,7 @@
 
     <script type="text/javascript">
         
-        var spinner
         function CargarData() {
-
 
             var objeto = new Object();
 
@@ -168,17 +166,8 @@
         }
 
         $(document).ready(function () {
-
+            $('#centralizado').removeClass('hidden')
             CargarData();
-
-        });
-
-        $(document).ajaxStart(function () {
-            spinner.spin(target);
-        });
-
-        $(document).ajaxStop(function () {
-            spinner.stop();
         });
 
     </script>
