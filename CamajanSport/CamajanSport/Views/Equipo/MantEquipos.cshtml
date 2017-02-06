@@ -140,17 +140,12 @@
         var objEquipo;
 
         $(document).ready(function () {
+
+            $('#centralizado').removeClass('hidden')
+
             AjaxCall('@Url.Action("Getdeportes","Deporte")', undefined, 'drpDeporte', CargarDropDownDeportes, true)
             CargarData();
             InicializarValidaciones();
-        });
-
-        $(document).ajaxStart(function () {
-            spinner.spin(target);
-        });
-
-        $(document).ajaxStop(function () {
-            spinner.stop();
         });
 
         function InicializarValidaciones() {
