@@ -117,7 +117,7 @@ namespace CamajanSport.Controllers
             var membresias = await ApiHelper.GET_ListWOAuth<Membresia>("Membresia/GetMembresias");
             return Json(membresias, JsonRequestBehavior.AllowGet);
         }
-        
+        [Authorize]
         public async Task<JsonResult> GuardarMembresia(Membresia membresia)
         {
             try
@@ -143,6 +143,25 @@ namespace CamajanSport.Controllers
                 return Json("Ha ocurrido un error al guardar la membresia. Si el problema persiste contacte su administrador.");
             }
 
+        }
+        [Authorize]
+        public async Task<JsonResult> RenovarMembresiaUsuario(int IdMembresiaUsuario, int CantDiasRenovacion) 
+        {
+
+            try
+            {
+                MembresiaUsuario memb = new MembresiaUsuario();
+                memb.IdMembresiaUsuario = IdMembresiaUsuario;
+                memb.Duracion = CantDiasRenovacion;
+                var membresia = await ApiHelper.PUT<MembresiaUsuario>("MembresiaUsuarios/RenovarMembresiaUsuario", memb, GetAuthToken);
+                return Json(new { Result = "OK", Message = "La membresía del usuario ha sido renovada exitosamente. Su nueva fecha de expiración es "+(DateTime.Now.AddDays(CantDiasRenovacion).ToShortDateString())+"." });
+            }
+            catch (Exception)
+            {
+                return Json(new { Result = "ERROR",Type="error", Message = "Ha ocurrido un error al renovar la membresia del usuario. Si el problema persiste contacte su administrador." });
+            }
+            
+        
         }
         public async Task<MembresiaUsuario> ObtieneMembresiaActiva()
         {

@@ -33,7 +33,21 @@ namespace ApiCamajan.Controllers
         {
             return db.MembresiaUsuarios.Where(m => m.IdUsuario == id && m.FechaExpiracion >= DateTime.Now).FirstOrDefault();
         }
+        [ResponseType(typeof(MembresiaUsuario))]
+        [HttpPut]
+        public async Task<IHttpActionResult> RenovarMembresiaUsuario(MembresiaUsuario membresiaUsuario) 
+        {
+            var membresiaActual = db.MembresiaUsuarios.Where(m => m.IdMembresiaUsuario == membresiaUsuario.IdMembresiaUsuario).FirstOrDefault();
+            TimeSpan tSpanDiferencia = DateTime.Now.Subtract(membresiaActual.FechaExpiracion);
+            membresiaActual.FechaExpiracion = membresiaActual.FechaExpiracion.AddDays(membresiaUsuario.Duracion + tSpanDiferencia.Days);
+            membresiaActual.Renovada = true;
 
+            db.Entry(membresiaActual).State = EntityState.Modified;
+
+            await db.SaveChangesAsync();
+            return Ok(membresiaActual); ;
+
+        }
         // GET: api/MembresiaUsuarios/5
         [ResponseType(typeof(MembresiaUsuario))]
         public async Task<IHttpActionResult> GetMembresiaUsuario(int id)
