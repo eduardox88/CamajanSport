@@ -51,11 +51,13 @@
     <link href="~/css/plugins/select2/select2.min.css" rel="stylesheet" />
     <link href="~/css/plugins/bootstrap-datetimepicker/bootstrap-datetimepicker.min.css" rel="stylesheet" />
     <link href="~/css/demo.css" rel="stylesheet">
+    <link href="~/css/loading.css" rel="stylesheet">
     @RenderSection("CSS", required: false)
 
 </head>
 
 <body>
+    <div id="centralizado" class="cssload-loader hidden">cargando</div>
     <div id="wrapper">
         <nav class="navbar-top" role="navigation">
             <div class="navbar-header">
@@ -90,14 +92,14 @@
                               <img id="imgPerfil" src="~/img/desconocido.png" class="img-circle" style="width:150px; height:150px;" alt="">
                             }
                             else { 
-                        <img id="imgPerfil" src="@modelo.Imagen" class="img-circle" style="width:150px; height:150px;" alt="">
+                                <img id="imgPerfil" src="@modelo.Imagen" class="img-circle" style="width:150px; height:150px;" alt="">
                             }
                         }
                         <p class="welcome">
                             <i class="fa fa-key"></i> Ha iniciado sesion como:
                         </p>
                         <p class="name tooltip-sidebar-logout">
-                            <span class="last-name">@modelo.NombreCompleto</span> <a style="color: inherit" class="logout_open" href="#logout" data-toggle="tooltip" data-placement="top" title="terminar sesión"><i class="fa fa-sign-out"></i></a>
+                            <span class="last-name">@modelo.NombreCompleto</span>
                         </p>
                         <div class="clearfix"></div>
                     </li>
@@ -121,27 +123,7 @@
     <script src="~/js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
     <script src="~/js/plugins/popupoverlay/jquery.popupoverlay.js"></script>
     <script src="~/js/plugins/popupoverlay/defaults.js"></script>
-    <!-- Logout Notification Box -->
-    <div id="logout">
-        <div class="logout-message">
-            <img class="img-circle img-logout" src="~/img/profile-pic.jpg" alt="">
-            <h3>
-                <i class="fa fa-sign-out text-green"></i> Ready to go?
-            </h3>
-            <p>Haz click en "Logout" si estas listo<br> para terminar tu sesión.</p>
-            <ul class="list-inline">
-                <li>
-                    <a href="@Url.Action("Index","LogIn")" class="btn btn-green">
-                        <strong>Logout</strong>
-                    </a>
-                </li>
-                <li>
-                    <button class="logout_close btn btn-green">Cancel</button>
-                </li>
-            </ul>
-        </div>
-    </div>
-    <!-- /#logout -->
+
     <!-- Logout Notification jQuery -->
     <script src="~/js/plugins/popupoverlay/logout.js"></script>
     <!-- HISRC Retina Images -->
@@ -187,7 +169,6 @@
     <script src="~/js/plugins/jquery.validate/utilities/decimal.js"></script>
     <script src="~/js/plugins/jquery.validate/utilities/integer.js"></script>
     <script src="~/js/plugins/autonumeric/autoNumeric.js"></script>
-    <script src="~/js/plugins/spin/spin.js"></script>
 
     @*<script src="~/js/demo/dashboard-demo.js"></script>*@
     <script src="~/js/helpers/Utilities.js"></script>
