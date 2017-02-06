@@ -70,7 +70,7 @@ namespace CamajanSport.Controllers
 
         }
 
-        public async Task<JsonResult> SignIn(string correo, string password, bool recordar )
+        public async Task<JsonResult> SignIn(string correo, string password, bool recordar = false )
         {
 
             try
