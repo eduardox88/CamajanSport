@@ -76,6 +76,8 @@ function MostrarDialogo(id, titulo, mensaje, showBtnCerrar, botones, showTopClos
 
 function AjaxCall(url, data,idContenedor ,callBackFunction, IsAsync,optionalParameter)
 {
+    $('#LoadingGif').removeClass('hidden');
+
     $.ajax({
         type: "POST",
         url: url,
@@ -94,7 +96,9 @@ function AjaxCall(url, data,idContenedor ,callBackFunction, IsAsync,optionalPara
                 callBackFunction(data);
             }
         }, error: function (jqXHR, textStatus, errorThrown) {
-            MostrarAlerta("Error", 'error', 'Ha ocurrido un error al realizar el llamado.' + url);
+
+            var r = jQuery.parseJSON(jqXHR.responseText);
+            MostrarAlerta(r.Title, r.Type, r.Message);
         }
     });
 };
@@ -349,5 +353,5 @@ function FechaUtility(milisecs)
 }
 
 $(document).ajaxStop(function () {
-    $('#centralizado').addClass('hidden')
+    $('#LoadingGif').addClass('hidden');
 });
