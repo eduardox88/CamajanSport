@@ -87,6 +87,7 @@
     <Compile Include="Membresia.cs" />
     <Compile Include="MembresiaUsuario.cs" />
     <Compile Include="netfx\System\Guard.cs" />
+    <Compile Include="Noticia.cs" />
     <Compile Include="Pais.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Publicacion.cs" />
