@@ -52,6 +52,11 @@ namespace CamajanSport.Controllers
                                         "<i class='fa fa-angle-double-right'></i> Publicaciones" +
                                     "</a>" +
                                 "</li>" +
+                                "<li>" +
+                                    "<a href='/Noticia/MantNoticias'>" +
+                                        "<i class='fa fa-angle-double-right'></i> Noticias" +
+                                    "</a>" +
+                                "</li>" +
                             "</ul>" +
                         "</li>";
                 }

@@ -64,21 +64,24 @@ namespace CamajanSport.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult> PartialPublicaciones(int CodDeporte, int idUsuario = 0) {
+        public async Task<ActionResult> PartialPublicaciones(int CodDeporte, int idUsuario = 0)
+        {
 
             var publicaciones = await ApiHelper.GET_List_ByFilter<Publicacion>("Publicacion/GetPublicacionesByFiltro", "FechaJuego= " + "&IdDeporte=" + CodDeporte + "&IdEstadoResultado=0" + "&TipoPublicacion= &IdUsuario=" + idUsuario.ToString(), GetAuthToken);
 
             return PartialView("~/Views/Shared/_PartialPublicaciones.cshtml", publicaciones);
         }
 
-        public async Task<ActionResult> Expertos() {
+        public async Task<ActionResult> Expertos()
+        {
 
             List<Usuario> expertos = await ApiHelper.GET_List<Usuario>("Usuario/GetusuariosCamajanes", GetAuthToken);
 
             return View(expertos);
         }
 
-        public ActionResult Membresias() {
+        public ActionResult Membresias()
+        {
 
             if (Request.Params["error"] != null && Convert.ToBoolean(Request.Params["error"]))
             {
@@ -92,9 +95,30 @@ namespace CamajanSport.Controllers
             {
                 ViewBag.PayPalCancel = false;
             }
-           
+
             return View();
         }
 
+        public ActionResult Contactos()
+        {
+            return View("Contactos");
+        }
+
+        [System.Web.Mvc.HttpPost]
+        public JsonResult EnviarComentario(string Nombre, string Telefono, string CorreoElectronico, string Comentario)
+        {
+
+            try
+            {
+                MailHandler.SendEmailToCamajanSport("Formulario de Contacto", CorreoElectronico, "Usted ha recibido el siguiente comentario:<br/><br/>Nombre:" + Nombre + "<br/>Correo Electrónico:" + CorreoElectronico + "<br/><br/>Comentario:<br/><br/>" + Comentario);
+                return Json(new { Result = "OK", Type = "success", Message = "Su comentario se ha enviado satisfactoriamente." });
+            }
+            catch (Exception)
+            {
+                return Json(new { Result = "ERROR", Type = "error", Message = "Ha ocurrido un error al enviar su comentario, si el problema persiste contacte el administrador." });
+
+            }
+
+        }
     }
 }
