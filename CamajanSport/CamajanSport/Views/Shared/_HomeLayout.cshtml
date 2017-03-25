@@ -12,36 +12,12 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width" />
-    @*<title>@ViewBag.Title</title>*@
-
-    <link href="~/css/main.css" rel="stylesheet" />
-    <link href="~/css/custom.css" rel="stylesheet" />
-    <link href="~/css/icomoon-social.css" rel="stylesheet" />
-    <link href="~/css/font-awesome.min.css" rel="stylesheet" />
-    <link href="~/css/home.css" rel="stylesheet" />
-    <link href="~/css/plugins/sweetalert/sweetalert.css" rel="stylesheet" />
-    <link href="~/css/loading.css" rel="stylesheet">
-
-    <link href="~/css/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-    <link href='http://fonts.googleapis.com/css?family=Ubuntu:300,400,500,700,300italic,400italic,500italic,700italic' rel="stylesheet" type="text/css">
-    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel="stylesheet" type="text/css">
-    <link href="~/icons/font-awesome/css/font-awesome.min.css" rel="stylesheet">
-    <link href="~/css/plugins/messenger/messenger.css" rel="stylesheet">
-    <link href="~/css/plugins/messenger/messenger-theme-flat.css" rel="stylesheet">
-
-    <link href="~/css/plugins/bootstrap-datepicker/datepicker3.css" rel="stylesheet" />
-
-    <link href="~/css/style.css" rel="stylesheet">
-    @*<link href="~/css/plugins.css" rel="stylesheet">*@
-    <link href="~/css/loading.css" rel="stylesheet">
-
+    @Styles.Render("~/Content/css/HomeLayout")
     @RenderSection("Styles", false)
-
-    <script src="~/js/modernizr-2.6.2-respond-1.1.0.min.js"></script>
-
 </head>
 <body>
-
+    <div id="LoadingGif" class="hidden">
+    </div>
     <nav class="navbar navbar-inverse">
         <div class="container-fluid">
             <div class="navbar-header">
@@ -62,6 +38,7 @@
                 </ul>
 
                 @Html.Partial("_LoginPartial")
+                
             </div>
         </div>
     </nav>
@@ -97,7 +74,7 @@
                         @*<!-- PayPal Logo --><table border="0" cellpadding="10" cellspacing="0" align="center"><tr><td align="center"></td></tr><tr><td align="center"><a href="https://www.paypal.com/webapps/mpp/paypal-popup" title="How PayPal Works" onclick="javascript:window.open('https://www.paypal.com/webapps/mpp/paypal-popup','WIPaypal','toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=yes, resizable=yes, width=1060, height=700'); return false;"><img src="https://www.paypalobjects.com/webstatic/mktg/logo/AM_SbyPP_mc_vs_dc_ae.jpg" border="0" alt="PayPal Acceptance Mark"></a></td></tr></table><!-- PayPal Logo -->*@
                     </p>
                 </div>
-                </div>
+            </div>
             <div class="row">
                 <div class="col-md-12">
                     <div class="footer-copyright">Copyright  &copy; 2017 CAMAJANDEPORTIVO.COM</div>
@@ -106,14 +83,11 @@
         </div>
     </div>
 
-    <!-- Javascripts -->
-    <script src="~/js/jquery-1.9.1.min.js"></script>    
-    <script>window.jQuery || document.write('<script src="js/jquery-1.9.1.min.js"><\/script>')</script>
-    <script src="~/js/bootstrap.js"></script>
-    <script src="~/js/helpers/Utilities.js"></script>
-    <script src="~/js/plugins/sweetalert/sweetalert.min.js"></script>
-    <script src="~/js/plugins/jquery.validate/jquery.validate.js"></script>
-    <script src="~/js/plugins/jquery.validate/messages_es.js"></script>
+    @Scripts.Render("~/js/modernizr-2.6.2-respond-1.1.0.min.js")
+    @Scripts.Render("~/js/jquery-1.9.1.min.js")
+    @Scripts.Render("~/js/plugins/sweetalert/sweetalert.min.js")
+    @Scripts.Render("~/bundles/js/HomeLayout")
+
     @RenderSection("HomeScripts", false);
 </body>
 </html>
@@ -122,19 +96,9 @@
 <script type="text/javascript">
 
 
-    function SuccessOrError(data){
+    function SuccessOrError(data) {
 
-        if (data == true) {
-            window.location.href = "@Url.Action("Index", "Home")";
-        }
-        else {
-            swal({
-                title: 'Lo sentimos!!',
-                text: 'Debe de activar su cuenta mediante el correo de confirmación que le hemos enviado. Recuerde revisar en su buzón de entrada como en los correos no deseados.',
-                type: 'error',
-                confirmButtonText: "Cerrar"
-            });
-        }
+       window.location.href = "@Url.Action("Index", "Home")";
     }
 
     $(document).ready(function () {
