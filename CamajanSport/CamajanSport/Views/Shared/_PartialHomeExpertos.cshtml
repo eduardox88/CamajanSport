@@ -1,0 +1,33 @@
+﻿@using CamajanSport.BOL
+
+@model List<Usuario>
+
+@{
+    
+    int indice = 0;
+}
+
+@foreach (Usuario user in Model) { 
+    
+<article>
+    <div class="expertos">
+        <a class="experto" data-codusuario="@user.IdUsuario">
+            <div class="bloque-gris">
+                <span> @(indice = indice + 1) </span>
+            </div>
+            <div class="author-image">
+                <img src="@user.Imagen" width="50" height="50" />
+            </div>
+            <div class="informacion-experto">
+                <div class="nombre">
+                    @user.NombreCompleto
+                </div>
+                <div class="profesion">
+                    Analista Camaján y Experto En Estadisticas De Juego
+                </div>
+            </div>
+        </a>
+    </div>
+</article>
+
+}
