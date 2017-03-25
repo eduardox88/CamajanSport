@@ -4,7 +4,7 @@
     $(document).ready(function () {
 
         $('div.expertos a.experto').on('click', function () {
-            $('#centralizado').removeClass('hidden')
+            $('#LoadingGif').removeClass('hidden')
             var self = $(this);
             var id = self.data('codusuario');
 
@@ -12,6 +12,6 @@
 
             $("#RenderPartial").load('@Url.Action("PartialPublicaciones", "Home")' + '?CodDeporte=' + CodDeporte + '&idUsuario=' + id);
         });
-
+        
     });
 </script>
