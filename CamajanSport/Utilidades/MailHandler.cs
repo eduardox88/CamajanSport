@@ -40,5 +40,35 @@ namespace Utilidades
                 
             }
         }
+
+        public static void SendEmailToCamajanSport(string asunto,string correoElectronico,string body)
+        {
+
+            try
+            {
+                using (MailMessage mail = new MailMessage())
+                {
+                    mail.From = new MailAddress(correoElectronico);
+                    mail.To.Add("");
+                    mail.Subject = "Formulario de Contacto";
+                    mail.Body = "<p>"+body+"</p>";
+                    mail.IsBodyHtml = true;
+                    //mail.Attachments.Add(new Attachment("C:\\file.zip"));
+
+                    using (SmtpClient smtp = new SmtpClient("smtp.gmail.com", 587))
+                    {
+                        smtp.Credentials = new NetworkCredential("hxf53514@gmail.com", "fullpower");
+                        smtp.EnableSsl = true;
+                        smtp.Send(mail);
+                    }
+                }
+
+
+            }
+            catch (Exception)
+            {
+
+            }
+        }
     }
 }
