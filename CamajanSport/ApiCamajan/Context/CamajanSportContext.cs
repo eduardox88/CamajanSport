@@ -28,5 +28,6 @@ namespace ApiCamajan.Context
 
         public System.Data.Entity.DbSet<CamajanSport.BOL.Publicacion> Publicacions { get; set; }
         public DbSet<MembresiaUsuario> MembresiaUsuarios { get; set; }
+        public DbSet<Noticia> Noticias { get; set; }
     }
 }
