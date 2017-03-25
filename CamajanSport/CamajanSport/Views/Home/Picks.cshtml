@@ -7,81 +7,13 @@
 
 @model List<Publicacion>
 
-<style>
-    div.menuPrincipal a {
-        margin: 0 20px;
-        color: #69737A;
-        cursor: pointer;
-    }
-
-        div.menuPrincipal a:hover {
-            margin: 0 20px;
-            padding: 7px;
-            color: #69737A;
-            background-color: lightgray;
-            border-radius: 5px;
-        }
-
-    .activelink {
-        margin: 0 20px;
-        padding: 7px;
-        background-color: #fff;
-        color: #5AA3E8 !important;
-        border-color: #5AA3E8;
-        border-radius: 5px;
-        border-width: 2px;
-        border-style: solid;
-        text-decoration: none;
-    }
-
-    .home-expertos {
-        font-size: 14px;
-        font-weight: 600;
-        color: #1B1B1B;
-        letter-spacing: 1px;
-        margin-bottom: 9px;
-        border-bottom: 1px solid gray;
-    }
-
-        .home-expertos .top .right {
-            margin-top: 7px;
-            margin-left: 10px;
-        }
-
-    .author-name {
-        font-family: proxima-nova,sans-serif;
-        font-size: 16px;
-        font-weight: 400;
-        font-style: normal;
-        line-height: 20px;
-        color: #282828;
-        margin-bottom: 4px;
-        padding-left: 8px;
-        -webkit-transition: color .2s;
-        transition: color .2s;
-    }
-
-    .author-rank {
-        font-family: proxima-nova,sans-serif;
-        font-size: 11px;
-        font-weight: 600;
-        font-style: normal;
-        line-height: 16px;
-        color: #717171;
-        letter-spacing: 1px;
-        text-transform: uppercase;
-        padding: 4px 6px 2px 8px;
-        border-width: 1px;
-        border-style: solid;
-        border-color: #E6E7E9;
-    }
-</style>
-
+@section Styles {
+        @Styles.Render("~/Content/css/Home/Picks");
+}
 
 @Html.Partial("~/Views/Shared/_PartialOferta.cshtml")
 
 <div class="main-content">
-    <div id="centralizado" class="cssload-loader hidden">cargando</div>
     <div style="width:20%; float:left;">
         &nbsp
     </div>
@@ -121,14 +53,12 @@
             <span>Pronosticos de:</span>
         </div>
         <section>
-            @Html.Partial("~/Views/Shared/_HomeExpertos.cshtml", (List<Usuario>)ViewBag.Expertos)
+            @Html.Partial("~/Views/Shared/_PartialHomeExpertos.cshtml", (List<Usuario>)ViewBag.Expertos)
         </section>
     </aside>
     <div style="clear:both"></div>
 </div>
 
-@Scripts.Render("~/js/plugins/spin/spin.js")
-@Scripts.Render("~/js/helpers/Utilities.js")
 @section HomeScripts{
 
     @Html.Partial("~/Views/Shared/_PartialScriptHomeExpertos.cshtml")
@@ -137,12 +67,12 @@
 
         $(document).ready(function () {
 
-            $('#centralizado').removeClass('hidden')
+            $('#LoadingGif').removeClass('hidden')
             $("#RenderPartial").load('@Url.Action("PartialPublicaciones", "Home")' + '?CodDeporte=0');
 
             $('div.menuPrincipal a').on('click', function () {
 
-                $('#centralizado').removeClass('hidden')
+                $('#LoadingGif').removeClass('hidden')
 
                 var self = $(this);
                 var div = self.closest('div');
