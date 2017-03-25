@@ -43,10 +43,18 @@
     <Reference Include="Antlr3.Runtime">
       <HintPath>..\packages\Antlr.3.4.1.9004\lib\Antlr3.Runtime.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.AspNet.Identity.Core, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Identity.Core.2.2.1\lib\net45\Microsoft.AspNet.Identity.Core.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="PayPal, Version=1.8.0.0, Culture=neutral, PublicKeyToken=5b4afc1ccaef40fb, processorArchitecture=MSIL">
+      <HintPath>..\packages\PayPal.1.8.0\lib\net45\PayPal.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -67,6 +75,9 @@
     </Reference>
     <Reference Include="System.Web.Http.WebHost, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.AspNet.WebApi.WebHost.5.2.3\lib\net45\System.Web.Http.WebHost.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web.Mvc, Version=4.0.0.1, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <Private>True</Private>
     </Reference>
     <Reference Include="System.Web.Optimization">
@@ -97,10 +108,6 @@
       <Private>True</Private>
       <HintPath>..\packages\Microsoft.AspNet.WebPages.2.0.30506.0\lib\net40\System.Web.Helpers.dll</HintPath>
     </Reference>
-    <Reference Include="System.Web.Mvc, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <Private>True</Private>
-      <HintPath>..\packages\Microsoft.AspNet.Mvc.4.0.30506.0\lib\net40\System.Web.Mvc.dll</HintPath>
-    </Reference>
     <Reference Include="System.Web.Razor, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <Private>True</Private>
       <HintPath>..\packages\Microsoft.AspNet.Razor.2.0.30506.0\lib\net40\System.Web.Razor.dll</HintPath>
@@ -122,14 +129,21 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="App_Data\Paypal.cs" />
     <Compile Include="Controllers\AdminController.cs" />
     <Compile Include="Controllers\CamajanController.cs" />
+    <Compile Include="Controllers\MenuInitializer.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Controllers\DeporteController.cs" />
     <Compile Include="Controllers\EquipoController.cs" />
     <Compile Include="Controllers\EstadoController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\LogInController.cs" />
+    <Compile Include="Controllers\MembresiaController.cs" />
+    <Compile Include="Controllers\NoticiaController.cs" />
     <Compile Include="Controllers\PaisController.cs" />
+    <Compile Include="Controllers\PayPalController.cs" />
     <Compile Include="Controllers\PublicacionController.cs" />
     <Compile Include="Controllers\RolController.cs" />
     <Compile Include="Controllers\UsuarioController.cs" />
@@ -137,10 +151,26 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Content Include="css\bootstrap.css" />
+    <Content Include="css\custom.css" />
+    <Content Include="css\font-awesome.min.css" />
+    <Content Include="css\home.css" />
+    <Content Include="css\Home\Picks.css" />
+    <Content Include="css\icomoon-social.css" />
+    <Content Include="css\loading-gif.css" />
+    <Content Include="css\loading.css" />
+    <Content Include="css\main.css" />
+    <Content Include="css\MembresiaBanner.css" />
+    <Content Include="css\Partials\HomeExpertos.css" />
     <Content Include="css\plugins\bootstrap-datetimepicker\bootstrap-datetimepicker.css" />
     <Content Include="css\plugins\bootstrap-datetimepicker\bootstrap-datetimepicker.min.css" />
     <Content Include="css\plugins\bootstrap\css\bootstrap-theme.css" />
@@ -156,6 +186,7 @@
     <Content Include="css\plugins\bootstrap-tokenfield\tokenfield-typeahead.css" />
     <Content Include="css\plugins\bootstrap\css\bootstrap.css" />
     <Content Include="css\plugins\bootstrap\css\bootstrap.min.css" />
+    <Content Include="css\plugins\bootstrap\fonts\glyphicons-halflings-regular.svg" />
     <Content Include="css\plugins\datatables\datatables.css" />
     <Content Include="css\plugins\daterangepicker\daterangepicker-bs3.css" />
     <Content Include="css\plugins\dropzone\css\dropzone.css" />
@@ -177,8 +208,8 @@
     <Content Include="css\plugins\summernote\summernote-bs3.css" />
     <Content Include="css\plugins\summernote\summernote.css" />
     <Content Include="css\plugins\sweetalert\sweetalert.css" />
+    <Content Include="css\slider.css" />
     <Content Include="css\style.css" />
-    <Content Include="css\plugins\bootstrap\fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Guia\404.html" />
     <Content Include="Guia\500.html" />
@@ -345,22 +376,41 @@
     <Content Include="icons\font-awesome\css\font-awesome.css" />
     <Content Include="icons\font-awesome\css\font-awesome.min.css" />
     <Content Include="icons\font-awesome\fonts\fontawesome-webfont.svg" />
+    <Content Include="img\a22.png" />
+    <Content Include="img\b05.png" />
+    <Content Include="img\banner1.jpg" />
+    <Content Include="img\banner2.jpg" />
+    <Content Include="img\banner3.jpg" />
+    <Content Include="img\bars.png" />
+    <Content Include="img\basketball-icon-86027.png" />
     <Content Include="img\checkmark.png" />
     <Content Include="img\datatables\sort_asc.png" />
     <Content Include="img\datatables\sort_asc_disabled.png" />
     <Content Include="img\datatables\sort_both.png" />
     <Content Include="img\datatables\sort_desc.png" />
     <Content Include="img\datatables\sort_desc_disabled.png" />
+    <Content Include="img\desconocido.png" />
     <Content Include="img\flex-admin-logo%401x.png" />
     <Content Include="img\flex-admin-logo%402x.png" />
     <Content Include="img\flex-admin-logo.png" />
     <Content Include="img\gif\pageloader.gif" />
+    <Content Include="img\icons\facebook.png" />
+    <Content Include="img\icons\linkedin.png" />
+    <Content Include="img\icons\rss.png" />
+    <Content Include="img\icons\twitter.png" />
+    <Content Include="img\loadingballs.gif" />
+    <Content Include="img\loadingmech.gif" />
+    <Content Include="img\logo-text.png" />
+    <Content Include="img\logo.png" />
+    <Content Include="img\logo2.png" />
     <Content Include="img\profile-full.jpg" />
     <Content Include="img\profile-pic-small.jpg" />
     <Content Include="img\profile-pic.jpg" />
+    <Content Include="img\title-before.png" />
     <Content Include="img\uniform\bg-input-focus.png" />
     <Content Include="img\uniform\bg-input.png" />
     <Content Include="img\uniform\sprite.png" />
+    <Content Include="img\unkown.jpg" />
     <Content Include="img\user-profile-1.jpg" />
     <Content Include="img\user-profile-2.jpg" />
     <Content Include="img\user-profile-3.jpg" />
@@ -369,6 +419,8 @@
     <Content Include="img\widget-bg-evening.jpg" />
     <Content Include="img\widget-bg-midnight.jpg" />
     <Content Include="img\widget-bg-morning.jpg" />
+    <Content Include="js\bootstrap.js" />
+    <Content Include="js\bootstrap.min.js" />
     <Content Include="js\demo\advanced-form-demo.js" />
     <Content Include="js\demo\advanced-tables-demo.js" />
     <Content Include="js\demo\buttons-demo.js" />
@@ -383,6 +435,15 @@
     <Content Include="js\flex.js" />
     <Content Include="js\helpers\Utilities.js" />
     <Content Include="js\html5shiv.js" />
+    <Content Include="js\jquery-1.11.3.min.js" />
+    <Content Include="js\jquery-1.9.1.min.js" />
+    <Content Include="js\jquery.easing.min.js" />
+    <Content Include="js\jssor.slider-22.1.9.debug.js" />
+    <Content Include="js\jssor.slider-22.1.9.min.js" />
+    <Content Include="js\jssor.slider-22.1.9.mini.js" />
+    <Content Include="js\modernizr-2.6.2-respond-1.1.0.min.js" />
+    <Content Include="js\plugins\autonumeric\autoNumeric-min.js" />
+    <Content Include="js\plugins\autonumeric\autoNumeric.js" />
     <Content Include="js\plugins\bootstrap-datepicker\bootstrap-datepicker.js" />
     <Content Include="js\plugins\bootstrap-maxlength\bootstrap-maxlength.js" />
     <Content Include="js\plugins\bootstrap-maxlength\bootstrap-maxlength.min.js" />
@@ -434,6 +495,7 @@
     <Content Include="js\plugins\jquery.validate\utilities\extension.js" />
     <Content Include="js\plugins\jquery.validate\utilities\giroaccountNL.js" />
     <Content Include="js\plugins\jquery.validate\utilities\iban.js" />
+    <Content Include="js\plugins\jquery.validate\utilities\decimal.js" />
     <Content Include="js\plugins\jquery.validate\utilities\integer.js" />
     <Content Include="js\plugins\jquery.validate\utilities\ipv4.js" />
     <Content Include="js\plugins\jquery.validate\utilities\ipv6.js" />
@@ -492,20 +554,20 @@
     <Content Include="js\plugins\slimscroll\jquery.slimscroll.min.js" />
     <Content Include="js\plugins\sparkline\jquery.sparkline.js" />
     <Content Include="js\plugins\sparkline\jquery.sparkline.min.js" />
+    <Content Include="js\plugins\spin\spin.js" />
     <Content Include="js\plugins\summernote\summernote.js" />
     <Content Include="js\plugins\summernote\summernote.min.js" />
     <Content Include="js\plugins\sweetalert\sweetalert.min.js" />
-    <Content Include="js\plugins\validate\jquery.validate.js" />
-    <Content Include="js\plugins\validate\jquery.validate.min.js" />
     <Content Include="js\respond.min.js" />
     <Content Include="js\plugins\bootstrap-datetimepicker\bootstrap-datetimepicker.js" />
     <Content Include="js\plugins\bootstrap-datetimepicker\bootstrap-datetimepicker.min.js" />
     <Content Include="js\plugins\moment\moment-with-locales.min.js" />
+    <Content Include="js\scrolling-nav.js" />
+    <Content Include="ProfileImages\IMG-20160701-WA0007.jpg" />
     <Content Include="Scripts\bootstrap-datetimepicker.js" />
     <Content Include="Scripts\bootstrap-datetimepicker.min.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
-    <Content Include="Scripts\npm.js" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -518,7 +580,6 @@
     <Content Include="Views\Web.config" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="App_Data\" />
     <Folder Include="Manejadores\" />
   </ItemGroup>
   <ItemGroup>
@@ -678,19 +739,7 @@
     <Content Include="Views\Equipo\MantEquipos.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Usuario\MantUsuarios.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
     <Content Include="Views\Publicacion\MantPublicaciones.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="css\plugins\bootstrap\fonts\glyphicons-halflings-regular.woff" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="css\plugins\bootstrap\fonts\glyphicons-halflings-regular.ttf" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="css\plugins\bootstrap\fonts\glyphicons-halflings-regular.eot" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\LogIn\VistaConfirmacion.cshtml" />
@@ -699,7 +748,28 @@
     <Content Include="Views\Usuario\PerfilUsuario.cshtml" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="css\plugins\bootstrap\fonts\glyphicons-halflings-regular.eot" />
+    <Content Include="css\plugins\bootstrap\fonts\glyphicons-halflings-regular.ttf" />
+    <Content Include="css\plugins\bootstrap\fonts\glyphicons-halflings-regular.woff" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <Content Include="Views\Membresia\MantMembresias.cshtml" />
+    <Content Include="Views\Home\Expertos.cshtml" />
+    <Content Include="Views\Home\Membresias.cshtml" />
+    <Content Include="Views\Shared\_HomeLayout.cshtml" />
+    <Content Include="Views\Shared\_LoginPartial.cshtml" />
+    <Content Include="Views\LogIn\CrearUsuario.cshtml" />
+    <Content Include="Views\Membresia\ListarMisMembresias.cshtml" />
     <Content Include="Views\Usuario\MantUsuarios.cshtml" />
+    <Content Include="Views\Home\Picks.cshtml" />
+    <Content Include="Views\Shared\_HomeExpertos.cshtml" />
+    <Content Include="Views\Shared\_PartialOferta.cshtml" />
+    <Content Include="Views\Shared\_PartialPublicaciones.cshtml" />
+    <Content Include="Views\Shared\_PartialScriptHomeExpertos.cshtml" />
+    <Content Include="Views\Home\Contactos.cshtml" />
+    <Content Include="Views\Noticia\MantNoticias.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

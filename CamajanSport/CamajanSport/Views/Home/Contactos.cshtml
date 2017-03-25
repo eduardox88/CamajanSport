@@ -1,0 +1,100 @@
+﻿@{
+    Layout = "~/Views/Shared/_HomeLayout.cshtml";
+}
+
+
+<div class="container">
+
+    <!-- Team Members Row -->
+    <form id="formContacto">
+        <div class="row">
+            <div class="center-block">
+                <div class="col-lg-12">
+                    <h1 class="page-header text-center"><strong>Formulario de Contacto</strong></h1>
+                </div>
+                <div class="row">
+                    <div class="col-xs-12 col-sm-4 col-md-3">
+                        <label for="txtNombre">Nombre Completo</label>
+                        <input type="text" id="txtNombre" name="txtNombre" class="form-control" />
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-12 col-sm-4 col-md-3">
+                        <label for="txtEmail">Correo Electrónico</label>
+                        <input type="text" id="txtEmail" name="txtEmail" class="form-control" />
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-12 col-sm-4 col-md-3">
+                        <label for="txtTelefono">Teléfono</label>
+                        <input type="text" id="txtTelefono" class="form-control" />
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-12 col-sm-4 col-md-3">
+                        <label for="txtComentario">Comentario</label>
+                        <input type="text" multiple="multiple" id="txtComentario" name="txtComentario" class="form-control" />
+                    </div>
+                </div><br />
+                <div class="row">
+                    <div class="col-xs-6 col-sm-4 col-md-3">
+                        <input type="button" id="btnEnviar" onclick="EnviarComentario()" class="btn btn-primary" value="Enviar" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+    <hr>
+
+    <!-- Footer -->
+    <footer>
+
+    </footer>
+
+</div>
+@section HomeScripts{
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        InicializarValidaciones();
+    });
+
+    function EnviarComentario()
+    {
+        if ($("#formContacto").valid()) {
+            AjaxCall('@Url.Action("EnviarComentario", "Home")', { 'Nombre': $('#txtNombre').val(), 'Telefono': $('#txtTelefono').val(), 'CorreoElectronico': $('#txtEmail').val(), 'Comentario': $('#txtComentario').val() }, '', EnviarComentarioCallBack, false);
+        }
+    }
+
+    function EnviarComentarioCallBack(data)
+    {
+        if (data.Result == "OK") {
+            $('#txtNombre').val('');
+            $('#txtTelefono').val('');
+            $('#txtEmail').val('');
+            $('#txtComentario').val('');
+        }
+        MostrarAlerta("Formulario de Contacto", data.Type, data.Message);
+    }
+
+    function InicializarValidaciones() {
+
+        $("#formContacto").validate({
+            errorClass: 'control-label text-danger',
+            rules: {
+                txtNombre: {
+                    required: true,
+                    minlength: 5
+                },
+                txtEmail: {
+                    required: true,
+                    email:true
+                },
+                txtComentario: {
+                    required: true
+                }
+            }
+        });
+    }
+</script>
+}

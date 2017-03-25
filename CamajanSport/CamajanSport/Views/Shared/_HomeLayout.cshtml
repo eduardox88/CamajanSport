@@ -14,7 +14,6 @@
     <meta name="viewport" content="width=device-width" />
     @*<title>@ViewBag.Title</title>*@
 
-    <link href="~/css/bootstrap.css" rel="stylesheet" />
     <link href="~/css/main.css" rel="stylesheet" />
     <link href="~/css/custom.css" rel="stylesheet" />
     <link href="~/css/icomoon-social.css" rel="stylesheet" />
@@ -22,6 +21,20 @@
     <link href="~/css/home.css" rel="stylesheet" />
     <link href="~/css/plugins/sweetalert/sweetalert.css" rel="stylesheet" />
     <link href="~/css/loading.css" rel="stylesheet">
+
+    <link href="~/css/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href='http://fonts.googleapis.com/css?family=Ubuntu:300,400,500,700,300italic,400italic,500italic,700italic' rel="stylesheet" type="text/css">
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel="stylesheet" type="text/css">
+    <link href="~/icons/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+    <link href="~/css/plugins/messenger/messenger.css" rel="stylesheet">
+    <link href="~/css/plugins/messenger/messenger-theme-flat.css" rel="stylesheet">
+
+    <link href="~/css/plugins/bootstrap-datepicker/datepicker3.css" rel="stylesheet" />
+
+    <link href="~/css/style.css" rel="stylesheet">
+    @*<link href="~/css/plugins.css" rel="stylesheet">*@
+    <link href="~/css/loading.css" rel="stylesheet">
+
     @RenderSection("Styles", false)
 
     <script src="~/js/modernizr-2.6.2-respond-1.1.0.min.js"></script>
@@ -45,7 +58,7 @@
                     <li><a href="@Url.Action("Membresias","Home")">Membresia</a></li>
                     <li><a href="@Url.Action("Picks","Home")">Picks Gratis</a></li>
                     <li><a href="@Url.Action("Expertos","Home")">Quienes Somos</a></li>
-                    <li><a href="#">Contactos</a></li>
+                    <li><a href="@Url.Action("Contactos","Home")">Contactos</a></li>
                 </ul>
 
                 @Html.Partial("_LoginPartial")
@@ -94,10 +107,8 @@
     </div>
 
     <!-- Javascripts -->
-    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <script src="~/js/jquery-1.9.1.min.js"></script>    
     <script>window.jQuery || document.write('<script src="js/jquery-1.9.1.min.js"><\/script>')</script>
-
-
     <script src="~/js/bootstrap.js"></script>
     <script src="~/js/helpers/Utilities.js"></script>
     <script src="~/js/plugins/sweetalert/sweetalert.min.js"></script>
