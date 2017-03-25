@@ -84,6 +84,8 @@
     <Compile Include="Equipo.cs" />
     <Compile Include="Estado.cs" />
     <Compile Include="EstadoResultado.cs" />
+    <Compile Include="Membresia.cs" />
+    <Compile Include="MembresiaUsuario.cs" />
     <Compile Include="netfx\System\Guard.cs" />
     <Compile Include="Pais.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
