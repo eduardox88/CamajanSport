@@ -131,6 +131,7 @@ namespace CamajanSport.Controllers
                     }
                     else
                     {
+                        
                         Response.StatusCode = (int)HttpStatusCode.BadRequest;
                         return Json("Ha ocurrido un error al guardar. Si el problema persiste contacte su administrador.");
                     }
