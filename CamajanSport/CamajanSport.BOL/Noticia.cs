@@ -13,6 +13,7 @@ namespace CamajanSport.BOL
         public string Contenido { get; set; }
         public bool Activo { get; set; }
 
+        public int IdUsuario { get; set; }
         public DateTime FechaIngreso { get; set; }
     }
 }
