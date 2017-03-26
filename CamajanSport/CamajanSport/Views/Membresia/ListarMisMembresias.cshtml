@@ -48,9 +48,9 @@
 
                                         <th>Nombre</th>
                                         <th>Monto pagado</th>
-                                        <th>Id Transacción</th>
-                                        <th>Fecha Expiración</th>
+                                        <th>Id Transacción</th>                                        
                                         <th>Fecha Compra</th>
+                                        <th>Fecha Expiración</th>
                                         <th>Estado</th>
                                     </tr>
                                 </thead>
@@ -96,8 +96,8 @@
                 '<td>' + membresia.Nombre + '</td>' +
                 '<td>USD$' + membresia.MontoTransaccion + '</td>' +
                 '<td>' + membresia.IdTransaccionPago + '</td>' +
-                '<td>' + new FechaUtility(membresia.FechaExpiracion).GetDate() + '</td>' +
                 '<td>' + new FechaUtility(membresia.FechaIngreso).GetDate() + '</td>' +
+                 '<td>' + new FechaUtility(membresia.FechaExpiracion).GetDate() + '</td>' +
                 '<td>' + estado + '</td>' +
                 '</tr>';
                 $('#tblMembresias').append(html);
