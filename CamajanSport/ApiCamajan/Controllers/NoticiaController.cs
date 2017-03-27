@@ -19,9 +19,12 @@ namespace ApiCamajan.Controllers
         private CamajanSportContext db = new CamajanSportContext();
 
         // GET: api/Noticia
-        public IQueryable<Noticia> GetNoticia()
+        public List<Noticia> GetNoticia()
         {
-            return db.Noticias;
+            var noticias = db.Noticias.SqlQuery("select Id,Titulo,'' as Contenido,FechaIngreso, IdUsuario,Activo from Noticias").ToList<Noticia>();
+            return noticias;
+                /*from n in db.Noticias
+                               select n.Id,n.Titulo,n.IdUsuario,n.FechaIngreso;*/
         }
 
         // GET: api/Noticia/5
@@ -39,17 +42,17 @@ namespace ApiCamajan.Controllers
 
         // PUT: api/Noticia/5
         [ResponseType(typeof(void))]
-        public async Task<IHttpActionResult> PutNoticia(int id, Noticia Noticia)
+        public async Task<IHttpActionResult> PutNoticia(Noticia Noticia)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            if (id != Noticia.Id)
-            {
-                return BadRequest();
-            }
+            //if (id != Noticia.Id)
+            //{
+            //    return BadRequest();
+            //}
 
             db.Entry(Noticia).State = EntityState.Modified;
 
@@ -59,14 +62,14 @@ namespace ApiCamajan.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!NoticiaExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
+                //if (!NoticiaExists(id))
+                //{
+                //    return NotFound();
+                //}
+                //else
+                //{
                     throw;
-                }
+               // }
             }
 
             return StatusCode(HttpStatusCode.NoContent);
