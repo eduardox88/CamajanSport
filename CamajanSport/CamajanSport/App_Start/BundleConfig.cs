@@ -17,6 +17,40 @@ namespace CamajanSport.App_Start
             bundles.Add(new ScriptBundle("~/bundles/js/Home/Index").Include(
                       "~/js/Home/Index.js"));
 
+            bundles.Add(new ScriptBundle("~/bundles/js/AdminLayout").Include(
+                      "~/js/plugins/datatables/jquery.dataTables.js",                                           
+                      "~/js/plugins/hisrc/hisrc.js",                                                             
+                      "~/js/plugins/bootstrap-datepicker/bootstrap-datepicker.js",                                
+                      "~/js/flex.js",                                                                           
+                      "~/js/plugins/dropzone/dropzone.js",                                                        
+                      "~/js/plugins/jquery.validate/jquery.validate.js",                                          
+                      "~/js/plugins/jquery.validate/messages_es.js,",                                              
+                      "~/js/plugins/jquery.validate/utilities/lettersonly.js",                                    
+                      "~/js/plugins/jquery.validate/utilities/decimal.js",                                        
+                      "~/js/plugins/jquery.validate/utilities/integer.js",                                        
+                      "~/js/plugins/autonumeric/autoNumeric.js",                                                  
+                      "~/js/helpers/Utilities.js"  
+                      
+                      ));
+
+
+            bundles.Add(new ScriptBundle("~/bundles/js/LogIn/CrearUsuario").Include(
+                      "~/js/plugins/jquery.validate/jquery.validate.js",
+                      "~/js/plugins/jquery.validate/messages_es.js",
+                      "~/js/plugins/jquery.validate/utilities/lettersonly.js",
+                      "~/js/plugins/jquery.validate/utilities/email.js",
+                      "~/js/helpers/Utilities.js"
+                      ));
+
+            bundles.Add(new StyleBundle("~/Content/css/AdminLayout").Include(    
+                       "~/css/plugins/datatables/datatables.css",                                    
+                       "~/css/style.css",                                                                                                        
+                       "~/css/plugins/sweetalert/sweetalert.css",                               
+                       "~/css/plugins/summernote/summernote.css",                                             
+                       "~/css/plugins/summernote/summernote-bs3.css"      
+                      ));
+
+
             bundles.Add(new StyleBundle("~/Content/css/HomeLayout").Include(
                       "~/css/bootstrap.css",                  
                        "~/css/main.css",                         
@@ -24,6 +58,12 @@ namespace CamajanSport.App_Start
                        "~/css/home.css",                             
                        "~/css/plugins/sweetalert/sweetalert.css",
                        "~/css/loading-gif.css"       
+                      ));
+
+            bundles.Add(new StyleBundle("~/Content/css/LogIn/CrearUsuario").Include(
+                       "~/css/plugins/bootstrap/css/bootstrap.css",
+                       "~/css/style.css",
+                       "~/css/plugins/sweetalert/sweetalert.css"
                       ));
 
             bundles.Add(new StyleBundle("~/Content/css/Slider").Include(
