@@ -98,56 +98,66 @@ namespace CamajanSport.Controllers
 
         }
         /// <summary>
-        /// Obtiene las membresias disponibles pero necesita AUTENTICACION
+        /// Obtiene las noticias disponibles pero necesita AUTENTICACION
         /// </summary>
         /// <returns></returns>
         [Authorize]
-        public async Task<JsonResult> GetMembresias()
+        public async Task<JsonResult> GetNoticia(int id)
         {
-            var membresias = await ApiHelper.GET_List<Membresia>("Membresia/GetMembresias", GetAuthToken);
-            return Json(membresias, JsonRequestBehavior.AllowGet);
+            var noticia = await ApiHelper.GET_By_ID<Noticia>("Noticia/GetNoticia",id, GetAuthToken);
+            return Json(noticia, JsonRequestBehavior.AllowGet);
         }
         /// <summary>
-        /// Obtiene las membresias disponibles SIN NECESIDAD DE AUTENTICARSE
+        /// Obtiene la noticias por el ID
         /// </summary>
         /// <returns></returns>
-        public async Task<JsonResult> GetMembresiasWOAuth()
+        [Authorize]
+        public async Task<JsonResult> GetNoticias()
         {
-            var membresias = await ApiHelper.GET_ListWOAuth<Membresia>("Membresia/GetMembresias");
-            return Json(membresias, JsonRequestBehavior.AllowGet);
+            var noticias = await ApiHelper.GET_List<Noticia>("Noticia/GetNoticia", GetAuthToken);
+            return Json(noticias, JsonRequestBehavior.AllowGet);
+        }
+        /// <summary>
+        /// Obtiene las noticias disponibles SIN NECESIDAD DE AUTENTICARSE
+        /// </summary>
+        /// <returns></returns>
+        public async Task<JsonResult> GetNoticiasWOAuth()
+        {
+           var noticias = await ApiHelper.GET_ListWOAuth<Noticia>("Noticia/GetNoticia");
+            return Json(noticias, JsonRequestBehavior.AllowGet);
         }
         [Authorize]
-        public async Task<JsonResult> GuardarMembresia(Membresia membresia)
+        public async Task<JsonResult> GuardarNoticia(Noticia noticia)
         {
             try
             {
                 //SE OBTIENE EL ID DE USUARIO DE LA SESION
-                membresia.IdUsuario = GetUserDecrypted.IdUsuario;
-                if (membresia.IdMembresia > 0)
+                noticia.IdUsuario = GetUserDecrypted.IdUsuario;
+                if (noticia.Id > 0)
                 {
-                    await ApiHelper.PUT<Membresia>("Membresia/PutMembresia", membresia, GetAuthToken);
-                    return Json("La publicación se ha editado exitosamente.");
+                    await ApiHelper.PUT<Noticia>("Noticia/PutNoticia", noticia, GetAuthToken);
+                    return Json("La noticia se ha editado exitosamente.");
                 }
                 else
                 {
-                    membresia.FechaIngreso = DateTime.Now;
-                    await ApiHelper.POST<Membresia>("Membresia/PostMembresia", membresia, GetAuthToken);
-                    return Json("La membresia se ha guardado exitosamente.");
+                    noticia.FechaIngreso = DateTime.Now;
+                    await ApiHelper.POST<Noticia>("Noticia/PostNoticia",noticia, GetAuthToken);
+                    return Json("La noticia se ha guardado exitosamente.");
                 }
 
             }
             catch (Exception)
             {
                 Response.StatusCode = (int)HttpStatusCode.BadRequest;
-                return Json("Ha ocurrido un error al guardar la membresia. Si el problema persiste contacte su administrador.");
+                return Json("Ha ocurrido un error al guardar la noticia. Si el problema persiste contacte su administrador.");
             }
 
         }
 
-        public async Task<MembresiaUsuario> ObtieneMembresiaActiva()
+        public async Task<Noticia> ObtieneNoticia(int id)
         {
-            var membresia = await ApiHelper.GET_By_ID<MembresiaUsuario>("MembresiaUsuarios/ObtieneMembresiaActiva", GetUserDecrypted.IdUsuario, GetAuthToken);
-            return membresia;
+            var noticia = await ApiHelper.GET_By_ID<Noticia>("Noticia/GetNoticia", id, GetAuthToken);
+            return noticia;
         }
     }
 }
