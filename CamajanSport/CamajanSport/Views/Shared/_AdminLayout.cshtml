@@ -33,12 +33,13 @@
     @Styles.Render("~/css/plugins/select2/select2.min.css")
     @Styles.Render("~/css/plugins/bootstrap-datetimepicker/bootstrap-datetimepicker.min.css")
     @Styles.Render("~/Content/css/AdminLayout")
-                         
+
     @RenderSection("CSS", required: false)
 
 </head>
 
 <body>
+    <div id="LoadingGif" class="hidden"></div>
     <div id="wrapper">
         <nav class="navbar-top" role="navigation">
             <div class="navbar-header">
@@ -69,10 +70,12 @@
 
                         @{
                             
-                            if (modelo.Imagen == null) { 
+                                if (modelo.Imagen == null)
+                                {
                               <img id="imgPerfil" src="~/img/desconocido.png" class="img-circle" style="width:150px; height:150px;" alt="">
                             }
-                            else { 
+                                else
+                                {
                         <img id="imgPerfil" src="@modelo.Imagen" class="img-circle" style="width:150px; height:150px;" alt="">
                             }
                         }
