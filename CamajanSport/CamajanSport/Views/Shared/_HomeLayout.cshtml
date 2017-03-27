@@ -1,11 +1,4 @@
-﻿@using Utilidades;
-@using System.Web.Script.Serialization;
-@using CamajanSport.BOL;
-
-<!DOCTYPE html>
-
-@using Microsoft.AspNet.Identity
-
+﻿<!DOCTYPE html>4
 <html class="no-js">
 <head>
     <title>Pronósticos Deportivos | Sports Betting</title>
@@ -97,12 +90,15 @@
 
 
     function SuccessOrError(data) {
-
-       window.location.href = "@Url.Action("Index", "Home")";
+        window.location.reload();
     }
 
-    $(document).ready(function () {
-        $('#LogIn').click(function () {
+    var WireEvents = function () {
+
+        var btnEntrar = $('#LogIn');
+
+        btnEntrar.on('click', function () {
+
             var objeto = {
                 'correo': $('#txtEmail').val(),
                 'password': $('#txtPassword').val()
@@ -111,9 +107,18 @@
 
         });
 
-        @*$('#CrearUsuario').click(function () {
-            window.location.href = "@Url.Action("CrearUsuario","LogIn")";
-        })*@
+        $('#txtEmail, #txtPassword').on('keyup', function (e) {
+            var self = $(this);
+            if (e.which == 13) {
+                self.blur();
+                btnEntrar.click();
+            }
+        })
+
+    }
+
+    $(document).ready(function () {
+        WireEvents()
     });
 
 </script>
