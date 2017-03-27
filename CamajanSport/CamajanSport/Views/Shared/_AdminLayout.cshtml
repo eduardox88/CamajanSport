@@ -28,31 +28,12 @@
 
     <title>Camajan Sport</title>
 
-    <link href="~/css/plugins/pace/pace.css" rel="stylesheet">
-    <script src="~/js/plugins/pace/pace.js"></script>
-    <!-- GLOBAL STYLES - Include these on every page. -->
-    <link href="~/css/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-    <link href='http://fonts.googleapis.com/css?family=Ubuntu:300,400,500,700,300italic,400italic,500italic,700italic' rel="stylesheet" type="text/css">
-    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel="stylesheet" type="text/css">
-    <link href="~/icons/font-awesome/css/font-awesome.min.css" rel="stylesheet">
-    <link href="~/css/plugins/messenger/messenger.css" rel="stylesheet">
-    <link href="~/css/plugins/messenger/messenger-theme-flat.css" rel="stylesheet">
-    <link href="~/css/plugins/morris/morris.css" rel="stylesheet">
-    <link href="~/css/plugins/jvectormap/jquery-jvectormap-1.2.2.css" rel="stylesheet">
-    <link href="~/css/plugins/datatables/datatables.css" rel="stylesheet">
-    <link href="~/css/plugins/dropzone/css/dropzone.css" rel="stylesheet">
-
-    <link href="~/css/plugins/bootstrap-datepicker/datepicker3.css" rel="stylesheet" />
-
-    <link href="~/css/style.css" rel="stylesheet">
-    <link href="~/css/plugins.css" rel="stylesheet">
-    <link href="~/css/plugins/sweetalert/sweetalert.css" rel="stylesheet" />
-    <link href="~/css/plugins/select2/select2.min.css" rel="stylesheet" />
-    <link href="~/css/plugins/bootstrap-datetimepicker/bootstrap-datetimepicker.min.css" rel="stylesheet" />
-    <link href="~/css/demo.css" rel="stylesheet">
-    <link href="~/css/loading.css" rel="stylesheet">
-    <link href="~/css/plugins/summernote/summernote.css" rel="stylesheet" />
-    <link href="~/css/plugins/summernote/summernote-bs3.css" rel="stylesheet" />
+    @Styles.Render("~/css/plugins/bootstrap/css/bootstrap.min.css")
+    @Styles.Render("~/icons/font-awesome/css/font-awesome.min.css")
+    @Styles.Render("~/css/plugins/select2/select2.min.css")
+    @Styles.Render("~/css/plugins/bootstrap-datetimepicker/bootstrap-datetimepicker.min.css")
+    @Styles.Render("~/Content/css/AdminLayout")
+                         
     @RenderSection("CSS", required: false)
 
 </head>
@@ -109,69 +90,25 @@
         </nav>
         <div id="page-wrapper">
             <div class="page-content">
-                <div id="spinner">
-                </div>
                 @RenderBody()
             </div>
         </div>
 
     </div>
-    <!-- /#wrapper -->
-    <!-- GLOBAL SCRIPTS -->
-    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
-    <script src="~/js/plugins/bootstrap/bootstrap.min.js"></script>
-    <script src="~/js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
-    <script src="~/js/plugins/popupoverlay/jquery.popupoverlay.js"></script>
-    <script src="~/js/plugins/popupoverlay/defaults.js"></script>
 
-    <!-- Logout Notification jQuery -->
-    <script src="~/js/plugins/popupoverlay/logout.js"></script>
-    <!-- HISRC Retina Images -->
-    <script src="~/js/plugins/hisrc/hisrc.js"></script>
-    <!-- PAGE LEVEL PLUGIN SCRIPTS -->
-    <!-- HubSpot Messenger -->
-    <script src="~/js/plugins/messenger/messenger.min.js"></script>
-    <script src="~/js/plugins/messenger/messenger-theme-flat.js"></script>
-    <!-- Morris Charts -->
-    <script src="~/js/plugins/morris/raphael-2.1.0.min.js"></script>
-    <script src="~/js/plugins/morris/morris.js"></script>
-    <!-- Flot Charts -->
-    <script src="~/js/plugins/flot/jquery.flot.js"></script>
-    <script src="~/js/plugins/flot/jquery.flot.resize.js"></script>
-    <!-- Sparkline Charts -->
-    <script src="~/js/plugins/sparkline/jquery.sparkline.min.js"></script>
-    <!-- Moment.js -->
-    <script src="~/js/plugins/moment/moment.min.js"></script>
-    <script src="~/js/plugins/moment/moment-with-locales.min.js"></script>
-    <script src="~/js/plugins/bootstrap-datepicker/bootstrap-datepicker.js"></script>
-    <script src="~/js/plugins/bootstrap-datetimepicker/bootstrap-datetimepicker.min.js"></script>
-    <!-- jQuery Vector Map -->
-    <script src="~/js/plugins/jvectormap/jquery-jvectormap-1.2.2.min.js"></script>
-    <script src="~/js/plugins/jvectormap/maps/jquery-jvectormap-world-mill-en.js"></script>
-    <script src="~/js/demo/map-demo-data.js"></script>
-    <!-- Easy Pie Chart -->
-    <script src="~/js/plugins/easypiechart/jquery.easypiechart.min.js"></script>
-    <!-- DataTables -->
-    <script src="~/js/plugins/datatables/jquery.dataTables.js"></script>
-    <script src="~/js/plugins/datatables/datatables-bs3.js"></script>
-    <!-- PAGE LEVEL PLUGIN SCRIPTS -->
-    <script src="~/js/plugins/dropzone/dropzone.js"></script>
-    <!-- THEME SCRIPTS -->
-    <script src="~/js/flex.js"></script>
+    @Scripts.Render("~/js/jquery-1.10.min.js")
+    @Scripts.Render("~/js/plugins/bootstrap/bootstrap.min.js")
+    @Scripts.Render("~/js/plugins/slimscroll/jquery.slimscroll.min.js")
+    @Scripts.Render("~/js/plugins/moment/moment.min.js")
+    @Scripts.Render("~/js/plugins/moment/moment-with-locales.min.js")
+    @Scripts.Render("~/js/plugins/bootstrap-datetimepicker/bootstrap-datetimepicker.min.js")
+    @Scripts.Render("~/js/plugins/summernote/summernote.min.js")
+    @Scripts.Render("~/js/plugins/sweetalert/sweetalert.min.js")
+    @Scripts.Render("~/js/plugins/select2/select2.min.js")
 
-    <script src="~/js/plugins/sweetalert/sweetalert.min.js"></script>
-    <script src="~/js/plugins/select2/select2.min.js"></script>
 
-    <script src="~/js/plugins/jquery.validate/jquery.validate.js"></script>
-    <script src="~/js/plugins/jquery.validate/messages_es.js"></script>
-    <script src="~/js/plugins/jquery.validate/utilities/lettersonly.js"></script>
-    <script src="~/js/plugins/jquery.validate/utilities/decimal.js"></script>
-    <script src="~/js/plugins/jquery.validate/utilities/integer.js"></script>
-    <script src="~/js/plugins/autonumeric/autoNumeric.js"></script>
+    @Scripts.Render("~/bundles/js/AdminLayout")                                                             
 
-    @*<script src="~/js/demo/dashboard-demo.js"></script>*@
-    <script src="~/js/helpers/Utilities.js"></script>
-    <script src="~/js/plugins/summernote/summernote.min.js"></script>
     @RenderSection("Scripts", required: false)
 
 </body>
