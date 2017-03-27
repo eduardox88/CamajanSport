@@ -45,9 +45,8 @@ namespace CamajanSport.App_Start
             bundles.Add(new StyleBundle("~/Content/css/AdminLayout").Include(    
                        "~/css/plugins/datatables/datatables.css",                                    
                        "~/css/style.css",                                                                                                        
-                       "~/css/plugins/sweetalert/sweetalert.css",                               
-                       "~/css/plugins/summernote/summernote.css",                                             
-                       "~/css/plugins/summernote/summernote-bs3.css"      
+                       "~/css/plugins/sweetalert/sweetalert.css",
+                       "~/css/loading-gif.css"            
                       ));
 
 
