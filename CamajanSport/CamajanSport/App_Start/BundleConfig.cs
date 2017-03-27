@@ -52,7 +52,9 @@ namespace CamajanSport.App_Start
 
             bundles.Add(new StyleBundle("~/Content/css/HomeLayout").Include(
                       "~/css/bootstrap.css",                  
-                       "~/css/main.css",                         
+                       "~/css/main.css",
+                       "~/css/plugins.css",
+                       "~/css/style.css", 
                        "~/css/MembresiaBanner.css",            
                        "~/css/home.css",                             
                        "~/css/plugins/sweetalert/sweetalert.css",
