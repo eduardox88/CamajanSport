@@ -1,7 +1,6 @@
 ﻿@{
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
-
 <div class="page-content">
     <!-- begin PAGE TITLE AREA -->
     <!-- Use this section for each page's title and breadcrumb layout. In this example a date range picker is included within the breadcrumb. -->
@@ -18,11 +17,11 @@
         </div>
     </div>
     <div id="divFormularioNoticia">
-        <form id="frmDivNoticia" sty style="width:100%">
+       
             <div class="portlet portlet-dark-blue">
                 <div class="portlet-heading">
                     <div class="portlet-title">
-                        <h4><i class="fa fa-exchange fa-fw"></i> Editar Noticia</h4>
+                        <h4><i class="fa fa-exchange fa-fw"></i><label id="lblFormNoticia"></label></h4>
                     </div>
                     <div class="portlet-widgets">
                         <a data-toggle="collapse" data-parent="#accordion" href="#transactionsPortlet"><i class="fa fa-chevron-down"></i></a>
@@ -56,17 +55,18 @@
                     <div class="portlet-footer">
                         <div class="row">
                             <div class="col-md-offset-4 col-xs-5 col-sm-3 col-md-2">
-                                <input type="button" value="Guardar" class="btn btn-success" onclick="Guardar()" />
+                                <input type="button" value="Cancelar" class="btn btn-danger" onclick="LimpiarDivCrearNoticia()" />
                             </div>
                             <div class="col-xs-5 col-sm-3 col-md-2">
-                                <input type="button" value="Cancelar" class="btn btn-danger" onclick="LimpiarDivCrearNoticia()" />
+                                <input type="button" value="Guardar" class="btn btn-success" onclick="Guardar()" />
+                                
                             </div>
                         </div>
 
                     </div>
                 </div>
             </div>
-        </form>
+
     </div>
         <!-- /.row -->
     <!-- end PAGE TITLE AREA -->
@@ -113,18 +113,27 @@
         </div>
     </div>           
     <!-- Modal -->
-    <div id="myModal" class="modal fade" style="z-index:1000" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-          <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                <h3 id="PreviewModalLabel"></h3>
-        </div>
-          <div class="modal-body" id="bodyPreviewNoticia">
-                
-        </div>
-          <div class="modal-footer">
-                <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+    <div class="row">
+        <div class="col-xs-12">
+            <div id="myModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                            <h3 id="PreviewModalLabel"></h3>
+                        </div>
+                        <div class="modal-body" id="bodyPreviewNoticia">
+
+                        </div>
+                        <div class="modal-footer">
+                            <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+                      
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
+    
 
 
 </div>
@@ -134,15 +143,6 @@
     $(document).ready(function () {
         var noticiaEditada = undefined;
         $('#divFormularioNoticia').hide();
-        $('#frmDivNoticia').validate({
-            errorClass: 'control-label text-danger',
-            rules: {
-                txtTitulo: {
-                    required: true
-                }
-            }
-        });
-
         //var objNoticias = null;
         
         $('#tblNoticia').show();
@@ -170,6 +170,7 @@
     function CrearNoticia() {
         $('#hdfIdNoticia').val('0');
         $('#tblNoticia').hide();
+        $('#lblFormNoticia').text('Nueva noticia');
         $('.summernote').summernote({
             height: 350,
             placeholder: 'Digite el contenido de su noticia',
@@ -192,6 +193,7 @@
             noticiaEditada = data;
             $('#tblNoticia').hide();
             $('#divFormularioNoticia').show();
+            $('#lblFormNoticia').text('Editar noticia');
             $('#txtTitulo').val(noticiaEditada.Titulo);
             $('#chkActivo').prop('checked', noticiaEditada.Activo);
             $('#hdfFechaIngreso').val(new FechaUtility(noticiaEditada.FechaIngreso).GetDate());
@@ -204,12 +206,12 @@
 
     function CargarData(response) {
         //objNoticias = response;
+        $('#tblNoticias').empty();
         if (response.length > 0) {
-            $('#tblNoticias').empty();
             for (var i = 0; i < response.length; i++) {
 
                 var noticia = response[i];
-                var btnEliminar = "<input type='button' class='btn btn-danger' value='Eliminar' onclick='EliminarNoticia('" + noticia.Id + "')' />";
+                var btnEliminar = "<input type='button' class='btn btn-danger' value='Eliminar' onclick='EliminarNoticia(" + noticia.Id + ")' />";
                 var btnEditar = "<input type='button' class='btn btn-warning' value='Editar' onclick='EditarNoticia(" + noticia.Id + ")' />";
                 var btnPreview = '<input type="button" value="Preview" class="btn btn-info" onclick="PreviewNoticia('+noticia.Id+')"/>';
                 var html = '<tr>' +
@@ -232,15 +234,15 @@
     {
         var Preview = function (data) {
             $('#myModal').modal('show');
-            //$('#PreviewModalLabel').val('Preview de "'+data.Titulo+'"');
-            //$('#bodyPreviewNoticia').innerHtml = data.Contenido;
+            $('#PreviewModalLabel').text('Preview de "'+data.Titulo+'"');
+            $('#bodyPreviewNoticia').html(data.Contenido);
         };
         AjaxCall('@Url.Action("GetNoticia", "Noticia")', { "id": id }, '', Preview, false);
     }
 
     function EliminarNoticia(Id) {
         swal({
-            title: "¿Confirmar acción?",
+            title: "¿Confirmar borrado?",
             text: "La noticia eliminada no podrá recuperarse",
             type: "warning",
             showCancelButton: true,
@@ -250,7 +252,7 @@
             closeOnConfirm: false
         },
         function () {
-            AjaxCall('@Url.Action("EliminarNoticia", "Noticia")', Id, '', CargarNoticias, false);
+            AjaxCall('@Url.Action("EliminarNoticia", "Noticia")', { "id": Id }, '', CargarNoticias, false);
             //swal("Deleted!", "Your imaginary file has been deleted.", "success");
         });
 
@@ -258,7 +260,7 @@
 
     function Guardar() {
 
-        if ($("#frmDivNoticia").valid()) {
+        if ($("#txtTitulo").val().length > 0) {
             swal({
                 title: "Guardar noticia",
                 text: "¿Confirma que desea guardar la noticia?",
@@ -283,6 +285,8 @@
                     AjaxCall('@Url.Action("GuardarNoticia", "Noticia")', Noticia, '', CargarNoticias, false);
                 }
             });
+        } else {
+            MostrarAlerta('Creación de Noticia', 'info', 'Debe escribir el título de la noticia');
         }
     };
 
