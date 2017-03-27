@@ -113,7 +113,7 @@
         </div>
     </div>           
     <!-- Modal -->
-    <div id="myModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div id="myModal" class="modal fade" style="z-index:1000" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
           <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
                 <h3 id="PreviewModalLabel"></h3>
@@ -130,7 +130,6 @@
 </div>
 
 @section Scripts{
-    
     <script>
     $(document).ready(function () {
         var noticiaEditada = undefined;
@@ -145,11 +144,7 @@
         });
 
         //var objNoticias = null;
-        $('.summernote').summernote({
-            height: 350,
-            placeholder: 'Digite el contenido de su noticia',
-
-        });
+        
         $('#tblNoticia').show();
 
         CargarNoticias();
@@ -175,6 +170,11 @@
     function CrearNoticia() {
         $('#hdfIdNoticia').val('0');
         $('#tblNoticia').hide();
+        $('.summernote').summernote({
+            height: 350,
+            placeholder: 'Digite el contenido de su noticia',
+
+        });
         $('#divFormularioNoticia').show();
         $('.summernote').summernote({ focus: true });
     }
@@ -190,7 +190,6 @@
     function EditarNoticia(id) {
         var CargarDatosNoticia = function (data) {
             noticiaEditada = data;
-            console.log(noticiaEditada.Activo);
             $('#tblNoticia').hide();
             $('#divFormularioNoticia').show();
             $('#txtTitulo').val(noticiaEditada.Titulo);
@@ -212,7 +211,7 @@
                 var noticia = response[i];
                 var btnEliminar = "<input type='button' class='btn btn-danger' value='Eliminar' onclick='EliminarNoticia('" + noticia.Id + "')' />";
                 var btnEditar = "<input type='button' class='btn btn-warning' value='Editar' onclick='EditarNoticia(" + noticia.Id + ")' />";
-                var btnPreview = '<a href="#myModal" role="button" class="btn btn-info" data-toggle="modal" onclick="PreviewNoticia('+noticia.Id+')">Preview</a>';
+                var btnPreview = '<input type="button" value="Preview" class="btn btn-info" onclick="PreviewNoticia('+noticia.Id+')"/>';
                 var html = '<tr>' +
                 '<td>' + noticia.Id + '</td>' +
                 '<td>' + noticia.Titulo + '</td>' +
@@ -232,8 +231,9 @@
     function PreviewNoticia(id)
     {
         var Preview = function (data) {
-            $('#PreviewModalLabel').val('Preview de "'+data.Titulo+'"');
-            $('#bodyPreviewNoticia').innerHtml = data.Contenido;
+            $('#myModal').modal('show');
+            //$('#PreviewModalLabel').val('Preview de "'+data.Titulo+'"');
+            //$('#bodyPreviewNoticia').innerHtml = data.Contenido;
         };
         AjaxCall('@Url.Action("GetNoticia", "Noticia")', { "id": id }, '', Preview, false);
     }
