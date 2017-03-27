@@ -105,13 +105,13 @@ namespace CamajanSport.Controllers
                 else
                 {
                     Response.StatusCode = (int)HttpStatusCode.BadRequest;
-                    return Json("Ha ocurrido un error al guardar. Si el problema persiste contacte su administrador.");
+                    return Json(DynamicObjectHandler.SwalResponse("Error", TypeResult.error, "Ha ocurrido un error al guardar. Si el problema persiste contacte su administrador."));
                 }
             }
             catch (Exception ex)
             {
                 Response.StatusCode = (int)HttpStatusCode.BadRequest;
-                return Json("Ha ocurrido un error al guardar. Si el problema persiste contacte su administrador.");
+                return Json(DynamicObjectHandler.SwalResponse("Error", TypeResult.error, "Ha ocurrido un error al guardar. Si el problema persiste contacte su administrador."));
             }
         }
 
@@ -125,7 +125,8 @@ namespace CamajanSport.Controllers
             catch (Exception ex)
             {
                 Response.StatusCode = (int)HttpStatusCode.BadRequest;
-                return Json("Ha ocurrido un error al momento de obtener el listado de equipos, si el problema persiste contacte al administrador");
+
+                return Json(DynamicObjectHandler.SwalResponse("Error", TypeResult.error, "Ha ocurrido un error al momento de obtener el listado de equipos, si el problema persiste contacte al administrador"));
             }
         }
 
@@ -146,7 +147,8 @@ namespace CamajanSport.Controllers
             catch (Exception ex)
             {
                 Response.StatusCode = (int)HttpStatusCode.BadRequest;
-                return Json("Ha ocurrido un error al momento de obtener la cantidad de equipos registrados, si el problema persiste contacte al administrador");
+
+                return Json(DynamicObjectHandler.SwalResponse("Error", TypeResult.error, "Ha ocurrido un error al momento de obtener la cantidad de equipos registrados, si el problema persiste contacte al administrador"));
             }
         }
 
@@ -161,7 +163,8 @@ namespace CamajanSport.Controllers
             catch (Exception ex)
             {
                 Response.StatusCode = (int)HttpStatusCode.BadRequest;
-                return Json("Ha ocurrido un error al momento de obtener el listado de equipos, si el problema persiste contacte al administrador");
+
+                return Json(DynamicObjectHandler.SwalResponse("Error", TypeResult.error, "Ha ocurrido un error al momento de obtener el listado de equipos, si el problema persiste contacte al administrador"));
             }
         }
         public async Task<JsonResult> GetEquiposByDeporte_Select(int idDeporte)
@@ -175,7 +178,8 @@ namespace CamajanSport.Controllers
             catch (Exception ex)
             {
                 Response.StatusCode = (int)HttpStatusCode.BadRequest;
-                return Json("Ha ocurrido un error al momento de obtener el listado de equipos, si el problema persiste contacte al administrador");
+
+                return Json(DynamicObjectHandler.SwalResponse("Error", TypeResult.error, "Ha ocurrido un error al momento de obtener el listado de equipos, si el problema persiste contacte al administrador"));
             }
         }
     }
