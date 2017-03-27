@@ -10,71 +10,65 @@
             <div class="page-title">
                 <h1>
                     Mantenimiento Noticias
-                    @*<small>Deportes</small>*@
                 </h1>
                 <ol class="breadcrumb">
                     <li class="active"><i class="fa fa-dashboard"></i> Mantenimiento Noticias</li>
-                    @*<li class="pull-right">
-                            <div id="reportrange" class="btn btn-green btn-square date-picker">
-                                <i class="fa fa-calendar"></i>
-                                <span class="date-range"></span> <i class="fa fa-caret-down"></i>
-                            </div>
-                        </li>*@
                 </ol>
             </div>
         </div>
-        <!-- /.col-lg-12 -->
     </div>
-    <form id="frmDivNoticia" sty style="width:100%">
-        <div class="portlet portlet-dark-blue">
-            <div class="portlet-heading">
-                <div class="portlet-title">
-                    <h4><i class="fa fa-exchange fa-fw"></i> Editar Noticia</h4>
+    <div id="divFormularioNoticia">
+        <form id="frmDivNoticia" sty style="width:100%">
+            <div class="portlet portlet-dark-blue">
+                <div class="portlet-heading">
+                    <div class="portlet-title">
+                        <h4><i class="fa fa-exchange fa-fw"></i> Editar Noticia</h4>
+                    </div>
+                    <div class="portlet-widgets">
+                        <a data-toggle="collapse" data-parent="#accordion" href="#transactionsPortlet"><i class="fa fa-chevron-down"></i></a>
+                    </div>
+                    <div class="clearfix"></div>
                 </div>
-                <div class="portlet-widgets">
-                    <a data-toggle="collapse" data-parent="#accordion" href="#transactionsPortlet"><i class="fa fa-chevron-down"></i></a>
-                </div>
-                <div class="clearfix"></div>
-            </div>
-            <div id="transactionsPortlet" class="panel-collapse collapse in">
-                <div class="portlet-body">
-                    <div class="row">
-                        <div class="col-xs-1">
-                            <input type="hidden" id="hdfId" />
-                            <input type="hidden" id="hdfFechaIngreso" />
+                <div id="transactionsPortlet" class="panel-collapse collapse in">
+                    <div class="portlet-body">
+                        <div class="row">
+                            <div class="col-xs-1">
+                                <input type="hidden" id="hdfIdNoticia" />
+                                <input type="hidden" id="hdfFechaIngreso" />
+                            </div>
                         </div>
+                        <div class="row">
+                            <div class="col-xs-5">
+                                <label for="txtNombre">Título:</label>
+                                <input type="text" class="form-control" id="txtTitulo" name="txtTitulo" />
+                            </div>
+                            <div class="col-xs-5">
+                                <label for="chkActivo">Activa:</label>
+                                <input type="checkbox" class="form-control" checked="checked" id="chkActivo" name="chkActivo" />
+                            </div>
+                        </div>
+                        <br />
+                        <div>
+                            <div class="summernote" id="txtContenido"></div>
+                        </div>
+                        <br />
                     </div>
-                    <div class="row">
-                        <div class="col-xs-5">
-                            <label for="txtNombre">Título:</label>
-                            <input type="text" class="form-control" id="txtNombre" name="txtNombre" />
+                    <div class="portlet-footer">
+                        <div class="row">
+                            <div class="col-md-offset-4 col-xs-5 col-sm-3 col-md-2">
+                                <input type="button" value="Guardar" class="btn btn-success" onclick="Guardar()" />
+                            </div>
+                            <div class="col-xs-5 col-sm-3 col-md-2">
+                                <input type="button" value="Cancelar" class="btn btn-danger" onclick="LimpiarDivCrearNoticia()" />
+                            </div>
                         </div>
-                        <div class="col-xs-5">
-                            <label for="chkActiva">Activa:</label>
-                            <input type="checkbox" class="form-control" checked="checked" id="chkActiva" name="chkActiva" />
-                        </div>
-                    </div>
-                    <br />
-                    <div>
-                        <div class="summernote" id="txtContenido"></div>
-                    </div>
-                    <br />
-                </div>
-                <div class="portlet-footer">
-                    <div class="row">
-                        <div class="col-md-offset-4 col-xs-5 col-sm-3 col-md-2">
-                            <input type="button" value="Guardar" class="btn btn-success" onclick="Guardar()" />
-                        </div>
-                        <div class="col-xs-5 col-sm-3 col-md-2">
-                            <input type="button" value="Cancelar" class="btn btn-danger" onclick="TrabajarNoticia(false)" />
-                        </div>
-                    </div>
 
+                    </div>
                 </div>
             </div>
-        </div>
-    </form>
-    <!-- /.row -->
+        </form>
+    </div>
+        <!-- /.row -->
     <!-- end PAGE TITLE AREA -->
     <div class="row" id="tblNoticia">
         <div class="col-lg-12">
@@ -95,20 +89,20 @@
                                 <thead>
                                     <tr>
 
-                                        <th>Id</th>
+                                        <th width="20px">Id</th>
                                         <th>Título</th>
-                                        <th>Contenido</th>
-                                        <th>Activa</th>
-                                        <th>Fecha Ingreso</th>
-                                        <th></th>
-                                        <th></th>
+                                        <th width="120px">Activa</th>
+                                        <th width="150px">Fecha Ingreso</th>
+                                        <th width="19px"></th>
+                                        <th width="15px"></th>
+                                        <th width ="19px"></th>
                                     </tr>
                                 </thead>
                                 <tbody id="tblNoticias"></tbody>
                             </table>
                         </div>
 
-                        <button class="btn btn-grey btn-md" onclick="TrabajarNoticia(true)">
+                        <button class="btn btn-grey btn-md" onclick="CrearNoticia()">
                             Nueva Noticia
                         </button>
                     </div>
@@ -117,10 +111,20 @@
 
             </div>
         </div>
-    </div>   
-</div>
-
-<div id="verResultado">
+    </div>           
+    <!-- Modal -->
+    <div id="myModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+          <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h3 id="PreviewModalLabel"></h3>
+        </div>
+          <div class="modal-body" id="bodyPreviewNoticia">
+                
+        </div>
+          <div class="modal-footer">
+                <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+        </div>
+    </div>
 
 
 </div>
@@ -128,44 +132,159 @@
 @section Scripts{
     <script src="~/js/plugins/summernote/summernote.min.js"></script>
     <script>
-        $(document).ready(function () {
-            $('.summernote').summernote({
-                height: 350,
-                placeholder: 'Digite el contenido de su noticia',
-
-            });
-            $('#tblNoticia').show();
-            $('#frmDivNoticia').hide();
-
+    $(document).ready(function () {
+        var noticiaEditada = undefined;
+        $('#divFormularioNoticia').hide();
+        $('#frmDivNoticia').validate({
+            errorClass: 'control-label text-danger',
+            rules: {
+                txtTitulo: {
+                    required: true
+                }
+            }
         });
 
-        function LimpiarDiv() {
-            $('#hdfId').val('');
-            $('#hdfFechaIngreso').val('');
-            $('#txtTitulo', '#frmNuevaNoticia').val('');
-            $('#txtContenido', '#frmNuevaNoticia').val('');
-            $('#chkActiva').prop('checked', true);
-            $('#flexModal').modal('hide');
-        }
+        //var objNoticias = null;
+        $('.summernote').summernote({
+            height: 350,
+            placeholder: 'Digite el contenido de su noticia',
 
-        function TrabajarNoticia(ejecutarAccion) {
-            if (ejecutarAccion) {
-                $('#tblNoticia').hide();
-                $('#frmDivNoticia').show();
-                $('.summernote').summernote({ focus: true });
-            } else {
-                $('#tblNoticia').show();
-                $('#frmDivNoticia').hide();
+        });
+        $('#tblNoticia').show();
+
+        CargarNoticias();
+    });
+
+    function LimpiarDiv() {
+        $('#hdfId').val('');
+        $('#hdfFechaIngreso').val('');
+        $('#txtTitulo', '#frmNuevaNoticia').val('');
+        $('#txtContenido', '#frmNuevaNoticia').val('');
+        $('#chkActiva').prop('checked', true);
+        $('#flexModal').modal('hide');
+    }
+
+    function CargarNoticias(data) {
+        if (data != undefined) {
+            MostrarAlerta("¡Enhorabuena!", 'success', data);
+            LimpiarDivCrearNoticia();
+        }
+        AjaxCall('@Url.Action("GetNoticias", "Noticia")', '', '', CargarData, false);
+    }
+
+    function CrearNoticia() {
+        $('#hdfIdNoticia').val('0');
+        $('#tblNoticia').hide();
+        $('#divFormularioNoticia').show();
+        $('.summernote').summernote({ focus: true });
+    }
+
+    function LimpiarDivCrearNoticia() {
+        $('#tblNoticia').show();
+        $('#divFormularioNoticia').hide();
+        $('#txtTitulo').val('');
+        $('#chkActiva').prop('checked', true);
+        $('.summernote').summernote('code', '');
+    }
+
+    function EditarNoticia(id) {
+        var CargarDatosNoticia = function (data) {
+            noticiaEditada = data;
+            console.log(noticiaEditada.Activo);
+            $('#tblNoticia').hide();
+            $('#divFormularioNoticia').show();
+            $('#txtTitulo').val(noticiaEditada.Titulo);
+            $('#chkActivo').prop('checked', noticiaEditada.Activo);
+            $('#hdfFechaIngreso').val(new FechaUtility(noticiaEditada.FechaIngreso).GetDate());
+            $('.summernote').summernote('code', noticiaEditada.Contenido);
+            $('.summernote').summernote({ focus: true });
+            $('#hdfIdNoticia').val(noticiaEditada.Id);
+        }
+        AjaxCall('@Url.Action("GetNoticia", "Noticia")', { "id": id }, '', CargarDatosNoticia, false);
+    }
+
+    function CargarData(response) {
+        //objNoticias = response;
+        if (response.length > 0) {
+            $('#tblNoticias').empty();
+            for (var i = 0; i < response.length; i++) {
+
+                var noticia = response[i];
+                var btnEliminar = "<input type='button' class='btn btn-danger' value='Eliminar' onclick='EliminarNoticia('" + noticia.Id + "')' />";
+                var btnEditar = "<input type='button' class='btn btn-warning' value='Editar' onclick='EditarNoticia(" + noticia.Id + ")' />";
+                var btnPreview = '<a href="#myModal" role="button" class="btn btn-info" data-toggle="modal" onclick="PreviewNoticia('+noticia.Id+')">Preview</a>';
+                var html = '<tr>' +
+                '<td>' + noticia.Id + '</td>' +
+                '<td>' + noticia.Titulo + '</td>' +
+                '<td>' + ((noticia.Activo == false) ? 'NO' : 'SI') + '</td>' +
+                '<td>' + new FechaUtility(noticia.FechaIngreso).GetDate() + '</td>' +
+                '<td>' + btnPreview + '</td>' +
+                 '<td>' + btnEditar + '</td>' +
+                '<td>' + btnEliminar + '</td>' +
+                '</tr>';
+                $('#tblNoticias').append(html);
             }
-            
+        } else {
+            $('#tblNoticias').append("<tr><td colspan='6'>No hay datos para mostrar!</td></tr>");
         }
 
-        function Guardar() {
-            var makrup = $('.summernote').summernote('code');
-            //alert(makrup);
-            $('#verResultado').html('');
-            $('#verResultado').html(makrup);
+    }
+    function PreviewNoticia(id)
+    {
+        var Preview = function (data) {
+            $('#PreviewModalLabel').val('Preview de "'+data.Titulo+'"');
+            $('#bodyPreviewNoticia').innerHtml = data.Contenido;
         };
+        AjaxCall('@Url.Action("GetNoticia", "Noticia")', { "id": id }, '', Preview, false);
+    }
+
+    function EliminarNoticia(Id) {
+        swal({
+            title: "¿Confirmar acción?",
+            text: "La noticia eliminada no podrá recuperarse",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#DD6B55",
+            confirmButtonText: "Confirmar",
+            cancelButtonText: "Cancelar",
+            closeOnConfirm: false
+        },
+        function () {
+            AjaxCall('@Url.Action("EliminarNoticia", "Noticia")', Id, '', CargarNoticias, false);
+            //swal("Deleted!", "Your imaginary file has been deleted.", "success");
+        });
+
+    }
+
+    function Guardar() {
+
+        if ($("#frmDivNoticia").valid()) {
+            swal({
+                title: "Guardar noticia",
+                text: "¿Confirma que desea guardar la noticia?",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "Confirmar",
+                cancelButtonText: "Cancelar",
+                closeOnConfirm: false
+            },
+            function () {
+
+                if ($('.summernote').summernote('code').length <= 11) {
+                    MostrarAlerta('Creación de Noticia', 'info', 'Debe escribir el contenido de la noticia');
+                } else {
+                    var Noticia = new Object();
+                    Noticia.Id = $('#hdfIdNoticia').val();
+                    Noticia.Titulo = $('#txtTitulo').val();
+                    Noticia.FechaIngreso = $('#hdfFechaIngreso').val();
+                    Noticia.Activo = $('#chkActivo').prop('checked');
+                    Noticia.Contenido = $('.summernote').summernote('code');
+                    AjaxCall('@Url.Action("GuardarNoticia", "Noticia")', Noticia, '', CargarNoticias, false);
+                }
+            });
+        }
+    };
 
 
     </script>
