@@ -19,6 +19,7 @@
 
  body {
     font-family: "Open Sans","Helvetica Neue",Helvetica,Arial,sans-serif;
+
 }
 
 .pointer:hover {
@@ -65,7 +66,7 @@ a:focus {
 
 @media(min-width:768px) {
     body {
-        /*background: #34495e;*/
+        background: #34495e;
     }
 }
 
@@ -1995,7 +1996,7 @@ input[type="checkbox"]:hover,
 input[type="checkbox"]:checked::after,
 .checkbox input[type="checkbox"]:checked::after,
 .checkbox-inline input[type="checkbox"]:checked::after {
-    content: url(../img/checkmark.png);
+    content: url(../../img/checkmark.png);
     display: block;
     position: absolute;
     top: -6px;
